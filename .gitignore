@@ -12,3 +12,20 @@ Makefile.in
 /install-sh
 /missing
 /stamp-h1
+
+# Objects
+*.o
+*.lo
+*.la
+*.libs
+*.dirstamp
+Makefile
+bin/mela-config
+config.log
+config.status
+libtool
+run/Evolution
+run/StructureFunctions
+run/Timing
+
+
