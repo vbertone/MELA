@@ -33,7 +33,7 @@ standar procedure:
 
 ```Shell
 cd MELA
-./configure --prefix=/where/install/apfel #(optional)
+./configure --prefix=/installation/path/ #(optional)
 make && make install
 ```
 
