@@ -4,7 +4,7 @@
 
 MELA is a Mellin-space based code for parton ditribution function
 (PDF) and fragmentation function (FF) DGLAP evolution.
-MELA also allows to able to compute DIS structure functions in
+MELA also allows to compute DIS structure functions in
 different mass schemes up to NNLO in QCD.
 
 ## Download
