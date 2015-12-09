@@ -19,10 +19,9 @@ Makefile.in
 *.la
 *.libs
 *.dirstamp
+config.*
 Makefile
 bin/mela-config
-config.log
-config.status
 libtool
 run/Evolution
 run/StructureFunctions
