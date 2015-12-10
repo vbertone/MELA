@@ -24,7 +24,7 @@
       integer ip,iQ
       double precision r,rmax
       double precision theta,sigma,t
-      double complex as
+      double complex aQCD
       double complex s,tmp(13)
       double complex xfN(13)
       double complex xfev(13)
@@ -35,11 +35,11 @@
 *
 *     Precompute alphas
 *
-      asEvolIni(1) = as(Q(1)**2d0)
-      asEvolFin(1) = as(Q(2)**2d0)
+      asEvolIni(1) = aQCD(Q(1)**2d0)
+      asEvolFin(1) = aQCD(Q(2)**2d0)
       do iQ=2,nQ-1
          asEvolIni(iQ) = asEvolFin(iQ-1)
-         asEvolFin(iQ) = as(Q(iQ+1)**2d0)
+         asEvolFin(iQ) = aQCD(Q(iQ+1)**2d0)
       enddo
 *
       t = - dlog(x)

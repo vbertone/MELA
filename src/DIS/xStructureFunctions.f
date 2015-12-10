@@ -31,7 +31,7 @@
       double precision r,rmax
       double precision theta,sigma,t
       double precision rho(6),W2,kappa
-      double complex as
+      double complex aQCD
       double complex s,tmp(3,6)
       double complex SFN(3,6)
 **
@@ -45,12 +45,12 @@
       if(ns.eq."FFNS")then
          iptbkp = ipt
          ipt    = max(0,ipt-1)
-         asDIS  = as((kfacQ*Q(nQ))**2d0)
-         asEvolIni(1) = as(Q(1)**2d0)
-         asEvolFin(1) = as((kfacQ*Q(2))**2d0)
+         asDIS  = aQCD((kfacQ*Q(nQ))**2d0)
+         asEvolIni(1) = aQCD(Q(1)**2d0)
+         asEvolFin(1) = aQCD((kfacQ*Q(2))**2d0)
          do iQ=2,nQ-1
             asEvolIni(iQ) = asEvolFin(iQ-1)
-            asEvolFin(iQ) = as((kfacQ*Q(iQ+1))**2d0)
+            asEvolFin(iQ) = aQCD((kfacQ*Q(iQ+1))**2d0)
          enddo
          ipt    = iptbkp
          W2     = abs(Q(nq)**2d0) * ( 1d0 - x ) / x
@@ -59,12 +59,12 @@
             if(W2.ge.kappa*abs(q2th(ip))) maxfl = maxfl + 1 
          enddo
       elseif(ns.eq."VFNS")then
-         asDIS  = as((kfacQ*Q(nQ))**2d0)
-         asEvolIni(1) = as(Q(1)**2d0)
-         asEvolFin(1) = as((kfacQ*Q(2))**2d0)
+         asDIS  = aQCD((kfacQ*Q(nQ))**2d0)
+         asEvolIni(1) = aQCD(Q(1)**2d0)
+         asEvolFin(1) = aQCD((kfacQ*Q(2))**2d0)
          do iQ=2,nQ-1
             asEvolIni(iQ) = asEvolFin(iQ-1)
-            asEvolFin(iQ) = as((kfacQ*Q(iQ+1))**2d0)
+            asEvolFin(iQ) = aQCD((kfacQ*Q(iQ+1))**2d0)
          enddo
          do ip=4,6
             if(abs(Q(nq)**2d0).ge.abs(q2th(ip))) maxfl = maxfl + 1 

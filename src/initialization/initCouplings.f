@@ -17,7 +17,7 @@
 *
       integer i
       double precision eps
-      double complex as
+      double complex aQCD
       double complex q2thm(4:6)
       parameter(eps=1d-7)
 *
@@ -25,14 +25,14 @@
          q2thm(i) = q2th(i) - eps
       enddo
 *
-      ASC   = AS(q2th(4))
-      ASCM  = AS(q2thm(4))
+      ASC   = AQCD(q2th(4))
+      ASCM  = AQCD(q2thm(4))
 *
-      ASB   = AS(q2th(5))
-      ASBM  = AS(q2thm(5))
+      ASB   = AQCD(q2th(5))
+      ASBM  = AQCD(q2thm(5))
 *
-      AST   = AS(q2th(6))
-      ASTM  = AS(q2thm(6))
+      AST   = AQCD(q2th(6))
+      ASTM  = AQCD(q2thm(6))
 *
       return
       end

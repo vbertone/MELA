@@ -4,12 +4,12 @@
 *     
 *     Routine that returns alpha_s/(4*pi).
 *
-*     Note that the only argument of routine AS is the energy Q2
+*     Note that the only argument of routine AQCD is the energy Q2
 *     of the process which is convereted into the renormalization
 *     scale inside the routine itself.
 *
 ****************************************************************
-      function as(q2)
+      function aQCD(q2)
 *
       implicit none
 *
@@ -42,7 +42,7 @@
 **
 *     Output Variables
 *
-      double complex as
+      double complex aQCD
 *
       asr0 = asref / 4d0 / pi
 *
@@ -109,9 +109,9 @@ c      kappa = 1d0      ! mu_R / mu_F
 *
  10   if(nff.eq.nfi) then
          if(modev.eq."TRN")then
-            as = as_expanded_MELA(nfi,mur20,asr0,mur2,ipt)
+            aQCD = as_expanded_MELA(nfi,mur20,asr0,mur2,ipt)
          elseif(modev.eq."ITE".or.modev.eq."PTH")then
-            as = as_exact_MELA(nfi,mur20,asr0,mur2,ipt)
+            aQCD = as_exact_MELA(nfi,mur20,asr0,mur2,ipt)
          endif
          return
       else
@@ -150,7 +150,7 @@ c      kappa = 1d0      ! mu_R / mu_F
 *     Routines for the computation of alpha_s with fixed number of 
 *     flavours
 * 
-*     - as_expanded_MELA: computes alpha_s as function of alpha_s at a given
+*     - as_expanded_MELA: computes alpha_s aQCD function of alpha_s at a given
 *                    refernce scale.
 *
 *     - as_exact_MELA: Exact solution of the QCD beta function 
@@ -174,7 +174,7 @@ c      kappa = 1d0      ! mu_R / mu_F
 *     Internal Variables
 *
       double complex asi
-      double complex alo,t,as,den
+      double complex alo,t,aQCD,den
 **
 *     Output Variables
 *
@@ -187,23 +187,23 @@ c      kappa = 1d0      ! mu_R / mu_F
 *
 *     LO
 *
-      as = alo
+      aQCD = alo
 *
 *     NLO
 *
       if(ipt.ge.1)then
-         as = alo * ( 1d0 - b1(nf) * alo * zlog(den) )
+         aQCD = alo * ( 1d0 - b1(nf) * alo * zlog(den) )
       endif
 *
 *     NNLO
 *
       if(ipt.eq.2)then
-         as = alo * ( 1d0 
+         aQCD = alo * ( 1d0 
      1      + ( alo * ( alo - asi ) * ( b2(nf) - b1(nf)**2d0 )
-     2      + as * b1(nf) * zlog(as/asi) ) )
+     2      + aQCD * b1(nf) * zlog(aQCD/asi) ) )
       endif
 *
-      as_expanded_MELA = as
+      as_expanded_MELA = aQCD
 *
       return
       end
@@ -225,7 +225,7 @@ c      kappa = 1d0      ! mu_R / mu_F
 *     Inernal Variables
 *
       INTEGER NSTEP,K1
-      DOUBLE COMPLEX AS
+      DOUBLE COMPLEX AQCD
       DOUBLE PRECISION SXTH
       DOUBLE COMPLEX FBETAMELA
       DOUBLE COMPLEX XK0,XK1,XK2,XK3
@@ -240,7 +240,7 @@ c      kappa = 1d0      ! mu_R / mu_F
 *
 *     ..The beta functions FBETAMELAn at N^nLO for n = 1, 2, and 3
 *
-      AS    = AS0
+      AQCD    = AS0
       LRRAT = ZLOG (MU2/MU20)
       DLR   = LRRAT / NSTEP
 *     
@@ -248,26 +248,26 @@ c      kappa = 1d0      ! mu_R / mu_F
 *   (fourth-order Runge-Kutta beyond the leading order)
 *     
       IF(IPT.EQ.0)THEN
-         AS = AS0 / ( 1D0 + BETA0(NF) * AS0 * LRRAT )
+         AQCD = AS0 / ( 1D0 + BETA0(NF) * AS0 * LRRAT )
       ELSEIF(IPT.EQ.1)THEN
          DO 2 K1=1,NSTEP
-            XK0 = DLR * FBETAMELA(AS,NF,IPT)
-            XK1 = DLR * FBETAMELA(AS + 0.5d0 * XK0,NF,IPT)
-            XK2 = DLR * FBETAMELA(AS + 0.5d0 * XK1,NF,IPT)
-            XK3 = DLR * FBETAMELA(AS + XK2,NF,IPT)
-            AS = AS + SXTH * ( XK0 + 2D0 * XK1 + 2d0 * XK2 + XK3 )
+            XK0 = DLR * FBETAMELA(AQCD,NF,IPT)
+            XK1 = DLR * FBETAMELA(AQCD + 0.5d0 * XK0,NF,IPT)
+            XK2 = DLR * FBETAMELA(AQCD + 0.5d0 * XK1,NF,IPT)
+            XK3 = DLR * FBETAMELA(AQCD + XK2,NF,IPT)
+            AQCD = AQCD + SXTH * ( XK0 + 2D0 * XK1 + 2d0 * XK2 + XK3 )
  2        CONTINUE
       ELSEIF(IPT.EQ.2)THEN
          DO 3 K1 = 1, NSTEP
-            XK0 = DLR * FBETAMELA(AS,NF,IPT)
-            XK1 = DLR * FBETAMELA(AS + 0.5d0 * XK0,NF,IPT)
-            XK2 = DLR * FBETAMELA(AS + 0.5d0 * XK1,NF,IPT)
-            XK3 = DLR * FBETAMELA(AS + XK2,NF,IPT)
-            AS = AS + SXTH * ( XK0 + 2D0 * XK1 + 2D0 * XK2 + XK3 )
+            XK0 = DLR * FBETAMELA(AQCD,NF,IPT)
+            XK1 = DLR * FBETAMELA(AQCD + 0.5d0 * XK0,NF,IPT)
+            XK2 = DLR * FBETAMELA(AQCD + 0.5d0 * XK1,NF,IPT)
+            XK3 = DLR * FBETAMELA(AQCD + XK2,NF,IPT)
+            AQCD = AQCD + SXTH * ( XK0 + 2D0 * XK1 + 2D0 * XK2 + XK3 )
  3       CONTINUE
       ENDIF
 *
-      AS_EXACT_MELA = AS
+      AS_EXACT_MELA = AQCD
 *
       RETURN
       END
