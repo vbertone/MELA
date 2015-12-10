@@ -1,12 +1,4 @@
 /autom4te.cache
-/aclocal.m4
-/compile
-/depcomp
-/install-sh
-/missing
-/stamp-h1
-
-# Objects
 *.o
 *.lo
 *.la
