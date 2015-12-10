@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([MELA],[2.0.0],[valerio.bertone@cern.ch],[mela])
+AC_INIT([MELA],[2.0.1],[valerio.bertone@cern.ch],[mela])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([subdir-objects])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
