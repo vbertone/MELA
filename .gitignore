@@ -4,7 +4,8 @@
 *.la
 *.libs
 *.dirstamp
-config.*
+config.log
+config.status
 Makefile
 bin/mela-config
 libtool
