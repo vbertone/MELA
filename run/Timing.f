@@ -50,7 +50,7 @@
       do iQ=1,nQ
          x = xmin
          do ix=1,nx
-            call xDistibutions(x,2,Q,xf)
+            call xDistributions(x,2,Q,xf)
             x = x * xstep
          enddo
          Q(2) = Q(2) * Qstep

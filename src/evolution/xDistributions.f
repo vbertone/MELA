@@ -1,11 +1,11 @@
 ************************************************************************
 *
-*     xDistibutions.f:
+*     xDistributions.f:
 *
 *     Routine that returns the evolved x-space distributions.
 *
 ************************************************************************
-      subroutine xDistibutions(x,nQ,Q,xfph)
+      subroutine xDistributions(x,nQ,Q,xfph)
 *
       implicit none
 *

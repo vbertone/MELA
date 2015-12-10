@@ -47,7 +47,7 @@
      5     "   c+cbar   ",
      6     "   gluon    "
       do ilha=3,11
-         call xDistibutions(xlha(ilha),nQ,Q,xf)
+         call xDistributions(xlha(ilha),nQ,Q,xf)
 *
          write(6,'(es7.1,2x,es8.2,5(es12.4))')
      1         xlha(ilha),abs(Q(nQ)**2d0),

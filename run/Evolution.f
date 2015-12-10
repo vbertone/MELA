@@ -53,7 +53,7 @@ c      Q(2) = Q(1)
 *
 *     Perform the N-space evolution
 *
-         call xDistibutions(xlha(ilha),nQ,Q,xf)
+         call xDistributions(xlha(ilha),nQ,Q,xf)
 *
          write(6,'(es7.1,5(es12.4))')
      1         xlha(ilha),
