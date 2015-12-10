@@ -44,10 +44,10 @@
          if(distf(1:8).eq."internal")then
             write(6,*) "Initial conditions: toy Les Houches PDF",
      1                 " (Q0 = sqrt(2) GeV)"
-         elseif(distf.eq."HERAFitter")then
-            write(6,*) "Initial conditions: HERAFitter PDFs"
+         elseif(distf.eq."XFitter")then
+            write(6,*) "Initial conditions: XFitter PDFs"
             write(6,*) "(These input distubutions can be used only ",
-     1                 "with HERAFitter)"
+     1                 "with XFitter)"
          elseif(distf(1:9).eq."ZeroScale")then
             write(6,*) "Initial conditions: Zero scale PDFs"
          endif
@@ -56,10 +56,10 @@
          if(distf(1:8).eq."internal")then
             write(6,*) "Initial conditions: HKNS 2007",
      1                 " for pi+ at NLO (Q0 = 1 GeV)"
-         elseif(distf.eq."HERAFitter")then
-            write(6,*) "Initial conditions: HERAFitter PDFs"
+         elseif(distf.eq."XFitter")then
+            write(6,*) "Initial conditions: XFitter PDFs"
             write(6,*) "(These input distubutions can be used only ",
-     1                 "with HERAFitter)"
+     1                 "with XFitter)"
          endif
       else
          write(6,*) "In InitializeEvolution.f:"

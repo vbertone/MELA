@@ -56,8 +56,8 @@
          elseif(evol(1:4).eq."TIME")then
             call HKNSFFsn(N,xfph0N) ! HKNS for pi+ at NLO
          endif
-      elseif(distf.eq."HERAFitter")then
-         call HERAFitterParametrization(N-1d0,xfph0N) ! HERAFitter PDFs
+      elseif(distf.eq."XFitter")then
+         call XFitterParametrization(N-1d0,xfph0N) ! XFitter PDFs
       elseif(distf(1:9).eq."ZeroScale")then
          call ZeroScalePDFs(N-1d0,xfph0N)
       else

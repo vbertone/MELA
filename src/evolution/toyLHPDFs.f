@@ -282,11 +282,11 @@
 *
 ************************************************************************
 *
-*     HERAFitter paratrization.
+*     XFitter paratrization.
 *     There parameters are passed by means of a common block.
 *
 ************************************************************************
-      subroutine HERAFitterParametrization(N,npdf)
+      subroutine XFitterParametrization(N,npdf)
 *
       implicit none
 **
@@ -307,7 +307,7 @@
       double precision dvalMELA(10)
       double precision glueMELA(10)
       double precision fsMELA,fcMELA
-      common / HERAFitterParametersMELA / ubarMELA,dbarMELA,
+      common / XFitterParametersMELA / ubarMELA,dbarMELA,
      1     uvalMELA,dvalMELA,glueMELA,fsMELA,fcMELA
 **
 *     Output Variables
@@ -394,13 +394,13 @@
 *
 ************************************************************************
 *
-*     Set the parameters of the HERAFitter parametrization
+*     Set the parameters of the XFitter parametrization
 *
 ************************************************************************
-      subroutine SetHERAFitterParametersMELA(ubar,dbar,
-     1                                       uval,dval,
-     2                                       glue,
-     3                                       fs,fc)
+      subroutine SetXFitterParametersMELA(ubar,dbar,
+     1                                    uval,dval,
+     2                                    glue,
+     3                                    fs,fc)
 *
       implicit none
 **
@@ -421,7 +421,7 @@
       double precision dvalMELA(10)
       double precision glueMELA(10)
       double precision fsMELA,fcMELA
-      common / HERAFitterParametersMELA / ubarMELA,dbarMELA,
+      common / XFitterParametersMELA / ubarMELA,dbarMELA,
      1     uvalMELA,dvalMELA,glueMELA,fsMELA,fcMELA
 *
       ubarMELA = ubar
