@@ -37,6 +37,10 @@ cd MELA
 make && make install
 ```
 
+## References
+
+- V. Bertone, S. Carrazza, E.R. Nocera, *Reference results for time-like evolution up to O(α_s^3)*, [arXiv:1501.00494](http://arxiv.org/abs/1501.00494)
+
 ## Contact Information
 
 Maintainers: Valerio Bertone, Emanuele Roberto Nocera
