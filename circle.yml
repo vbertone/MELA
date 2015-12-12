@@ -1,0 +1,15 @@
+## Customize dependencies
+dependencies:
+  pre:
+    - sudo apt-get update
+  override:
+    - sudo apt-get install gfortran g++ gcc
+  post:
+    - ./configure && make
+
+## Customize test commands
+test:
+  override:
+    - cd run/; echo "Reference.ini" | ./Evolution; cd ..;
+    - cd run/; echo "Reference.ini" | ./Timing; cd ..;
+    - cd run/; echo "Reference.ini" | ./StructureFunctions; cd ..;
