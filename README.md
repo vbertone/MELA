@@ -43,5 +43,5 @@ make && make install
 
 ## Contact Information
 
-Maintainers: Valerio Bertone, Emanuele Roberto Nocera
+Maintainers: Valerio Bertone, Stefano Carrazza, Emanuele Roberto Nocera
 
