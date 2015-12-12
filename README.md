@@ -1,3 +1,5 @@
+[![Circle CI](https://circleci.com/gh/vbertone/MELA.svg?style=svg)](https://circleci.com/gh/vbertone/MELA)
+
 ![alt text](https://raw.githubusercontent.com/vbertone/mela/master/logos/logomela.png "Logo MELA")
 
 # MELA: a Mellin Evolution LibrAry
