@@ -18,6 +18,7 @@ if test "x$FC" == "x"; then
   fi
 fi
 AC_PROG_FC
+AC_PROG_CXX
 AC_FC_LIBRARY_LDFLAGS
 AC_FC_WRAPPERS
 
@@ -38,6 +39,14 @@ AC_SUBST(AM_FFLAGS)
 
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
+
+# Check host
+AC_CANONICAL_HOST
+case $host_os in
+  darwin*)
+	AM_CPPFLAGS=["$AM_CPPFLAGS -DDARWIN"]
+        ;;
+esac
 
 ## LHAPDF
 #AC_ARG_ENABLE([lhapdf],

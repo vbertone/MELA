@@ -30,6 +30,7 @@
       double complex zfuncns15(2),zfuncns24(2),zfuncns35(2)
       double complex zfuncnsv15,zfuncnsv24,zfuncnsv35
       double complex xfph0N(-6:6),xfev0N(13)
+      external ExternalSetMELA
 **
 *     Output Variables
 *
@@ -60,6 +61,8 @@
          call XFitterParametrization(N-1d0,xfph0N) ! XFitter PDFs
       elseif(distf(1:9).eq."ZeroScale")then
          call ZeroScalePDFs(N-1d0,xfph0N)
+      elseif(distf.eq."external")then
+         call ExternalSetMELA(N,xfph0N)
       else
          write(6,*) "Unknown input distributions, distf = ",distf
       endif
