@@ -281,6 +281,35 @@
       end
 *
 ************************************************************************
+      subroutine QEDdists(N,npdf)
+*
+      implicit none
+**
+*     Input Variables
+*
+      double complex N
+**
+*     Internal Variables
+*
+      integer ipdf
+**
+*     Output Variables
+*
+      double complex npdf(-6:6)
+*
+*     Initialize PDFs to zero
+*
+      do ipdf=-6,6
+         npdf(ipdf) = (0d0,0d0)
+      enddo
+*
+      npdf(1)  = zexp( - ( N - 1d0 ) * dlog(3d0) )
+      npdf(2)  = 2d0 * npdf(1)
+*
+      return
+      end
+*
+************************************************************************
 *
 *     XFitter paratrization.
 *     There parameters are passed by means of a common block.

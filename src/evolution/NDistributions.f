@@ -61,6 +61,8 @@
          call XFitterParametrization(N-1d0,xfph0N) ! XFitter PDFs
       elseif(distf(1:9).eq."ZeroScale")then
          call ZeroScalePDFs(N-1d0,xfph0N)
+      elseif(distf(1:3).eq."QED")then
+         call QEDdists(N,xfph0N)
       elseif(distf.eq."external")then
          call ExternalSetMELA(N,xfph0N)
       else

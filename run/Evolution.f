@@ -33,13 +33,14 @@
 *
       call InitializeEvolution
 *
-      nQ = 2
+      nQ = 3
       Q(1) = dsqrt(2d0) - eps
-c      Q(2) = (10d0,10d0)
+      Q(2) = (10d0,10d0)
 c      Q(3) = (20d0,-20d0)
 c      Q(4) = (50d0,50d0)
 c      Q(2) = Q(1)
-      Q(2) = dsqrt(100d0)
+c     Q(2) = dsqrt(100d0)
+      Q(3) = 100d0
 *
       write(6,*) "Standard evolution:"
       write(6,*)

@@ -13,6 +13,7 @@
       include "../commons/modev.h"
       include "../commons/ns.h"
       include "../commons/alphas.h"
+      include "../commons/alphaem.h"
       include "../commons/hqmass.h"
       include "../commons/massthrs.h"
       include "../commons/nffn.h"
@@ -142,7 +143,16 @@
       write(6,"(a,f8.3,a,f8.3,a)") "   Qref = (",real(sqrt(Q2REF)),",",
      1                             imag(sqrt(Q2REF))," ) GeV"
       write(6,"(a,f7.3,a,f7.3,a)") "   Alpha_s(Qref) = (",
-     1                             real(ASREF),",",imag(ASREF)," )"
+     1     real(ASREF),",",imag(ASREF)," )"
+
+*
+*     Alphaem reference values
+*
+      write(6,*) "Alpha(e.m.) reference value:"
+      write(6,"(a,f8.3,a,f8.3,a)") "   Qemref = (",real(sqrt(Q2EMREF)),
+     1                             ",",imag(sqrt(Q2EMREF))," ) GeV"
+      write(6,"(a,f7.3,a,f7.3,a)") "   Alpha_s(Qemref) = (",
+     1                             real(AEMREF),",",imag(AEMREF)," )"
 *
 *     MSbar or Pole masses reference values
 *

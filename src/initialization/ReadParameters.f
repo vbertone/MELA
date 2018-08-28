@@ -13,6 +13,7 @@
       include "../commons/modev.h"
       include "../commons/ns.h"
       include "../commons/alphas.h"
+      include "../commons/alphaem.h"
       include "../commons/hqmass.h"
       include "../commons/massthrs.h"
       include "../commons/nffn.h"
@@ -34,13 +35,15 @@
       double precision eps
       double precision ReQR,ImQR
       double precision ReASR,ImASR
+      double precision ReQRem,ImQRem
+      double precision ReASRem,ImASRem
       character*6  fhqmass
       character*50 str
       parameter(eps=1d-10)
 *
 *     Overwritten by the values read from the input card if found.
 *
-      IPT     = 2
+      IPT     = 0
       MODEV   = "ITE"
       NS      = "VFNS"
       NFMAX   = 6
@@ -53,13 +56,17 @@
       ImQR    = 0d0
       ReASR   = 0.35d0
       ImASR   = 0d0
+      ReQRem  = 91.1786d0
+      ImQRem  = 0d0
+      ReASRem = 1 / 128d0
+      ImASRem = 0d0
       MC      = dsqrt(2d0)
       MB      = 4.5d0
       MT      = 175d0
       PROC    = "EM"
       KRENQ   = 1d0
       KFACQ   = 1d0
-      DISTF   = "internal"
+      DISTF   = "QED"
 *
 c      open(unit=10,status="old",file="../run/"//card)
       open(unit=10,status="old",file=card)
@@ -68,24 +75,26 @@ c      open(unit=10,status="old",file="../run/"//card)
          if(str(1:1).ne."#")then
             lp = index(str," ") - 1
             lu = index(str,"=") + 1
-            if(str(1:lp).eq."IPT")     read(str(lu:50),*) IPT
-            if(str(1:lp).eq."MODEV")   read(str(lu:50),*) MODEV
-            if(str(1:lp).eq."NS")      read(str(lu:50),*) NS
-            if(str(1:lp).eq."NFMAX")   read(str(lu:50),*) NFMAX
-            if(str(1:lp).eq."NFFN")    read(str(lu:50),*) NFFN
-            if(str(1:lp).eq."HQMASS")  read(str(lu:50),*) FHQMASS
-            if(str(1:lp).eq."KRF")     read(str(lu:50),*) KRF
-            if(str(1:lp).eq."EVOL")    read(str(lu:50),*) EVOL
-            if(str(1:lp).eq."POL")     read(str(lu:50),*) POL
-            if(str(1:lp).eq."QREF")    read(str(lu:50),*) ReQR,ImQR
-            if(str(1:lp).eq."ASREF")   read(str(lu:50),*) ReASR,ImASR
-            if(str(1:lp).eq."MC")      read(str(lu:50),*) MC
-            if(str(1:lp).eq."MB")      read(str(lu:50),*) MB
-            if(str(1:lp).eq."MT")      read(str(lu:50),*) MT
-            if(str(1:lp).eq."PROC")    read(str(lu:50),*) PROC
-            if(str(1:lp).eq."KRENQ")   read(str(lu:50),*) KRENQ
-            if(str(1:lp).eq."KFACQ")   read(str(lu:50),*) KFACQ
-            if(str(1:lp).eq."DISTF")   read(str(lu:50),*) DISTF
+            if(str(1:lp).eq."IPT")    read(str(lu:50),*) IPT
+            if(str(1:lp).eq."MODEV")  read(str(lu:50),*) MODEV
+            if(str(1:lp).eq."NS")     read(str(lu:50),*) NS
+            if(str(1:lp).eq."NFMAX")  read(str(lu:50),*) NFMAX
+            if(str(1:lp).eq."NFFN")   read(str(lu:50),*) NFFN
+            if(str(1:lp).eq."HQMASS") read(str(lu:50),*) FHQMASS
+            if(str(1:lp).eq."KRF")    read(str(lu:50),*) KRF
+            if(str(1:lp).eq."EVOL")   read(str(lu:50),*) EVOL
+            if(str(1:lp).eq."POL")    read(str(lu:50),*) POL
+            if(str(1:lp).eq."QREF")   read(str(lu:50),*) ReQR,ImQR
+            if(str(1:lp).eq."ASREF")  read(str(lu:50),*) ReASR,ImASR
+            if(str(1:lp).eq."QEMREF") read(str(lu:50),*) ReQRem,ImQRem
+            if(str(1:lp).eq."AEMREF") read(str(lu:50),*) ReASRem,ImASRem
+            if(str(1:lp).eq."MC")     read(str(lu:50),*) MC
+            if(str(1:lp).eq."MB")     read(str(lu:50),*) MB
+            if(str(1:lp).eq."MT")     read(str(lu:50),*) MT
+            if(str(1:lp).eq."PROC")   read(str(lu:50),*) PROC
+            if(str(1:lp).eq."KRENQ")  read(str(lu:50),*) KRENQ
+            if(str(1:lp).eq."KFACQ")  read(str(lu:50),*) KFACQ
+            if(str(1:lp).eq."DISTF")  read(str(lu:50),*) DISTF
          endif
       enddo
  101  close(10)
@@ -94,6 +103,8 @@ c      open(unit=10,status="old",file="../run/"//card)
 *
       Q2REF    = DCMPLX(ReQR,ImQR)**2d0
       ASREF    = DCMPLX(ReASR,ImASR)
+      Q2EMREF  = DCMPLX(ReQRem,ImQRem)**2d0
+      AEMREF    =DCMPLX(ReASRem,ImASRem)
       Q2TH(4)  = DCMPLX(MC**2d0,0d0)
       Q2TH(5)  = DCMPLX(MB**2d0,0d0)
       Q2TH(6)  = DCMPLX(MT**2d0,0d0)

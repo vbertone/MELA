@@ -25,8 +25,6 @@
        include "../commons/colfact.h"
        include "../commons/consts.h"
 *
-* ---------------------------------------------------------------------
-*
 *     Internal variables
 *
        DOUBLE COMPLEX NS,N1,N2,NM
@@ -67,7 +65,7 @@
        P0SG(1,1) = CF * PQQA
        P0SG(1,2) = TR * dble(NF) * PQGA
        P0SG(2,1) = CF * PGQA
-       P0SG(2,2) = CA * PGGA + TR *dble(NF) * PGGB
+       P0SG(2,2) = CA * PGGA + TR * dble(NF) * PGGB
 *
        RETURN
        END
