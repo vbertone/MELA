@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get install gfortran g++ gcc
+      - run: ./configure && make
+      - run: cd run/; echo "Reference.ini" | ./Evolution; cd ..;
+      - run: cd run/; echo "Reference.ini" | ./Timing; cd ..;
+      - run: cd run/; echo "Reference.ini" | ./StructureFunctions; cd ..;
