@@ -27,6 +27,7 @@
       double complex Qv(2)
       double complex xfevN(13), xfphN(-6:6)
       double complex xdevN(13), xdphN(-6:6)
+      double complex C21QQ_SIDIS, C21GQ_SIDIS, C21QG_SIDIS
       double complex CL1QQ_SIDIS, CL1GQ_SIDIS, CL1QG_SIDIS
       double complex C2qq, C2gq, C2qg
       double complex CLqq, CLgq, CLqg
@@ -75,6 +76,9 @@
       CLgq = (0d0, 0d0)
       CLqg = (0d0, 0d0)
       if (ipt.ge.1) then
+         C2qq = C2qq + asDIS * C21QQ_SIDIS(N, M)
+         C2gq = C2gq + asDIS * C21GQ_SIDIS(N, M)
+         C2qg = C2qg + asDIS * C21QG_SIDIS(N, M)
          CLqq = CLqq + asDIS * CL1QQ_SIDIS(N, M)
          CLgq = CLgq + asDIS * CL1GQ_SIDIS(N, M)
          CLqg = CLqg + asDIS * CL1QG_SIDIS(N, M)

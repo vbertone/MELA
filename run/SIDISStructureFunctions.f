@@ -42,7 +42,7 @@ c      read(5,*) card
       write(6,*) "MELA SIDIS structure functions:"
       write(6,*)
      1     "   x    ","   z   ","     Q    ",
-     2     "  F2 (LO)   ","     F2     ","     FL     "
+     2     "   F2 (LO)   ","     F2     ","     FL     "
       do i = 1, 7
          do j = 1, 6
 *     Compute LO F2 using PDFs and FFs
