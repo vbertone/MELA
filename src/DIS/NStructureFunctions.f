@@ -2,7 +2,7 @@
 *
 *     NStructureFunctions.f:
 *
-*     Routine that returns the evolved N-space distributions.
+*     Routine that returns the inclusive structure functions in N-space.
 *
 ************************************************************************
       subroutine NStructureFunctions(N,nQ,Q,SFN)
@@ -48,7 +48,7 @@
          call NDistributions(N,nQ,muF,xfevN)
       endif
 *
-*     Call ceofficient functions at the final scale
+*     Call coefficient functions at the final scale
 *
       call NCoefficientFunctions(N,Q(nQ),CF)
 *

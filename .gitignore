@@ -12,5 +12,6 @@ libtool
 run/Evolution
 run/StructureFunctions
 run/Timing
-
+run/SIDISStructureFunctions
+src/evolution/.deps/
 

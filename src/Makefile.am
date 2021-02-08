@@ -12,7 +12,8 @@ EVOL = evolution/alphas.f evolution/andim_lo_tl.f evolution/andim_nlo_tl.f evolu
 
 DIS = DIS/adlersr_coeff.f DIS/MassiveCoefficientFunctions.f DIS/NStructureFunctions.f \
 	DIS/ZeroMassCoefficientFunctions.f DIS/ComputeChargesDIS.f DIS/NCoefficientFunctions.f \
-	DIS/xStructureFunctions.f
+	DIS/xStructureFunctions.f DIS/SemiInclusiveCoefficientFunctions.f DIS/SIDISNStructureFunctions.f \
+        DIS/SIDISxStructureFunctions.f
 
 CORE = core/betac.f core/dgauss.f core/gammal.f core/hypgeo.f core/mmult.f core/psi.f core/ddilog.f
 
