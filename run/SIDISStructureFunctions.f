@@ -11,9 +11,9 @@
       double precision eps
       double precision xlha(7)
       double precision zlha(6)
-      double complex Q0, Q, Qv(2)
-      double complex SFx(2)
-      double complex xf(-6:6), xd(-6:6), F2LO, f2lov
+      double precision Q0, Q
+      double precision SFx(2), F2LO, f2lov
+      double complex xf(-6:6), xd(-6:6)
       double complex bq(6), dq(6), ch
       character*100 card
 
@@ -36,8 +36,6 @@ c      read(5,*) card
 *
       Q0 = dsqrt(2d0) - eps
       Q  = 10
-      Qv(1) = Q0
-      Qv(2) = Q
 *
       write(6,*) "MELA SIDIS structure functions:"
       write(6,*)
@@ -50,9 +48,8 @@ c      read(5,*) card
 *
             call SIDISxStructureFunctions(xlha(i), zlha(j), Q0, Q, SFx)
             write(6,'(2(es7.1,2x),es8.2,3(es12.4))')
-     1           xlha(i),zlha(j),abs(Q),
-     2           dreal(f2lov),
-     3           dreal(SFx(1)),dreal(SFx(2))
+     1           xlha(i),zlha(j),Q,
+     2           f2lov,SFx(1),SFx(2)
          enddo
       enddo
       write(*,*) "  "

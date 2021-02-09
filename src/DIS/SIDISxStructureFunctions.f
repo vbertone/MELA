@@ -20,7 +20,7 @@
 *     Input Variables
 *
       double precision x, z
-      double complex Q0, Q
+      double precision Q0, Q
 **
 *     Internal Variables
 *
@@ -36,7 +36,7 @@
 **
 *     Output Variables
 *
-      double complex SFx(2)
+      double precision SFx(2)
 *
       asDIS  = aQCD((kfacQ*Q)**2d0)
       asEvolIni(1) = aQCD(Q0**2d0)
@@ -44,7 +44,7 @@
 *
 *     Couplings
 *
-      call ComputeChargesDIS_MELA(Q**2d0, bq, dq)
+      call ComputeChargesDIS_MELA(dcmplx(Q**2d0, 0d0), bq, dq)
 *
       m = 33                  ! Must be odd
       rmax = 10d0
@@ -104,7 +104,7 @@
       end
 *
 ************************************************************************
-      double complex function F2LO(x, z, Q0, Q)
+      double precision function F2LO(x, z, Q0, Q)
 *
       implicit none
 *
