@@ -38,7 +38,7 @@
       END
 *
 ************************************************************************
-      DOUBLE COMPLEX FUNCTION CL1QG_SIDIS(N)
+      DOUBLE COMPLEX FUNCTION CL1QG_SIDIS(N, M)
 *
       IMPLICIT NONE
 *
@@ -46,9 +46,9 @@
 *
 *     Input variables
 *
-      DOUBLE COMPLEX N
+      DOUBLE COMPLEX N, M
 *
-      CL1QG_SIDIS = 2D0 * TR / ( N + 1D0 ) / ( N + 2D0 ) 
+      CL1QG_SIDIS = 16D0 * TR / ( N + 1D0 ) / ( N + 2D0 ) / M
 *
       RETURN
       END
@@ -119,10 +119,10 @@
       S1N = EMC + PSI(N1)
       S1M = EMC + PSI(M1)
 *
-      C21GQ_SIDIS = 2 * CF * ( ( 2D0 - 2d0 * M -9D0 * MS + M**3 - M**4
+      C21GQ_SIDIS = 2 * CF * ( ( 2D0 - 2D0 * M - 9D0 * MS + M**3 - M**4
      1     + M**5 ) / MS / MM**2 / M1**2 + 2D0 * M / N / M1 / MM
-     2     - ( 2D0 - M - MS ) / M / M1 / MM / N1
-     3     - ( 2D0 + M + MS ) * ( S1N + S1M ) / M / M1 / MM
+     2     - ( 2D0 - M + MS ) / M / M1 / MM / N1
+     3     - ( 2D0 + M + MS ) * ( S1M + S1N ) / M / M1 / MM
      4     - 2D0 / M1 / N / N1 + 2D0 / M1 / N / N1 )
      5     + CL1GQ_SIDIS(N, M)
 *
@@ -156,11 +156,10 @@
       S1N = EMC + PSI(N1)
       S1M = EMC + PSI(M1)
 *
-      C21QG_SIDIS = 2 * TR * ( NM * ( 1D0 / MM - 1D0 / M + 1D0 / N
-     1     - S1M - S1N ) / N / N1 + ( 2D0 + N + N**2 )
-     2     * ( 1D0 / MM - 1D0 / M - S1M - S1N ) / N / N1 / ( N + 2D0 )
-     3     + 1D0 / N / N )
-     4     + CL1QG_SIDIS(N)
+      C21QG_SIDIS = 2 * TR * ( ( 2D0 + N + N**2 )
+     1     * ( 1D0 / MM - 1D0 / M - S1M - S1N ) / N / N1 / ( N + 2D0 )
+     2     + 1D0 / N / N )
+     3     + CL1QG_SIDIS(N, M)
 *
       RETURN
       END
