@@ -76,3 +76,36 @@
 *
       return
       end
+*
+************************************************************************
+      subroutine xDistributionsReal(x,Q0,Q,xfph)
+*
+      implicit none
+**
+*     Input Variables
+*
+      double precision x
+      double precision Q0, Q
+**
+*     Internal Variables
+*
+      integer i
+      double complex Qv(100)
+      double complex xfphc(-6:6)
+**
+*     Output Variables
+*
+      double precision xfph(-6:6)
+*
+*     Precompute alphas
+*
+      Qv(1) = dcmplx(Q0, 0d0)
+      Qv(2) = dcmplx(Q, 0d0)
+      call xDistributions(x, 2, Qv, xfphc)
+*
+      do i=-6,6
+         xfph(i) = dreal(xfphc(i))
+      enddo
+*
+      return
+      end

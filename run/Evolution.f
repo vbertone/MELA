@@ -44,11 +44,11 @@ c      Q(2) = Q(1)
       write(6,*) "Standard evolution:"
       write(6,*)
      1     "  x    ",
-     2     " u-ubar     ",
-     3     " d-dbar     ",
-     4     " 2(ubr+dbr) ",
-     5     " c+cbar     ",
-     6     " gluon      "
+     2     " u-ubar      ",
+     3     " d-dbar      ",
+     4     "  2(ubr+dbr) ",
+     5     "  c+cbar     ",
+     6     "  gluon      "
       do ilha=3,11
 *
 *     Perform the N-space evolution
