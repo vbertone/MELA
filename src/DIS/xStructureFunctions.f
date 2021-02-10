@@ -141,3 +141,36 @@
 *
       return
       end
+*
+************************************************************************
+      subroutine xStructureFunctionsReal(x,Q0,Q,SFx)
+*
+      implicit none
+**
+*     Input Variables
+*
+      double precision x
+      double precision Q0, Q
+**
+*     Internal Variables
+*
+      integer i,isf
+      double complex Qv(100)
+      double complex SFxc(3,0:6)
+**
+*     Output Variables
+*
+      double precision SFx(3)
+*
+*     Precompute alphas
+*
+      Qv(1) = dcmplx(Q0, 0d0)
+      Qv(2) = dcmplx(Q, 0d0)
+      call xStructureFunctions(x, 2, Qv, SFxc)
+*
+      do isf=1,3
+         SFx(isf) = dreal(SFxc(isf, 0))
+      enddo
+*
+      return
+      end
