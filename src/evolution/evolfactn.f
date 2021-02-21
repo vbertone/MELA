@@ -94,6 +94,14 @@
          RETURN
       ENDIF
 *
+*     g-functions solution
+*
+      !write(6,*) ZN, Q2I, asi
+      IF(MODEV.EQ."GFN")THEN
+         CALL GFUNCS(ZN,ASI,ZSQRT(Q2I),ZSQRT(Q2F),NF,EFNNS,EFNSG)
+         RETURN
+      ENDIF
+*
 *     U matrices evaluation for singlet and non-singlet
 *
       CALL UMATRIX(ZN,NF,LP,LM,EP,EM,U,R,UNS,RNS)

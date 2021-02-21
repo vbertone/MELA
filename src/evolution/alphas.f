@@ -108,7 +108,7 @@ c      kappa = 1d0      ! mu_R / mu_F
       endif
 *
  10   if(nff.eq.nfi) then
-         if(modev.eq."TRN")then
+         if(modev.eq."TRN".or.modev.eq."GFN")then
             aQCD = as_expanded_MELA(nfi,mur20,asr0,mur2,ipt)
          elseif(modev.eq."ITE".or.modev.eq."PTH")then
             aQCD = as_exact_MELA(nfi,mur20,asr0,mur2,ipt)
@@ -123,7 +123,7 @@ c      kappa = 1d0      ! mu_R / mu_F
             snf = 0
          endif
 *
-         if(modev.eq."TRN")then
+         if(modev.eq."TRN".or.modev.eq."GFN")then
             asi = as_expanded_MELA(nfi,mur20,asr0,mur2th(nfi+snf),ipt)
          elseif(modev.eq."ITE".or.modev.eq."PTH")then
             asi = as_exact_MELA(nfi,mur20,asr0,mur2th(nfi+snf),ipt)

@@ -8,7 +8,7 @@ EVOL = evolution/alphas.f evolution/andim_lo_tl.f evolution/andim_nlo_tl.f evolu
 	evolution/xDistributions.f evolution/andim_lo.f evolution/andim_nlo.f evolution/andim_nnlo.f \
 	evolution/BasisTransformations.f evolution/evolfactn.f evolution/matchcoef2sg.f \
 	evolution/path_ordering.f evolution/umatrix.f evolution/zfunc.f evolution/andim_lo_pol.f \
-        evolution/andim_nlo_pol.f evolution/externalsetmela.cc
+        evolution/andim_nlo_pol.f evolution/gfuncs.f evolution/externalsetmela.cc
 
 DIS = DIS/adlersr_coeff.f DIS/MassiveCoefficientFunctions.f DIS/NStructureFunctions.f \
 	DIS/ZeroMassCoefficientFunctions.f DIS/ComputeChargesDIS.f DIS/NCoefficientFunctions.f \

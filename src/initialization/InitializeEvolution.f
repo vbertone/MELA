@@ -107,6 +107,8 @@
          write(6,*) "Iterated solution chosen"
       elseif(MODEV.EQ."PTH")then
          write(6,*) "Path-ordering solution chosen"
+      elseif(MODEV.EQ."GFN")then
+         write(6,*) "g-functions solution chosen"
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Unknown solution mode, MODEV = ",MODEV
@@ -121,7 +123,7 @@
             write(6,*)"NFFN out or range, NFFN =",NFFN
             call exit(-10)
          endif
-         write(6,"(a,i1)") "Evolution scheme: FFNS with NF = ",NFFN
+         write(6,"(a,i1)") " Evolution scheme: FFNS with NF = ",NFFN
       elseif(NS.eq."VFNS")then
          write(6,*) "Evolution scheme: VFNS"
          if(ipt.eq.2.and.evol(1:4).eq."TIME")then

@@ -39,16 +39,16 @@ c      Q(2) = (10d0,10d0)
 c      Q(3) = (20d0,-20d0)
 c      Q(4) = (50d0,50d0)
 c      Q(2) = Q(1)
-      Q(2) = dsqrt(100d0)
+      Q(2) = dsqrt(10000d0)
 *
       write(6,*) "Standard evolution:"
       write(6,*)
-     1     "  x    ",
-     2     " u-ubar      ",
-     3     " d-dbar      ",
-     4     "  2(ubr+dbr) ",
-     5     "  c+cbar     ",
-     6     "  gluon      "
+     1     "  x   ",
+     2     "    u-ubar   ",
+     3     "   d-dbar    ",
+     4     " 2(ubr+dbr)  ",
+     5     " c+cbar      ",
+     6     " gluon       "
       do ilha=3,11
 *
 *     Perform the N-space evolution
