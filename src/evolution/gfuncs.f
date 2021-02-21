@@ -85,8 +85,7 @@ C               CALL ANDIM_NLO_TL_POL(ZN,NF,GAMMA1NS,GAMMA1)
       ENDIF
 *
       BT0 = - 2D0 * BETA0(NF)
-*
-      LAMBDAB = ASI * BT0 * ZLOG( KRF * QF / QI)
+      LAMBDAB = ASI * BT0 * ZLOG( KRF * QF / QI )
       LN1ML = ZLOG( 1D0 - LAMBDAB )
 *
 *     LO g-functions

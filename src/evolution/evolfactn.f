@@ -17,6 +17,7 @@
       include "../commons/massthrs.h"
       include "../commons/ipt.h"
       include "../commons/modev.h"
+      include "../commons/renfacscales.h"
 **
 *     Input Variables
 *
@@ -31,7 +32,7 @@
       
       DOUBLE COMPLEX TMP
       DOUBLE COMPLEX TMP2,TMP5,TMP6
-      DOUBLE COMPLEX ASI,ASF,T
+      DOUBLE COMPLEX ASI,ASF,T,AQCD
       DOUBLE COMPLEX TMP1(3),TMP4(3)
       DOUBLE COMPLEX EFNSGTMP(2,2)
       DOUBLE COMPLEX EXPM,EXPP,LP,LM
@@ -96,9 +97,9 @@
 *
 *     g-functions solution
 *
-      !write(6,*) ZN, Q2I, asi
       IF(MODEV.EQ."GFN")THEN
-         CALL GFUNCS(ZN,ASI,ZSQRT(Q2I),ZSQRT(Q2F),NF,EFNNS,EFNSG)
+         CALL GFUNCS(ZN,AQCD(Q2I/KRF**2),ZSQRT(Q2I),ZSQRT(Q2F),
+     1        NF,EFNNS,EFNSG)
          RETURN
       ENDIF
 *
