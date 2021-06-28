@@ -1,13 +1,15 @@
-AC_PREREQ([2.69])
+AC_PREREQ([2.71])
 AC_INIT([MELA],[2.0.2],[valerio.bertone@cern.ch],[mela])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([subdir-objects])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE([disable])
 
-## Set Fortran compiler behaviour
 if test "x$FCFLAGS" == "x"; then
-  FCFLAGS="-O3"
+#  FFLAGS="-fopenmp -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -O2 -pipe -fopenmp -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -Og -g -Wall -Wextra -fcheck=all -fbacktrace -fvar-tracking-assignments -pipe -fsanitize=address"
+# CXXFLAGS="-fsanitize=address"
+# CCFLAGS="-fsanitize=address"
+  FCFLAGS="-g -O3 -Wunused"
 fi
 # Try to respect users' Fortran compiler variables
 if test "x$FC" == "x"; then
@@ -17,6 +19,7 @@ if test "x$FC" == "x"; then
     FC="$F77"
   fi
 fi
+
 AC_PROG_FC
 AC_PROG_CXX
 AC_FC_LIBRARY_LDFLAGS
@@ -37,8 +40,14 @@ AC_SUBST(FFLAGS)
 AC_SUBST(F77)
 AC_SUBST(AM_FFLAGS)
 
-AC_LIBTOOL_DLOPEN
-AC_PROG_LIBTOOL
+_LT_SET_OPTION([LT_INIT],[dlopen])
+m4_warn([obsolete],[_LT_SET_OPTION([LT_INIT],[dlopen])
+m4_warn([obsolete],[AC_LIBTOOL_DLOPEN: Remove this warning and the call to _LT_SET_OPTION when you
+put the 'dlopen' option into LT_INIT's first parameter.])
+: Remove this warning and the call to _LT_SET_OPTION when you
+put the 'dlopen' option into LT_INIT's first parameter.])
+
+LT_INIT
 
 # Check host
 AC_CANONICAL_HOST
@@ -50,7 +59,7 @@ esac
 
 ## LHAPDF
 #AC_ARG_ENABLE([lhapdf],
-#  [AC_HELP_STRING(--disable-lhapdf, [don't link to LHAPDF])],
+#  [AS_HELP_STRING([--disable-lhapdf],[don't link to LHAPDF])],
 #  [], [enable_lhapdf=yes])
 #if test x$enable_lhapdf == xyes; then
 #  AC_SEARCH_LHAPDF  
@@ -61,7 +70,7 @@ esac
 
 ## APFEL
 #AC_ARG_ENABLE([apfel],
-#  [AC_HELP_STRING(--disable-apfel, [don't link to APFEL])],
+#  [AS_HELP_STRING([--disable-apfel],[don't link to APFEL])],
 #  [], [enable_apfel=yes])
 #if test x$enable_apfel == xyes; then
 #  AC_SEARCH_APFEL  

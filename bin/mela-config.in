@@ -32,6 +32,6 @@ test -n "$tmp" && OUT="$OUT -L@libdir@ -lMELA"
 
 ## Version
 tmp=$( echo "$*" | egrep -- '--\<version\>')
-test -n "$tmp" && OUT="$OUT @PACKAGE_VERSION@"
+test -n "$tmp" && OUT="$OUT @mela_VERSION@"
 
 echo $OUT

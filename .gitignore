@@ -14,4 +14,6 @@ run/StructureFunctions
 run/Timing
 run/SIDISStructureFunctions
 src/evolution/.deps/
-
+build/
+lib/libmela.dylib
+*~
