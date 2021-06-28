@@ -35,7 +35,8 @@ standar procedure:
 
 ```Shell
 cd MELA
-./configure --prefix=/installation/path/ #(optional)
+mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
 
