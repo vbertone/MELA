@@ -1,6 +1,0 @@
-MELA: Mellin Evolution LibrAry
-
-Authors: Valerio Bertone, Stefano Carrazza and Emanuele R. Nocera.
-
-MELA is an N-space program that computes space- and time-like evolution up to O(alpha_s^2) (NNLO)
-and computes DIS ZM-VFNS and massive structure functions up to O(as^2).
