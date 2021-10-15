@@ -4,6 +4,6 @@
 *
       double precision CA,CF,TR
 *
-      parameter(CA = 3d0)
-      parameter(CF = 4d0/3d0)
-      parameter(TR = 1d0/2d0)
+      parameter(CA = 0d0)
+      parameter(CF = 1d0)
+      parameter(TR = 1d0)

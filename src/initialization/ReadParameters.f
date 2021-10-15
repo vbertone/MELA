@@ -19,9 +19,7 @@
       include "../commons/nfmax.h"
       include "../commons/renfacscales.h"
       include "../commons/evol.h"
-      include "../commons/process.h"
       include "../commons/distf.h"
-      include "../commons/pol.h"
 **
 *     Input Variables
 *
@@ -40,7 +38,7 @@
 *
 *     Overwritten by the values read from the input card if found.
 *
-      IPT     = 2
+      IPT     = 1
       MODEV   = "ITE"
       NS      = "VFNS"
       NFMAX   = 6
@@ -48,7 +46,6 @@
       FHQMASS = "POLE"
       KRF     = 1d0
       EVOL    = "SPACE"
-      POL     = "OFF"
       ReQR    = dsqrt(2d0) - eps
       ImQR    = 0d0
       ReASR   = 0.35d0
@@ -56,9 +53,6 @@
       MC      = dsqrt(2d0)
       MB      = 4.5d0
       MT      = 175d0
-      PROC    = "EM"
-      KRENQ   = 1d0
-      KFACQ   = 1d0
       DISTF   = "internal"
 *
 c      open(unit=10,status="old",file="../run/"//card)
@@ -76,15 +70,11 @@ c      open(unit=10,status="old",file="../run/"//card)
             if(str(1:lp).eq."HQMASS")  read(str(lu:50),*) FHQMASS
             if(str(1:lp).eq."KRF")     read(str(lu:50),*) KRF
             if(str(1:lp).eq."EVOL")    read(str(lu:50),*) EVOL
-            if(str(1:lp).eq."POL")     read(str(lu:50),*) POL
             if(str(1:lp).eq."QREF")    read(str(lu:50),*) ReQR,ImQR
             if(str(1:lp).eq."ASREF")   read(str(lu:50),*) ReASR,ImASR
             if(str(1:lp).eq."MC")      read(str(lu:50),*) MC
             if(str(1:lp).eq."MB")      read(str(lu:50),*) MB
             if(str(1:lp).eq."MT")      read(str(lu:50),*) MT
-            if(str(1:lp).eq."PROC")    read(str(lu:50),*) PROC
-            if(str(1:lp).eq."KRENQ")   read(str(lu:50),*) KRENQ
-            if(str(1:lp).eq."KFACQ")   read(str(lu:50),*) KFACQ
             if(str(1:lp).eq."DISTF")   read(str(lu:50),*) DISTF
          endif
       enddo
@@ -100,10 +90,6 @@ c      open(unit=10,status="old",file="../run/"//card)
 *
       if(FHQMASS.EQ."POLE")  HQMASS = 0
       if(FHQMASS.EQ."MSBAR") HQMASS = 1
-*
-*     If KRENQ or KFACQ are different from 1, force KRF to be KRENQ/KFACQ
-*
-      if(KRENQ.ne.1d0.or.KFACQ.ne.1d0) KRF = KRENQ / KFACQ
 *
       return
       end

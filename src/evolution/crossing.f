@@ -203,20 +203,7 @@
       ASTH(6) = AST
 *
       CALL EVOLFACTN(ZN,Q2I,Q2TH(4),NFI,EFNNS1,EFNSG1)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MCSG(1,1) = (1D0,0D0) + ASTH(NFI+1)**2D0 * (A2NS + A2SG(1,1))
-         MCSG(1,2) = ASTH(NFI+1)**2D0 * A2SG(1,2)
-         MCSG(2,1) = ASTH(NFI+1)**2D0 * A2SG(2,1)
-         MCSG(2,2) = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2SG(2,2)
-*
-         MCNS = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2NS
-*
-         VCNS(1) = (1D0,0D0)+ASTH(NFI+1)**2D0*(A2NS - 3D0 * A2SG(1,1))
-         VCNS(2) = - 3D0 * ASTH(NFI+1)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MCSG(1,1) = (1D0,0D0)
@@ -327,20 +314,7 @@
       ASTH(6) = AST
 *
       CALL EVOLFACTN(ZN,Q2I,Q2TH(5),NFI,EFNNS1,EFNSG1)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MBSG(1,1) = (1D0,0D0) + ASTH(NFI+1)**2D0 * (A2NS + A2SG(1,1))
-         MBSG(1,2) = ASTH(NFI+1)**2D0 * A2SG(1,2)
-         MBSG(2,1) = ASTH(NFI+1)**2D0 * A2SG(2,1)
-         MBSG(2,2) = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2SG(2,2)
-*
-         MBNS = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2NS
-*
-         VBNS(1) = (1D0,0D0)+ASTH(NFI+1)**2D0*(A2NS - 4D0 * A2SG(1,1))
-         VBNS(2) = - 4D0 * ASTH(NFI+1)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MBSG(1,1) = (1D0,0D0)
@@ -451,20 +425,7 @@
       ASTH(6) = AST
 *
       CALL EVOLFACTN(ZN,Q2I,Q2TH(6),NFI,EFNNS1,EFNSG1)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MTSG(1,1) = (1D0,0D0) + ASTH(NFI+1)**2D0 * (A2NS + A2SG(1,1))
-         MTSG(1,2) = ASTH(NFI+1)**2D0 * A2SG(1,2)
-         MTSG(2,1) = ASTH(NFI+1)**2D0 * A2SG(2,1)
-         MTSG(2,2) = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2SG(2,2)
-*
-         MTNS = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2NS
-*
-         VTNS(1) = (1D0,0D0)+ASTH(NFI+1)**2D0*(A2NS - 5D0 * A2SG(1,1))
-         VTNS(2) = - 5D0 * ASTH(NFI+1)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MTSG(1,1) = (1D0,0D0)
@@ -574,20 +535,7 @@
       ASTH(6) = AST
 *
       CALL EVOLFACTN(ZN,Q2I,Q2TH(4),NFI,EFNNS1,EFNSG1)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MCSG(1,1) = (1D0,0D0) + ASTH(NFI+1)**2D0 * (A2NS + A2SG(1,1))
-         MCSG(1,2) = ASTH(NFI+1)**2D0 * A2SG(1,2)
-         MCSG(2,1) = ASTH(NFI+1)**2D0 * A2SG(2,1)
-         MCSG(2,2) = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2SG(2,2)
-*
-         MCNS = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2NS
-*
-         VCNS(1) = (1D0,0D0)+ASTH(NFI+1)**2D0*(A2NS - 3D0 * A2SG(1,1))
-         VCNS(2) = - 3D0 * ASTH(NFI+1)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MCSG(1,1) = (1D0,0D0)
@@ -611,17 +559,7 @@
          VCNS(2) = (0D0,0D0)
       ENDIF
       CALL EVOLFACTN(ZN,Q2TH(4),Q2TH(5),NFI+1,EFNNS2,EFNSG2)
-      IF(IPT.EQ.2)THEN
-         MBSG(1,1) = (1D0,0D0) + ASTH(NFI+2)**2D0 * ( A2NS + A2SG(1,1))
-         MBSG(1,2) = ASTH(NFI+2)**2D0 * A2SG(1,2)
-         MBSG(2,1) = ASTH(NFI+2)**2D0 * A2SG(2,1)
-         MBSG(2,2) = (1D0,0D0) + ASTH(NFI+2)**2D0 * A2SG(2,2)
-*
-         MBNS = (1D0,0D0) + ASTH(NFI+2)**2D0 * A2NS
-*
-         VBNS(1) = (1D0,0D0)+ASTH(NFI+2)**2D0*(A2NS - 4D0 * A2SG(1,1))
-         VBNS(2) = - 4D0 * ASTH(NFI+2)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MBSG(1,1) = (1D0,0D0)
@@ -757,20 +695,7 @@
       ASTH(6) = AST
 *
       CALL EVOLFACTN(ZN,Q2I,Q2TH(5),NFI,EFNNS1,EFNSG1)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MBSG(1,1) = (1D0,0D0) + ASTH(NFI+1)**2D0 * (A2NS + A2SG(1,1))
-         MBSG(1,2) = ASTH(NFI+1)**2D0 * A2SG(1,2)
-         MBSG(2,1) = ASTH(NFI+1)**2D0 * A2SG(2,1)
-         MBSG(2,2) = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2SG(2,2)
-*
-         MBNS = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2NS
-*
-         VBNS(1) = (1D0,0D0)+ASTH(NFI+1)**2D0*(A2NS - 4D0 * A2SG(1,1))
-         VBNS(2) = - 4D0 * ASTH(NFI+1)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MBSG(1,1) = (1D0,0D0)
@@ -794,20 +719,7 @@
          VBNS(2) = (0D0,0D0)
       ENDIF
       CALL EVOLFACTN(ZN,Q2TH(5),Q2TH(6),NFI+1,EFNNS2,EFNSG2)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MTSG(1,1) = (1D0,0D0) + ASTH(NFI+2)**2D0 * ( A2NS + A2SG(1,1))
-         MTSG(1,2) = ASTH(NFI+2)**2D0 * A2SG(1,2)
-         MTSG(2,1) = ASTH(NFI+2)**2D0 * A2SG(2,1)
-         MTSG(2,2) = (1D0,0D0) + ASTH(NFI+2)**2D0 * A2SG(2,2)
-*
-         MTNS = (1D0,0D0) + ASTH(NFI+2)**2D0 * A2NS
-*
-         VTNS(1) = (1D0,0D0)+ASTH(NFI+2)**2D0*(A2NS - 5D0 * A2SG(1,1))
-         VTNS(2) = - 5D0 * ASTH(NFI+2)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MTSG(1,1) = (1D0,0D0)
@@ -935,20 +847,7 @@
       ASTH(6) = AST
 *
       CALL EVOLFACTN(ZN,Q2I,Q2TH(4),NFI,EFNNS1,EFNSG1)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MCSG(1,1) = (1D0,0D0) + ASTH(NFI+1)**2D0 * (A2NS + A2SG(1,1))
-         MCSG(1,2) = ASTH(NFI+1)**2D0 * A2SG(1,2)
-         MCSG(2,1) = ASTH(NFI+1)**2D0 * A2SG(2,1)
-         MCSG(2,2) = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2SG(2,2)
-*
-         MCNS = (1D0,0D0) + ASTH(NFI+1)**2D0 * A2NS
-*
-         VCNS(1) = (1D0,0D0)+ASTH(NFI+1)**2D0*(A2NS - 3D0 * A2SG(1,1))
-         VCNS(2) = - 3D0 * ASTH(NFI+1)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MCSG(1,1) = (1D0,0D0)
@@ -972,20 +871,7 @@
          VCNS(2) = (0D0,0D0)
       ENDIF
       CALL EVOLFACTN(ZN,Q2TH(4),Q2TH(5),NFI+1,EFNNS2,EFNSG2)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MBSG(1,1) = (1D0,0D0) + ASTH(NFI+2)**2D0 * ( A2NS + A2SG(1,1))
-         MBSG(1,2) = ASTH(NFI+2)**2D0 * A2SG(1,2)
-         MBSG(2,1) = ASTH(NFI+2)**2D0 * A2SG(2,1)
-         MBSG(2,2) = (1D0,0D0) + ASTH(NFI+2)**2D0 * A2SG(2,2)
-*
-         MBNS = (1D0,0D0) + ASTH(NFI+2)**2D0 * A2NS
-*
-         VBNS(1) = (1D0,0D0)+ASTH(NFI+2)**2D0*(A2NS - 4D0 * A2SG(1,1))
-         VBNS(2) = - 4D0 * ASTH(NFI+2)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MBSG(1,1) = (1D0,0D0)
@@ -1009,20 +895,7 @@
          VBNS(2) = (0D0,0D0)
       ENDIF
       CALL EVOLFACTN(ZN,Q2TH(5),Q2TH(6),NFI+2,EFNNS3,EFNSG3)
-      IF(IPT.EQ.2)THEN
-         CALL MATCHCOEF2SG(ZN,A2SG)
-         CALL MATCHCOEF2NS(ZN,A2NS)
-*
-         MTSG(1,1) = (1D0,0D0) + ASTH(NFI+3)**2D0 * ( A2NS + A2SG(1,1))
-         MTSG(1,2) = ASTH(NFI+3)**2D0 * A2SG(1,2)
-         MTSG(2,1) = ASTH(NFI+3)**2D0 * A2SG(2,1)
-         MTSG(2,2) = (1D0,0D0) + ASTH(NFI+3)**2D0 * A2SG(2,2)
-*
-         MTNS = (1D0,0D0) + ASTH(NFI+3)**2D0 * A2NS
-*
-         VTNS(1) = (1D0,0D0)+ASTH(NFI+3)**2D0*(A2NS - 5D0 * A2SG(1,1))
-         VTNS(2) = - 5D0 * ASTH(NFI+3)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+      IF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MTSG(1,1) = (1D0,0D0)

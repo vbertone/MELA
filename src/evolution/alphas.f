@@ -129,12 +129,10 @@ c      kappa = 1d0      ! mu_R / mu_F
             asi = as_exact_MELA(nfi,mur20,asr0,mur2th(nfi+snf),ipt)
          endif
 *
-*     NLO and NNLO threshold matchings
+*     NLO threshold matchings
 *
          if(ipt.eq.1)then
             asi = asi * ( 1d0 + c1 * asi )
-         elseif(ipt.eq.2)then
-            asi = asi * ( 1d0 + c1 * asi + c2 * asi**2d0 )
          endif
 *
          asr0  = asi
@@ -195,14 +193,6 @@ c      kappa = 1d0      ! mu_R / mu_F
          aQCD = alo * ( 1d0 - b1(nf) * alo * zlog(den) )
       endif
 *
-*     NNLO
-*
-      if(ipt.eq.2)then
-         aQCD = alo * ( 1d0 
-     1      + ( alo * ( alo - asi ) * ( b2(nf) - b1(nf)**2d0 )
-     2      + aQCD * b1(nf) * zlog(aQCD/asi) ) )
-      endif
-*
       as_expanded_MELA = aQCD
 *
       return
@@ -240,7 +230,7 @@ c      kappa = 1d0      ! mu_R / mu_F
 *
 *     ..The beta functions FBETAMELAn at N^nLO for n = 1, 2, and 3
 *
-      AQCD    = AS0
+      AQCD  = AS0
       LRRAT = ZLOG (MU2/MU20)
       DLR   = LRRAT / NSTEP
 *     
@@ -249,7 +239,7 @@ c      kappa = 1d0      ! mu_R / mu_F
 *     
       IF(IPT.EQ.0)THEN
          AQCD = AS0 / ( 1D0 + BETA0(NF) * AS0 * LRRAT )
-      ELSEIF(IPT.EQ.1)THEN
+      ELSEIF(IPT.GE.1)THEN
          DO 2 K1=1,NSTEP
             XK0 = DLR * FBETAMELA(AQCD,NF,IPT)
             XK1 = DLR * FBETAMELA(AQCD + 0.5d0 * XK0,NF,IPT)
@@ -257,14 +247,6 @@ c      kappa = 1d0      ! mu_R / mu_F
             XK3 = DLR * FBETAMELA(AQCD + XK2,NF,IPT)
             AQCD = AQCD + SXTH * ( XK0 + 2D0 * XK1 + 2d0 * XK2 + XK3 )
  2        CONTINUE
-      ELSEIF(IPT.EQ.2)THEN
-         DO 3 K1 = 1, NSTEP
-            XK0 = DLR * FBETAMELA(AQCD,NF,IPT)
-            XK1 = DLR * FBETAMELA(AQCD + 0.5d0 * XK0,NF,IPT)
-            XK2 = DLR * FBETAMELA(AQCD + 0.5d0 * XK1,NF,IPT)
-            XK3 = DLR * FBETAMELA(AQCD + XK2,NF,IPT)
-            AQCD = AQCD + SXTH * ( XK0 + 2D0 * XK1 + 2D0 * XK2 + XK3 )
- 3       CONTINUE
       ENDIF
 *
       AS_EXACT_MELA = AQCD
@@ -282,11 +264,10 @@ c      kappa = 1d0      ! mu_R / mu_F
       double complex fbetaMELA,a
       integer nf,ipt
 *
-      if(ipt.eq.1)then
+      if(ipt.eq.0)then
+         fbetaMELA = - A**2d0 * BETA0(NF)
+      elseif(ipt.eq.1)then
          fbetaMELA = - A**2d0 * ( BETA0(NF) + A * BETA1(NF) )
-      elseif(ipt.eq.2)then
-         fbetaMELA = - A**2d0 * ( BETA0(NF) + A * ( BETA1(NF)
-     1             + A * BETA2(NF) ) )
       endif
 *
       return

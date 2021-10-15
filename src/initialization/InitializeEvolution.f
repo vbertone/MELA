@@ -19,11 +19,7 @@
       include "../commons/nfmax.h"
       include "../commons/renfacscales.h"
       include "../commons/evol.h"
-      include "../commons/process.h"
-      include "../commons/coeffhqmellin.h"
-      include "../commons/minimax.h"
       include "../commons/distf.h"
-      include "../commons/pol.h"
 *
 *     Initialize the coefficient of the beta functions in QCD and QED 
 *     and the coefficient of the QCD gamma function
@@ -67,32 +63,12 @@
          call exit(-10)
       endif
 *
-*     Polarized or upolarized evolution
-*
-      if(pol.eq."OFF")then
-         write(6,*) "Unpolarized evolution"
-      elseif(pol(1:2).eq."ON")then
-         write(6,*) "Polarized evolution"
-         if(evol(1:4).eq."TIME")then
-            write(6,*) "In InitializeEvolution.f:"
-            write(6,*) "Time-like polarized evolution not",
-     1                 " yet available"
-            call exit(-10)
-         endif
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Invalid polarization switch, pol = ",pol
-         call exit(-10)
-      endif
-*
 *     Perturbative order
 *
       if(ipt.eq.0)then
          write(6,*) "Perturbative order: LO"
       elseif(ipt.eq.1)then
          write(6,*) "Perturbative order: NLO"
-      elseif(ipt.eq.2)then
-         write(6,*) "Perturbative order: NNLO"
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Invalid perturbative order, ipt = ",ipt
@@ -126,12 +102,6 @@
          write(6,"(a,i1)") " Evolution scheme: FFNS with NF = ",NFFN
       elseif(NS.eq."VFNS")then
          write(6,*) "Evolution scheme: VFNS"
-         if(ipt.eq.2.and.evol(1:4).eq."TIME")then
-            write(6,*) "In InitializeEvolution.f:"
-            write(6,*) "Time-like evolution at NNLO in the VFNS",
-     1                 " not available"
-            call exit(-10)
-         endif
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Unknown mass scheme = ",NS
@@ -172,27 +142,6 @@
          write(6,*) "Invalid value for nffac =",nfmax
          call exit(-10)
       endif
-*
-*     Factorization/renormalization scales (QCD and QED)
-*
-      write(6,"(a,f7.4)") " muR / muF = ",KRF
-      write(6,*) "  "
-*
-      write(6,*) "========== DIS parameters =========="
-      write(6,*) "  "
-      if(proc.eq."EM")then
-         write(6,*) "Electromagnetic process"
-      elseif(proc.eq."NC")then
-         write(6,*) "Neutral current process"
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Invalid DIS process, proc = ",proc
-         call exit(-10)
-      endif
-*
-      write(6,"(a,f7.4)") " muR / Q = ",KRENQ
-      write(6,"(a,f7.4)") " muF / Q = ",KFACQ
-      write(6,*) "  "
 *
       return
       end

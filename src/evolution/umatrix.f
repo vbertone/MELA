@@ -42,7 +42,6 @@
       include "../commons/ipt.h"
       include "../commons/renfacscales.h"
       include "../commons/evol.h"
-      include "../commons/pol.h"
 *
       INTEGER NF
       DOUBLE COMPLEX ZN
@@ -68,34 +67,18 @@
 *     LO
 *
       IF(EVOL.EQ."SPACE")THEN
-         IF(POL.EQ."OFF")THEN
-            CALL ANDIM_LO(ZN,NF,G0NS,G0)
-         ELSE
-            CALL ANDIM_LO_POL(ZN,NF,G0NS,G0)
-         ENDIF
+         CALL ANDIM_LO(ZN,NF,G0NS,G0)
       ELSEIF(EVOL.EQ."TIME")THEN
-         IF(POL.EQ."OFF")THEN
-            CALL ANDIM_LO_TL(ZN,NF,G0NS,G0)
-         ELSE
-C            CALL ANDIM_LO_TL_POL(ZN,NF,G0NS,G0)
-         ENDIF
+         CALL ANDIM_LO_TL(ZN,NF,G0NS,G0)
       ENDIF
 *
 *     NLO
 *
       IF(IPT.GE.1)THEN
          IF(EVOL.EQ."SPACE")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NLO(ZN,NF,G1NS,G1)
-            ELSE
-               CALL ANDIM_NLO_POL(ZN,NF,G1NS,G1)
-            ENDIF
+            CALL ANDIM_NLO(ZN,NF,G1NS,G1)
          ELSEIF(EVOL.EQ."TIME")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NLO_TL(ZN,NF,G1NS,G1)
-            ELSE
-C               CALL ANDIM_NLO_TL_POL(ZN,NF,G1NS,G1)
-            ENDIF
+            CALL ANDIM_NLO_TL(ZN,NF,G1NS,G1)
          ENDIF
 *        Anomalous dimensions at NLO for muR.ne.muF
          IF(KRF.NE.1D0)THEN
@@ -110,43 +93,10 @@ C               CALL ANDIM_NLO_TL_POL(ZN,NF,G1NS,G1)
          ENDIF
       ENDIF
 *
-*     NNLO
-*
-      IF(IPT.GE.2)THEN
-         IF(EVOL.EQ."SPACE")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NNLO(ZN,NF,G2NS,G2)
-            ELSE
-C               CALL ANDIM_NNLO_POL(ZN,NF,G2NS,G2)
-            ENDIF
-         ELSEIF(EVOL.EQ."TIME")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NNLO_TL(ZN,NF,G2NS,G2)
-            ELSE
-C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
-            ENDIF
-         ENDIF
-         IF(KRF.NE.1D0)THEN
-            DO I=1,2
-               DO J=1,2
-                  G2(I,J) = G2(I,J) - 2D0 * BETA0(NF) * LOGR * G1(I,J)
-     1                    - ( BETA1(NF) * LOGR
-     2                    +  BETA0(NF)**2D0 * LOGR**2D0 ) * G0(I,J)       !Third line of eq. (2.8) hep-ph/0408244 
-               ENDDO
-            ENDDO
-            DO I=1,3
-               G2NS(I) = G2NS(I) - 2D0 * BETA0(NF) * LOGR * G1NS(I)
-     1                 - ( BETA1(NF) * LOGR
-     2                 +  BETA0(NF)**2D0 * LOGR**2D0 ) * G0NS             !Third line ofeq. (2.8) hep-ph/0408244
-            ENDDO
-         ENDIF
-      ENDIF
-*
 *******************
 *     b_i coefficients and DGLAP kernels assignment according to the perturbation order
 *
       B(1) = B1(NF)
-      B(2) = B2(NF)
       DO I=1,2
          DO J=1,2
             P(0,I,J) = G0(I,J)

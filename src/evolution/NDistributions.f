@@ -14,7 +14,6 @@
       include "../commons/nf.h"
       include "../commons/evol.h"
       include "../commons/distf.h"
-      include "../commons/pol.h"
 **
 *     Input Variables
 *
@@ -49,11 +48,7 @@
 *
       if(distf(1:8).eq."internal")then
          if(evol.eq."SPACE")then
-            if(pol.eq."OFF")then
                call toyLHPDFsn(N,xfph0N)    ! ToyLH PDFs
-            else
-               call toyLHPDFsPoln(N,xfph0N) ! ToyLH PDFs
-            endif
          elseif(evol(1:4).eq."TIME")then
             call HKNSFFsn(N,xfph0N) ! HKNS for pi+ at NLO
          endif

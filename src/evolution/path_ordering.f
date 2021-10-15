@@ -15,7 +15,6 @@
       include "../commons/renfacscales.h"
       include "../commons/beta.h"
       include "../commons/evol.h"
-      include "../commons/pol.h"
 **
 *     Input Variables
 *
@@ -28,7 +27,7 @@
       INTEGER NINT
       INTEGER I,J,K,L
       DOUBLE PRECISION AS_CHECK,PREC
-      DOUBLE PRECISION BT0,BT1,BT2
+      DOUBLE PRECISION BT0,BT1
       DOUBLE COMPLEX AF,AI,DA,AK
       DOUBLE COMPLEX LOGR
       DOUBLE COMPLEX G0(2,2),G1(2,2),G2(2,2)
@@ -64,41 +63,24 @@
 *
       BT0 = BETA0(NF)
       BT1 = 0D0
-      BT2 = 0D0
 *
       LOGR = - 2D0 * DLOG(KRF)
 *
 *     LO
 *
       IF(EVOL.EQ."SPACE")THEN
-         IF(POL.EQ."OFF")THEN
-            CALL ANDIM_LO(ZN,NF,G0NS,G0)
-         ELSE
-            CALL ANDIM_LO_POL(ZN,NF,G0NS,G0)
-         ENDIF
+         CALL ANDIM_LO(ZN,NF,G0NS,G0)
       ELSEIF(EVOL.EQ."TIME")THEN
-         IF(POL.EQ."OFF")THEN
-            CALL ANDIM_LO_TL(ZN,NF,G0NS,G0)
-         ELSE
-C            CALL ANDIM_LO_TL_POL(ZN,NF,G0NS,G0)
-         ENDIF
+         CALL ANDIM_LO_TL(ZN,NF,G0NS,G0)
       ENDIF
 *
 *     NLO
 *
       IF(IPT.GE.1)THEN
          IF(EVOL.EQ."SPACE")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NLO(ZN,NF,G1NS,G1)
-            ELSE
-               CALL ANDIM_NLO_POL(ZN,NF,G1NS,G1)
-            ENDIF
+            CALL ANDIM_NLO(ZN,NF,G1NS,G1)
          ELSEIF(EVOL.EQ."TIME")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NLO_TL(ZN,NF,G1NS,G1)
-            ELSE
-C               CALL ANDIM_NLO_TL_POL(ZN,NF,G1NS,G1)
-            ENDIF
+            CALL ANDIM_NLO_TL(ZN,NF,G1NS,G1)
          ENDIF
          BT1 = BETA1(NF)
 *        Anomalous dimensions at NLO for muR.ne.muF
@@ -111,40 +93,6 @@ C               CALL ANDIM_NLO_TL_POL(ZN,NF,G1NS,G1)
 *
             DO I=1,3
                G1NS(I) = G1NS(I) - BETA0(NF) * LOGR * G0NS       !Second line of eq. (2.8) of hep-ph/0408244)
-            ENDDO
-         ENDIF
-      ENDIF
-*
-*     NNLO
-*
-      IF(IPT.GE.2)THEN
-         IF(EVOL.EQ."SPACE")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NNLO(ZN,NF,G2NS,G2)
-            ELSE
-C               CALL ANDIM_NNLO_POL(ZN,NF,G2NS,G2)
-            ENDIF
-         ELSEIF(EVOL.EQ."TIME")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NNLO_TL(ZN,NF,G2NS,G2)
-            ELSE
-C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
-            ENDIF
-         ENDIF
-         BT2 = BETA2(NF)
-         IF(KRF.NE.1D0)THEN
-            DO I=1,2
-               DO J=1,2
-                  G2(I,J) = G2(I,J) - 2D0 * BETA0(NF) * LOGR * G1(I,J)
-     1                    - ( BETA1(NF) * LOGR
-     2                    +   BETA0(NF)**2D0 * LOGR**2D0 ) * G0(I,J)       !Third line of eq. (2.8) hep-ph/0408244 
-               ENDDO
-            ENDDO
-*
-            DO I=1,3
-               G2NS(I) = G2NS(I) - 2D0 * BETA0(NF) * LOGR * G1NS(I)
-     1                 - ( BETA1(NF) * LOGR
-     2                 +   BETA0(NF)**2D0 * LOGR**2D0 ) * G0NS             !Third line ofeq. (2.8) hep-ph/0408244
             ENDDO
          ENDIF
       ENDIF
@@ -213,11 +161,11 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
             DO I=1,2
                DO J=1,2
                   PSG(I,J) = ( G0(I,J) + AI*G1(I,J) + AI**2D0*G2(I,J) ) 
-     1                     / ( BT0 + AI * BT1 + AI**2D0 * BT2 ) / AI
+     1                     / ( BT0 + AI * BT1 ) / AI
 *
                   PSG(I,J) = PSG(I,J)
      1                     + ( G0(I,J) + AF*G1(I,J) + AF**2D0*G2(I,J) )
-     2                     / ( BT0 + AF * BT1 + AF**2D0 * BT2 ) / AF
+     2                     / ( BT0 + AF * BT1 ) / AF
 *
                   SPSG(I,J) = - DA * PSG(I,J) / 2D0
                ENDDO
@@ -267,11 +215,11 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
       AF = ASF
       DO I=1,3
          PNS(I) = ( G0NS + AI * G1NS(I) + AI**2D0 * G2NS(I) )
-     1          / ( BT0 + AI * BT1 + AI**2D0 * BT2 ) / AI
+     1          / ( BT0 + AI * BT1 ) / AI
 *
          PNS(I) = PNS(I)
      1          + ( G0NS + AF * G1NS(I) + AF**2D0 * G2NS(I) )
-     2          / ( BT0 + AF * BT1 + AF**2D0 * BT2 ) / AF
+     2          / ( BT0 + AF * BT1 ) / AF
 *
          SPNS(I) = - DA * PNS(I) / 2D0
       ENDDO
@@ -282,7 +230,7 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
 *
          DO I=1,3
             PNS(I) = ( G0NS + AK * G1NS(I) + AK**2D0 * G2NS(I) )
-     2             / ( BT0 + AK * BT1 + AK**2D0 * BT2 ) / AK
+     2             / ( BT0 + AK * BT1 ) / AK
 *
             SPNS(I) = SPNS(I) - DA * PNS(I)
          ENDDO

@@ -62,21 +62,4 @@
       write(6,*) nx," points in x for each of the ",nQ," points in Q"
       write(6,*) "equal to: ",t2-t1," s"
 *
-      call cpu_time(t1)
-      Q(2) = Qmin
-      do iQ=1,nQ
-         x = xmin
-         do ix=1,nx
-            call xStructureFunctions(x,2,Q,SFx)
-            x = x * xstep
-         enddo
-         Q(2) = Q(2) * Qstep
-      enddo
-      write(*,*) "  "
-      call cpu_time(t2)
-      write(6,*) "Time take for the computation of ",nx*nQ," structure",
-     1     " functions"
-      write(6,*) nx," points in x for each of the ",nQ," points in Q"
-      write(6,*) "equal to: ",t2-t1," s"
-*
       end

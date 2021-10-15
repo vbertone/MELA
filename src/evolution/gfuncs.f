@@ -15,7 +15,6 @@
       include "../commons/renfacscales.h"
       include "../commons/beta.h"
       include "../commons/evol.h"
-      include "../commons/pol.h"
 **
 *     Input Variables
 *
@@ -45,43 +44,19 @@
 *     LO
 *
       IF(EVOL.EQ."SPACE")THEN
-         IF(POL.EQ."OFF")THEN
-            CALL ANDIM_LO(ZN,NF,GAMMA0NS,GAMMA0)
-         ELSE
-            CALL ANDIM_LO_POL(ZN,NF,GAMMA0NS,GAMMA0)
-         ENDIF
+         CALL ANDIM_LO(ZN,NF,GAMMA0NS,GAMMA0)
       ELSEIF(EVOL.EQ."TIME")THEN
-         IF(POL.EQ."OFF")THEN
-            CALL ANDIM_LO_TL(ZN,NF,GAMMA0NS,GAMMA0)
-         ELSE
-C            CALL ANDIM_LO_TL_POL(ZN,NF,GAMMA0NS,GAMMA0)
-         ENDIF
+         CALL ANDIM_LO_TL(ZN,NF,GAMMA0NS,GAMMA0)
       ENDIF
 *
 *     NLO
 *
       IF(IPT.GE.1)THEN
          IF(EVOL.EQ."SPACE")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NLO(ZN,NF,GAMMA1NS,GAMMA1)
-            ELSE
-               CALL ANDIM_NLO_POL(ZN,NF,GAMMA1NS,GAMMA1)
-            ENDIF
+            CALL ANDIM_NLO(ZN,NF,GAMMA1NS,GAMMA1)
          ELSEIF(EVOL.EQ."TIME")THEN
-            IF(POL.EQ."OFF")THEN
-               CALL ANDIM_NLO_TL(ZN,NF,GAMMA1NS,GAMMA1)
-            ELSE
-C               CALL ANDIM_NLO_TL_POL(ZN,NF,GAMMA1NS,GAMMA1)
-            ENDIF
+            CALL ANDIM_NLO_TL(ZN,NF,GAMMA1NS,GAMMA1)
          ENDIF
-      ENDIF
-*
-*     NNLO
-*
-      IF(IPT.GE.2)THEN
-         WRITE(6,*) "In gfuncs.f:"
-         WRITE(6,*) "NNLO evolution not implemented yet."
-         CALL EXIT(-10)
       ENDIF
 *
       BT0 = - 2D0 * BETA0(NF)
