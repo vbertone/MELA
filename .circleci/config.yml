@@ -10,4 +10,3 @@ jobs:
       - run: cmake . && make -j8
       - run: cd run/; echo "Reference.ini" | ./Evolution; cd ..;
       - run: cd run/; echo "Reference.ini" | ./Timing; cd ..;
-      - run: cd run/; echo "Reference.ini" | ./StructureFunctions; cd ..;
