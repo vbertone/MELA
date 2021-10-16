@@ -25,8 +25,6 @@
 *     Modified to allow different renormalization and factorization scales 
 *     in the anomalous dimensions.
 *
-*     KRF = MUR / MUF
-*
 *     Notation follows EQ. (2.8) of "NNLO evolution of DIS structure functions"
 *     Van Neerven and Vogt hep-ph/0006154.
 *
@@ -40,7 +38,6 @@
       include "../commons/beta.h"
       include "../commons/colfact.h"
       include "../commons/ipt.h"
-      include "../commons/renfacscales.h"
       include "../commons/evol.h"
 *
       INTEGER NF
@@ -51,7 +48,7 @@
       DOUBLE COMPLEX EP(2,2),EM(2,2)
 *
       INTEGER I,J,K,II,JJ,KK,L
-      DOUBLE PRECISION LOGR,B(20)
+      DOUBLE PRECISION B(20)
       DOUBLE COMPLEX G0(2,2),G1(2,2),G2(2,2)
       DOUBLE COMPLEX G0NS,G1NS(3),G2NS(3)
       DOUBLE COMPLEX P(0:20,2,2),PNS(0:20,3)
@@ -60,8 +57,6 @@
       DOUBLE COMPLEX SQ,LDIFF
 *
 *     Anomalous dimensions calculation
-*
-      LOGR = - 2D0 * DLOG(KRF)
 *
 *******************
 *     LO
@@ -79,17 +74,6 @@
             CALL ANDIM_NLO(ZN,NF,G1NS,G1)
          ELSEIF(EVOL.EQ."TIME")THEN
             CALL ANDIM_NLO_TL(ZN,NF,G1NS,G1)
-         ENDIF
-*        Anomalous dimensions at NLO for muR.ne.muF
-         IF(KRF.NE.1D0)THEN
-            DO I=1,2
-               DO J=1,2
-                  G1(I,J) = G1(I,J) - BETA0(NF) * LOGR * G0(I,J) !Second line of eq. (2.8) of hep-ph/0408244)
-               ENDDO
-            ENDDO
-            DO I=1,3
-               G1NS(I) = G1NS(I) - BETA0(NF) * LOGR * G0NS       !Second line of eq. (2.8) of hep-ph/0408244)
-            ENDDO
          ENDIF
       ENDIF
 *

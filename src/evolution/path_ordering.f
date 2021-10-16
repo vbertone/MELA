@@ -2,34 +2,32 @@
 *
 *     path_ordering.f:
 *
-*     This subroutine returns the QCD evolution factors, in N space, from
+*     This subroutine returns the QED evolution factors, in N space, from
 *     Q2I to Q2F with NF active flavours, for Non Singlet and Singlet-Gluon
 *     using the path ordering method.
 *
 ***********************************************************************
-      SUBROUTINE PATH_ORDERING(ZN,ASI,ASF,NF,EFNNS,EFNSG)
+      SUBROUTINE PATH_ORDERING(ZN,AII,AFF,NF,EFNNS,EFNSG)
 *
       IMPLICIT NONE
 *
       include "../commons/ipt.h"
-      include "../commons/renfacscales.h"
       include "../commons/beta.h"
       include "../commons/evol.h"
 **
 *     Input Variables
 *
       INTEGER NF
-      DOUBLE COMPLEX ASI,ASF
+      DOUBLE COMPLEX AII,AFF
       DOUBLE COMPLEX ZN
 **
 *     Internal Variables
 *
       INTEGER NINT
       INTEGER I,J,K,L
-      DOUBLE PRECISION AS_CHECK,PREC
+      DOUBLE PRECISION A_CHECK,PREC
       DOUBLE PRECISION BT0,BT1
       DOUBLE COMPLEX AF,AI,DA,AK
-      DOUBLE COMPLEX LOGR
       DOUBLE COMPLEX G0(2,2),G1(2,2),G2(2,2)
       DOUBLE COMPLEX G0NS,G1NS(3),G2NS(3)
       DOUBLE COMPLEX PSG(2,2),PNS(3)
@@ -64,8 +62,6 @@
       BT0 = BETA0(NF)
       BT1 = 0D0
 *
-      LOGR = - 2D0 * DLOG(KRF)
-*
 *     LO
 *
       IF(EVOL.EQ."SPACE")THEN
@@ -83,28 +79,16 @@
             CALL ANDIM_NLO_TL(ZN,NF,G1NS,G1)
          ENDIF
          BT1 = BETA1(NF)
-*        Anomalous dimensions at NLO for muR.ne.muF
-         IF(KRF.NE.1D0)THEN
-            DO I=1,2
-               DO J=1,2
-                  G1(I,J) = G1(I,J) - BETA0(NF) * LOGR * G0(I,J) !Second line of eq. (2.8) of hep-ph/0408244)
-               ENDDO
-            ENDDO
-*
-            DO I=1,3
-               G1NS(I) = G1NS(I) - BETA0(NF) * LOGR * G0NS       !Second line of eq. (2.8) of hep-ph/0408244)
-            ENDDO
-         ENDIF
       ENDIF
 *
 *     Singlet
 *
 *     Solution at leading order (easy)
 *
-      DA = ( ASF - ASI ) / DBLE(NINT)
+      DA = ( AFF - AII ) / DBLE(NINT)
       IF(IPT.EQ.0)THEN
-         AI = ASI
-         AF = ASF
+         AI = AII
+         AF = AFF
          DO I=1,2
             DO J=1,2
                PSG(I,J) = G0(I,J) * ( 1D0 / AF + 1D0 / AI ) / BT0
@@ -126,10 +110,10 @@
 *
 *     Check
 *
-         AS_CHECK = ABS( AK + DA - AF )
-         IF(AS_CHECK.GT.PREC)THEN
+         A_CHECK = ABS( AK + DA - AF )
+         IF(A_CHECK.GT.PREC)THEN
             WRITE(6,*) "In path_ordering.f:"
-            WRITE(6,*) "Mismatch, ASF =",AF,", AK =",AK + DA
+            WRITE(6,*) "Mismatch, AFF =",AF,", AK =",AK + DA
             CALL EXIT(-10)
          ENDIF
 *
@@ -155,7 +139,7 @@
          EFNSG(2,1) = (0D0,0D0)
          EFNSG(2,2) = (1D0,0D0)
 *
-         AI = ASI
+         AI = AII
          DO K=1,NINT
             AF = AI + DA
             DO I=1,2
@@ -211,8 +195,8 @@
 *
 *     Non Singlet
 *
-      AI = ASI
-      AF = ASF
+      AI = AII
+      AF = AFF
       DO I=1,3
          PNS(I) = ( G0NS + AI * G1NS(I) + AI**2D0 * G2NS(I) )
      1          / ( BT0 + AI * BT1 ) / AI
@@ -238,8 +222,8 @@
 *
 *     Check
 *
-      AS_CHECK = ABS( AK + DA - AF )
-      IF(AS_CHECK.GT.PREC)THEN
+      A_CHECK = ABS( AK + DA - AF )
+      IF(A_CHECK.GT.PREC)THEN
          WRITE(6,*) "In path_ordering.f:"
          WRITE(6,*) "Mismatch, AF =",AF,", AK =",AK + DA
          CALL EXIT(-10)

@@ -2,7 +2,7 @@
 *
 *     evolfactn.f:
 *
-*     This subroutine returns the QCD evolution factors, in N space, from
+*     This subroutine returns the QED evolution factors, in N space, from
 *     Q2I to Q2F with NF active flavours, for Non Singlet and Singlet-Gluon.
 *
 ***********************************************************************
@@ -13,11 +13,10 @@
       include "../commons/evscale.h"
       include "../commons/beta.h"
       include "../commons/consts.h"
-      include "../commons/alphas.h"
+      include "../commons/alpha.h"
       include "../commons/massthrs.h"
       include "../commons/ipt.h"
       include "../commons/modev.h"
-      include "../commons/renfacscales.h"
 **
 *     Input Variables
 *
@@ -32,7 +31,7 @@
       
       DOUBLE COMPLEX TMP
       DOUBLE COMPLEX TMP2,TMP5,TMP6
-      DOUBLE COMPLEX ASI,ASF,T,AQCD
+      DOUBLE COMPLEX AI,AF,T,AQED
       DOUBLE COMPLEX TMP1(3),TMP4(3)
       DOUBLE COMPLEX EFNSGTMP(2,2)
       DOUBLE COMPLEX EXPM,EXPP,LP,LM
@@ -67,39 +66,31 @@
 *     Compute alpha_s
 *
       IF(ABS(Q2I).EQ.ABS(Q20)) THEN
-         ASI = AS0
-      ELSEIF(ABS(Q2I).EQ.ABS(Q2TH(4))) THEN
-         ASI = ASC
-      ELSEIF(ABS(Q2I).EQ.ABS(Q2TH(5))) THEN
-         ASI = ASB
-      ELSEIF(ABS(Q2I).EQ.ABS(Q2TH(6))) THEN
-         ASI = AST
+         AI = A0
+      ELSEIF(ABS(Q2I).EQ.ABS(Q2TH(1))) THEN
+         AI = AE
+      ELSEIF(ABS(Q2I).EQ.ABS(Q2TH(2))) THEN
+         AI = AM
+      ELSEIF(ABS(Q2I).EQ.ABS(Q2TH(3))) THEN
+         AI = AT
       ENDIF
 *
       IF(ABS(Q2F).EQ.ABS(Q20)) THEN
-         ASF = AS0
-      ELSEIF(ABS(Q2F).EQ.ABS(Q2TH(4))) THEN
-         ASF = ASCM
-      ELSEIF(ABS(Q2F).EQ.ABS(Q2TH(5))) THEN
-         ASF = ASBM
-      ELSEIF(ABS(Q2F).EQ.ABS(Q2TH(6))) THEN
-         ASF = ASTM
+         AF = A0
+      ELSEIF(ABS(Q2F).EQ.ABS(Q2TH(1))) THEN
+         AF = AEM
+      ELSEIF(ABS(Q2F).EQ.ABS(Q2TH(2))) THEN
+         AF = AMM
+      ELSEIF(ABS(Q2F).EQ.ABS(Q2TH(3))) THEN
+         AF = ATM
       ELSE
-         ASF = ASQ
+         AF = AQ
       ENDIF
 *
 *     Path-ordering solution
 *
       IF(MODEV.EQ."PTH")THEN
-         CALL PATH_ORDERING(ZN,ASI,ASF,NF,EFNNS,EFNSG)
-         RETURN
-      ENDIF
-*
-*     g-functions solution
-*
-      IF(MODEV.EQ."GFN")THEN
-         CALL GFUNCS(ZN,AQCD(Q2I/KRF**2),ZSQRT(Q2I),ZSQRT(Q2F),
-     1        NF,EFNNS,EFNSG)
+         CALL PATH_ORDERING(ZN,AI,AF,NF,EFNNS,EFNSG)
          RETURN
       ENDIF
 *
@@ -109,7 +100,7 @@
 *
 *     LO evolution factors 
 *
-      T = ZLOG(ASF/ASI)
+      T = ZLOG(AF/AI)
 *
 *     Non singlet
 *
@@ -165,7 +156,7 @@
 *     Non singlet
 *
             DO I=1,3
-               EFNNS(I) = LNS(I) * ( (1D0,0D0) + UNS(1,I) * (ASF-ASI) )
+               EFNNS(I) = LNS(I) * ( (1D0,0D0) + UNS(1,I) * (AF-AI) )
             ENDDO
 *
 *     Singlet
@@ -180,7 +171,7 @@
             CALL MMULT(L,2,2,U1,2,2,LU1)
             DO I=1,2
                DO J=1,2
-                  EFNSG(I,J) = L(I,J) + ASF * U1L(I,J) - ASI * LU1(I,J) !Eq. (2.24) of hep-ph/0408244 for the singlet 
+                  EFNSG(I,J) = L(I,J) + AF * U1L(I,J) - AI * LU1(I,J) !Eq. (2.24) of hep-ph/0408244 for the singlet 
                ENDDO
             ENDDO
          ELSEIF(MODEV.EQ."ITE")THEN
@@ -189,8 +180,8 @@
 *
 *     Non singlet
 *
-            TMP = ZLOG( ( 1D0 + B1(NF) * ASF ) 
-     1                / ( 1D0 + B1(NF) * ASI ) ) / B1(NF)
+            TMP = ZLOG( ( 1D0 + B1(NF) * AF ) 
+     1                / ( 1D0 + B1(NF) * AI ) ) / B1(NF)
             DO I=1,3
                EFNNS(I) = LNS(I) * EXP( TMP * UNS(1,I) )   !Eq. (2.34) of hep-ph/0408244 (analytical solution)
             ENDDO
@@ -213,9 +204,9 @@
                DO I=1,2
                   DO J=1,2
                      USUM(I,J) = USUM(I,J)
-     1                         + ( ASF**(DBLE(K)) * U(K,I,J) )
+     1                         + ( AF**(DBLE(K)) * U(K,I,J) )
                      USUMTMP(I,J) = USUMTMP(I,J)
-     1                            + ( ASI**(DBLE(K)) * U(K,I,J) )
+     1                            + ( AI**(DBLE(K)) * U(K,I,J) )
                    ENDDO
                ENDDO
             ENDDO

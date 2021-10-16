@@ -12,14 +12,11 @@
       include "../commons/ipt.h"
       include "../commons/modev.h"
       include "../commons/ns.h"
-      include "../commons/alphas.h"
-      include "../commons/hqmass.h"
+      include "../commons/alpha.h"
       include "../commons/massthrs.h"
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
-      include "../commons/renfacscales.h"
       include "../commons/evol.h"
-      include "../commons/distf.h"
 **
 *     Input Variables
 *
@@ -28,68 +25,56 @@
 *     Internal Variables
 *
       integer lp,lu
-      double precision mc,mb,mt
-      double precision eps
+      double precision me,mm,mt
       double precision ReQR,ImQR
-      double precision ReASR,ImASR
-      character*6  fhqmass
+      double precision ReAR,ImAR
       character*50 str
-      parameter(eps=1d-10)
 *
 *     Overwritten by the values read from the input card if found.
 *
-      IPT     = 1
-      MODEV   = "ITE"
-      NS      = "VFNS"
-      NFMAX   = 6
-      NFFN    = 3
-      FHQMASS = "POLE"
-      KRF     = 1d0
-      EVOL    = "SPACE"
-      ReQR    = dsqrt(2d0) - eps
-      ImQR    = 0d0
-      ReASR   = 0.35d0
-      ImASR   = 0d0
-      MC      = dsqrt(2d0)
-      MB      = 4.5d0
-      MT      = 175d0
-      DISTF   = "internal"
+      IPT   = 1
+      MODEV = "ITE"
+      NS    = "VFNS"
+      NFMAX = 6
+      NFFN  = 3
+      EVOL  = "SPACE"
+      ReQR  = 0.000510998928d0
+      ImQR  = 0d0
+      ReAR  = 0.0072973525693d0
+      ImAR  = 0d0
+      ME    = 0.000510998928d0
+      MM    = 0.10566d0
+      MT    = 1.777d0
 *
 c      open(unit=10,status="old",file="../run/"//card)
-      open(unit=10,status="old",file=card)
+      open(unit = 10, status = "old", file = card)
       do
          read(10,"(a)",end=101) str
          if(str(1:1).ne."#")then
             lp = index(str," ") - 1
             lu = index(str,"=") + 1
-            if(str(1:lp).eq."IPT")     read(str(lu:50),*) IPT
-            if(str(1:lp).eq."MODEV")   read(str(lu:50),*) MODEV
-            if(str(1:lp).eq."NS")      read(str(lu:50),*) NS
-            if(str(1:lp).eq."NFMAX")   read(str(lu:50),*) NFMAX
-            if(str(1:lp).eq."NFFN")    read(str(lu:50),*) NFFN
-            if(str(1:lp).eq."HQMASS")  read(str(lu:50),*) FHQMASS
-            if(str(1:lp).eq."KRF")     read(str(lu:50),*) KRF
-            if(str(1:lp).eq."EVOL")    read(str(lu:50),*) EVOL
-            if(str(1:lp).eq."QREF")    read(str(lu:50),*) ReQR,ImQR
-            if(str(1:lp).eq."ASREF")   read(str(lu:50),*) ReASR,ImASR
-            if(str(1:lp).eq."MC")      read(str(lu:50),*) MC
-            if(str(1:lp).eq."MB")      read(str(lu:50),*) MB
-            if(str(1:lp).eq."MT")      read(str(lu:50),*) MT
-            if(str(1:lp).eq."DISTF")   read(str(lu:50),*) DISTF
+            if(str(1:lp).eq."IPT")   read(str(lu:50),*) IPT
+            if(str(1:lp).eq."MODEV") read(str(lu:50),*) MODEV
+            if(str(1:lp).eq."NS")    read(str(lu:50),*) NS
+            if(str(1:lp).eq."NFMAX") read(str(lu:50),*) NFMAX
+            if(str(1:lp).eq."NFFN")  read(str(lu:50),*) NFFN
+            if(str(1:lp).eq."EVOL")  read(str(lu:50),*) EVOL
+            if(str(1:lp).eq."QREF")  read(str(lu:50),*) ReQR,ImQR
+            if(str(1:lp).eq."AREF")  read(str(lu:50),*) ReAR,ImAR
+            if(str(1:lp).eq."ME")    read(str(lu:50),*) ME
+            if(str(1:lp).eq."MM")    read(str(lu:50),*) MM
+            if(str(1:lp).eq."MT")    read(str(lu:50),*) MT
          endif
       enddo
  101  close(10)
 *
 *     Some redefinitions
 *
-      Q2REF    = DCMPLX(ReQR,ImQR)**2d0
-      ASREF    = DCMPLX(ReASR,ImASR)
-      Q2TH(4)  = DCMPLX(MC**2d0,0d0)
-      Q2TH(5)  = DCMPLX(MB**2d0,0d0)
-      Q2TH(6)  = DCMPLX(MT**2d0,0d0)
-*
-      if(FHQMASS.EQ."POLE")  HQMASS = 0
-      if(FHQMASS.EQ."MSBAR") HQMASS = 1
+      Q2REF   = DCMPLX(ReQR, ImQR)**2d0
+      AREF    = DCMPLX(ReAR, ImAR)
+      Q2TH(1) = DCMPLX(ME**2d0, 0d0)
+      Q2TH(2) = DCMPLX(MM**2d0, 0d0)
+      Q2TH(3) = DCMPLX(MT**2d0, 0d0)
 *
       return
       end

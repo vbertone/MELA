@@ -2,37 +2,37 @@
 *
 *     initCouplings.f:
 *
-*     Initialize the values of alphas at the initial scale Q20 and at 
-*     the heavy quark thresholds.
+*     Initialize the values of alpha at the initial scale Q20 and at 
+*     the lepton thresholds.
 *
 ************************************************************************
       subroutine initCouplings
 *
       implicit none
 *
-      include "../commons/alphas.h"
+      include "../commons/alpha.h"
       include "../commons/massthrs.h"
 **
 *     Internal Variables
 *
       integer i
       double precision eps
-      double complex aQCD
-      double complex q2thm(4:6)
+      double complex aQED
+      double complex q2thm(3)
       parameter(eps=1d-7)
 *
-      do i=4,6
-         q2thm(i) = q2th(i) - eps
+      do i=1,3
+         q2thm(i) = q2th(i) * ( 1d0 - eps )
       enddo
 *
-      ASC   = AQCD(q2th(4))
-      ASCM  = AQCD(q2thm(4))
+      AE  = AQED(q2th(1))
+      AEM = AQED(q2thm(1))
 *
-      ASB   = AQCD(q2th(5))
-      ASBM  = AQCD(q2thm(5))
+      AM  = AQED(q2th(2))
+      AMM = AQED(q2thm(2))
 *
-      AST   = AQCD(q2th(6))
-      ASTM  = AQCD(q2thm(6))
+      AT  = AQED(q2th(3))
+      ATM = AQED(q2thm(3))
 *
       return
       end

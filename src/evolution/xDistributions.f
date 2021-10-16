@@ -10,7 +10,7 @@
       implicit none
 *
       include "../commons/consts.h"
-      include "../commons/alphas.h"
+      include "../commons/alpha.h"
 **
 *     Input Variables
 *
@@ -24,7 +24,7 @@
       integer ip,iQ
       double precision r,rmax
       double precision theta,sigma,t
-      double complex aQCD
+      double complex aQED
       double complex s,tmp(13)
       double complex xfN(13)
       double complex xfev(13)
@@ -33,13 +33,13 @@
 *
       double complex xfph(-6:6)
 *
-*     Precompute alphas
+*     Precompute alpha
 *
-      asEvolIni(1) = aQCD(Q(1)**2d0)
-      asEvolFin(1) = aQCD(Q(2)**2d0)
+      aEvolIni(1) = aQED(Q(1)**2d0)
+      aEvolFin(1) = aQED(Q(2)**2d0)
       do iQ=2,nQ-1
-         asEvolIni(iQ) = asEvolFin(iQ-1)
-         asEvolFin(iQ) = aQCD(Q(iQ+1)**2d0)
+         aEvolIni(iQ) = aEvolFin(iQ-1)
+         aEvolFin(iQ) = aQED(Q(iQ+1)**2d0)
       enddo
 *
       t = - dlog(x)
@@ -97,7 +97,7 @@
 *
       double precision xfph(-6:6)
 *
-*     Precompute alphas
+*     Precompute alpha
 *
       Qv(1) = dcmplx(Q0, 0d0)
       Qv(2) = dcmplx(Q, 0d0)

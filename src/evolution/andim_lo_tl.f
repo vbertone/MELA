@@ -4,7 +4,7 @@
 *                                                                              *
 ********************************************************************************
 *                                                                              *
-*     Returns the LO anomalous dimensions in the a_s=alpha_s/4pi notation      *
+*     Returns the LO anomalous dimensions in the a=alpha/4pi notation          *
 *                                                                              *
 *     Input variables:                                                         *
 *     N  : Mellin variable                                                     *

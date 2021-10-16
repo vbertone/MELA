@@ -12,21 +12,17 @@
       include "../commons/ipt.h"
       include "../commons/modev.h"
       include "../commons/ns.h"
-      include "../commons/alphas.h"
-      include "../commons/hqmass.h"
+      include "../commons/alpha.h"
       include "../commons/massthrs.h"
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
-      include "../commons/renfacscales.h"
       include "../commons/evol.h"
-      include "../commons/distf.h"
 *
-*     Initialize the coefficient of the beta functions in QCD and QED 
-*     and the coefficient of the QCD gamma function
+*     Initialize the coefficient of the beta functions in QED
 *
       call initBeta
 *
-*     Alphas at Q20 and at the heavy quark mass thresholds
+*     Alpha at Q20 and at the heavy lepton mass thresholds
 *
       call initCouplings
 *
@@ -37,26 +33,8 @@
       write(6,*) "  "
       if(evol.eq."SPACE")then
          write(6,*) "Space-like evolution (PDFs)"
-         if(distf(1:8).eq."internal")then
-            write(6,*) "Initial conditions: toy Les Houches PDF",
-     1                 " (Q0 = sqrt(2) GeV)"
-         elseif(distf.eq."XFitter")then
-            write(6,*) "Initial conditions: XFitter PDFs"
-            write(6,*) "(These input distubutions can be used only ",
-     1                 "with XFitter)"
-         elseif(distf(1:9).eq."ZeroScale")then
-            write(6,*) "Initial conditions: Zero scale PDFs"
-         endif
       elseif(evol(1:4).eq."TIME")then
          write(6,*) "Time-like evolution (FFs)"
-         if(distf(1:8).eq."internal")then
-            write(6,*) "Initial conditions: HKNS 2007",
-     1                 " for pi+ at NLO (Q0 = 1 GeV)"
-         elseif(distf.eq."XFitter")then
-            write(6,*) "Initial conditions: XFitter PDFs"
-            write(6,*) "(These input distubutions can be used only ",
-     1                 "with XFitter)"
-         endif
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Invalid evolution mode, evol = ",evol
@@ -94,7 +72,7 @@
 *     Evolution scheme
 *
       if(NS.eq."FFNS")then
-         if(NFFN.lt.3.or.NFFN.gt.6)then
+         if(NFFN.lt.0.or.NFFN.gt.3)then
             write(6,*)"In InitializeEvolution.f:"
             write(6,*)"NFFN out or range, NFFN =",NFFN
             call exit(-10)
@@ -108,34 +86,22 @@
          call exit(-10)
       endif
 *
-*     Alphas reference values
+*     Alpha reference values
 *
-      write(6,*) "Alphas reference value:"
-      write(6,"(a,f8.3,a,f8.3,a)") "   Qref = (",real(sqrt(Q2REF)),",",
+      write(6,*) "Alpha reference value:"
+      write(6,"(a,f14.9,a,f14.9,a)")"   Qref = (",real(sqrt(Q2REF)),",",
      1                             imag(sqrt(Q2REF))," ) GeV"
-      write(6,"(a,f7.3,a,f7.3,a)") "   Alpha_s(Qref) = (",
-     1                             real(ASREF),",",imag(ASREF)," )"
+      write(6,"(a,f14.9,a,f14.9,a)")"   Alpha(Qref) = (",
+     1                             real(AREF),",",imag(AREF)," )"
 *
-*     MSbar or Pole masses reference values
-*
-      if(hqmass.eq.0)then
-         write(6,*) "Pole masses chosen"
-      elseif(hqmass.eq.1)then
-         write(6,*) "MSbar masses chosen"
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Unknown value of HQMASS =",hqmass
-         call exit(-10)
-      endif
-*
-      write(6,*) "Heavy quark thresholds:"
-      write(6,"(a,f8.3,a)") "   mc =",dsqrt(real(q2th(4)))," GeV"
-      write(6,"(a,f8.3,a)") "   mb =",dsqrt(real(q2th(5)))," GeV"
-      write(6,"(a,f8.3,a)") "   mt =",dsqrt(real(q2th(6)))," GeV"
+      write(6,*) "Lepton thresholds:"
+      write(6,"(a,f14.9,a)") "   me =",dsqrt(real(q2th(1)))," GeV"
+      write(6,"(a,f14.9,a)") "   mm =",dsqrt(real(q2th(2)))," GeV"
+      write(6,"(a,f14.9,a)") "   mt =",dsqrt(real(q2th(3)))," GeV"
 *
 *     Maximum number of active flavours
 *
-      if(nfmax.ge.3.and.nfmax.le.6)then
+      if(nfmax.ge.0.and.nfmax.le.3)then
          write(6,"(a,i1)") " Maximum number of active flavours = ",nfmax
       else
          write(6,*) "In InitializeEvolution.f:"

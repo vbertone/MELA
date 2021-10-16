@@ -1,17 +1,12 @@
 ************************************************************************
 *
 *     zfunc.f:
-*     It returns the evolution kernels in N space from Q20 to Q2, 
-*     according to eq. (20) of the "Notes on Perturbative Evolution"
-*     (only forward evolution allowed).
-*
-*      - Fixed Flavour Number Scheme ("FFNS")
-*      - Variable Flavour Number Scheme ("VFNS")
+*     It returns the evolution kernels in N space from Q20 to Q2
 *
 ************************************************************************
       SUBROUTINE ZFUNC(ZN,Q20,Q2,
-     1                 ZFUNCNS,ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                 ZFUNCSG,ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
+     1                 ZFUNCNS,ZFUNCNS3,ZFUNCNS8,
+     2                 ZFUNCSG,ZFUNCNSV3,ZFUNCNSV8)
 *
       IMPLICIT NONE
 *
@@ -29,8 +24,8 @@
 *     Output Variables
 *
       DOUBLE COMPLEX ZFUNCNS(3),ZFUNCSG(2,2)
-      DOUBLE COMPLEX ZFUNCNS15(2),ZFUNCNS24(2),ZFUNCNS35(2)
-      DOUBLE COMPLEX ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35
+      DOUBLE COMPLEX ZFUNCNS3(2),ZFUNCNS8(2)
+      DOUBLE COMPLEX ZFUNCNSV3,ZFUNCNSV8
 *
 *     Evolution Kernels
 *
@@ -39,22 +34,22 @@
       IF(NS.EQ."FFNS")THEN
          NFI = NFFN
          NFF = NFFN
-         IF(NFFN.EQ.3)THEN
+         IF(NFFN.EQ.0)THEN
             CALL CROSS01(ZN,Q20,Q2,NFFN,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                   ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
-         ELSEIF(NFFN.EQ.4)THEN
+     1                   ZFUNCNS3,ZFUNCNS8,
+     2                   ZFUNCNSV3,ZFUNCNSV8)
+         ELSEIF(NFFN.EQ.1)THEN
             CALL CROSS02(ZN,Q20,Q2,NFFN,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                   ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
-         ELSEIF(NFFN.EQ.5)THEN
+     1                   ZFUNCNS3,ZFUNCNS8,
+     2                   ZFUNCNSV3,ZFUNCNSV8)
+         ELSEIF(NFFN.EQ.2)THEN
             CALL CROSS03(ZN,Q20,Q2,NFFN,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                   ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
-         ELSEIF(NFFN.EQ.6)THEN
+     1                   ZFUNCNS3,ZFUNCNS8,
+     2                   ZFUNCNSV3,ZFUNCNSV8)
+         ELSEIF(NFFN.EQ.3)THEN
             CALL CROSS04(ZN,Q20,Q2,NFFN,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                   ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
+     1                   ZFUNCNS3,ZFUNCNS8,
+     2                   ZFUNCNSV3,ZFUNCNSV8)
          ENDIF
 *
 *     Variable Flavour Number Schemes
@@ -64,96 +59,96 @@
 *     Determine number of active flavours at the initial (NFI) and
 *     final (NFF) scale.
 *
-         IF(ABS(Q20).GT.ABS(Q2TH(6)))THEN
-            NFI = 6
-         ELSEIF(ABS(Q20).GT.ABS(Q2TH(5)))THEN
-            NFI = 5
-         ELSEIF(ABS(Q20).GT.ABS(Q2TH(4)))THEN
-            NFI = 4
-         ELSE
+         IF(ABS(Q20).GT.ABS(Q2TH(3)))THEN
             NFI = 3
+         ELSEIF(ABS(Q20).GT.ABS(Q2TH(2)))THEN
+            NFI = 2
+         ELSEIF(ABS(Q20).GT.ABS(Q2TH(1)))THEN
+            NFI = 1
+         ELSE
+            NFI = 0
          ENDIF
          IF(NFI.GT.NFMAX) NFI = NFMAX
 *     
-         IF(ABS(Q2).GT.ABS(Q2TH(6)))THEN
-            NFF = 6
-         ELSEIF(ABS(Q2).GT.ABS(Q2TH(5)))THEN
-            NFF = 5
-         ELSEIF(ABS(Q2).GT.ABS(Q2TH(4)))THEN
-            NFF = 4
-         ELSE
+         IF(ABS(Q2).GT.ABS(Q2TH(3)))THEN
             NFF = 3
+         ELSEIF(ABS(Q2).GT.ABS(Q2TH(2)))THEN
+            NFF = 2
+         ELSEIF(ABS(Q2).GT.ABS(Q2TH(1)))THEN
+            NFF = 1
+         ELSE
+            NFF = 0
          ENDIF
          IF(NFF.GT.NFMAX) NFF = NFMAX
 *
-         IF(NFI.EQ.3)THEN
-            IF(NFF.EQ.3)THEN
+         IF(NFI.EQ.0)THEN
+            IF(NFF.EQ.0)THEN
 *     NO CROSSING
                CALL CROSS01(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
-            ELSEIF(NFF.EQ.4)THEN
-*     MC2 CROSSING
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8)
+            ELSEIF(NFF.EQ.1)THEN
+*     ME2 CROSSING
                CALL CROSS11(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
-            ELSEIF(NFF.EQ.5)THEN
-*     MC2 AND MB2 CROSSING
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8)
+            ELSEIF(NFF.EQ.2)THEN
+*     ME2 AND MM2 CROSSING
                CALL CROSS21(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
-            ELSEIF(NFF.EQ.6)THEN
-*     MC2, MB2 AND MT2 CROSSING
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8)
+            ELSEIF(NFF.EQ.3)THEN
+*     ME2, MM2 AND MT2 CROSSING
                CALL CROSS31(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8)
             ELSE
                WRITE(6,*) "In src/evolution/zfunc.f:"
                WRITE(6,*) 'Undefined Final Flavour Number, NFF =',NFF
                CALL EXIT(-10)
             ENDIF
-         ELSEIF(NFI.EQ.4)THEN
-            IF(NFF.EQ.4)THEN
+         ELSEIF(NFI.EQ.1)THEN
+            IF(NFF.EQ.1)THEN
 *     NO CROSSING
                CALL CROSS02(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
-            ELSEIF(NFF.EQ.5)THEN
-*     MB2 CROSSING
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8)
+            ELSEIF(NFF.EQ.2)THEN
+*     MM2 CROSSING
                CALL CROSS12(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
-            ELSEIF(NFF.EQ.6)THEN
-*     MB2 AND MT2 CROSSING
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8)
+            ELSEIF(NFF.EQ.3)THEN
+*     MM2 AND MT2 CROSSING
                CALL CROSS22(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8)
             ELSE
                WRITE(6,*) "In src/evolution/zfunc.f:"
                WRITE(6,*) 'Undefined Final Flavour Number, NFF =',NFF
                CALL EXIT(-10)
             ENDIF
-         ELSEIF(NFI.EQ.5)THEN
-            IF(NFF.EQ.5)THEN
+         ELSEIF(NFI.EQ.2)THEN
+            IF(NFF.EQ.2)THEN
 *     NO CROSSING
                CALL CROSS03(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35) 
-            ELSEIF(NFF.EQ.6)THEN
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8) 
+            ELSEIF(NFF.EQ.3)THEN
 *     MT2 CROSSING
                CALL CROSS13(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                      ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
+     1                      ZFUNCNS3,ZFUNCNS8,
+     2                      ZFUNCNSV3,ZFUNCNSV8)
             ELSE
                WRITE(6,*) "In src/evolution/zfunc.f:"
                WRITE(6,*) 'Undefined Final Flavour Number, NFF =',NFF
                CALL EXIT(-10)
             ENDIF
-         ELSEIF(NFI.EQ.6)THEN
+         ELSEIF(NFI.EQ.3)THEN
 *     NO CROSSING
             CALL CROSS04(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS15,ZFUNCNS24,ZFUNCNS35,
-     2                   ZFUNCNSV15,ZFUNCNSV24,ZFUNCNSV35)
+     1                   ZFUNCNS3,ZFUNCNS8,
+     2                   ZFUNCNSV3,ZFUNCNSV8)
          ELSE
             WRITE(6,*) "In src/evolution/zfunc.f:"
             WRITE(6,*) 'Undefined Initial Flavour Number, NFI =',NFI
