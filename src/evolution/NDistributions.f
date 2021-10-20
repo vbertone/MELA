@@ -45,6 +45,7 @@
 *
 *     Call N-space distributions
 *
+      Q20 = Q(1)**2d0
       if(evol.eq."SPACE")then
          call electronPDFsn(N, xfph0N) ! Electron PDFs
       elseif(evol(1:4).eq."TIME")then

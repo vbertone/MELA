@@ -22,16 +22,16 @@
 *
       integer m,j
       integer ip,iQ
-      double precision r,rmax
+      double precision r
       double precision theta,sigma,t
       double complex aQED
-      double complex s,tmp(13)
-      double complex xfN(13)
-      double complex xfev(13)
+      double complex s,tmp(7)
+      double complex xfN(7)
+      double complex xfev(7)
 **
 *     Output Variables
 *
-      double complex xfph(-6:6)
+      double complex xfph(-3:3)
 *
 *     Precompute alpha
 *
@@ -43,29 +43,25 @@
       enddo
 *
       t = - dlog(x)
-      m = 33                  ! Must be odd
-      r = 2d0 * m / 5d0 / t
+      r = 2d0 * 43 / 5d0 / t
 *
-      rmax = 10d0
-*
-      if(r.gt.rmax) r = rmax
-*
-      do ip=1,13
+      do ip=1,7
          tmp(ip) = (0d0,0d0)
       enddo
+      m = 83                  ! Must be odd
       do j=1,m-1
          theta = - pi + dble(j) * ( 2d0 * pi / dble(m) )
          sigma = theta + (theta/tan(theta)-1d0)/tan(theta)
          s     = r * theta * dcmplx(1d0/tan(theta),1d0) + 1d0
 *
          call NDistributions(s,nQ,Q,xfN)
-         do ip=1,13
+         do ip=1,7
             tmp(ip) = tmp(ip)
      1              + exp( t * s ) * dcmplx(1d0,sigma) * xfN(ip)
          enddo
       enddo
 *
-      do ip=1,13
+      do ip=1,7
          xfev(ip) = x * r * tmp(ip) / m
          if(abs(xfev(ip)).lt.1d-12) xfev(ip) = (0d0,0d0)
       enddo
@@ -91,11 +87,11 @@
 *
       integer i
       double complex Qv(100)
-      double complex xfphc(-6:6)
+      double complex xfphc(-3:3)
 **
 *     Output Variables
 *
-      double precision xfph(-6:6)
+      double precision xfph(-3:3)
 *
 *     Precompute alpha
 *
@@ -103,7 +99,7 @@
       Qv(2) = dcmplx(Q, 0d0)
       call xDistributions(x, 2, Qv, xfphc)
 *
-      do i=-6,6
+      do i=-3,3
          xfph(i) = dreal(xfphc(i))
       enddo
 *
