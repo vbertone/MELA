@@ -100,7 +100,7 @@
       call xDistributions(x, 2, Qv, xfphc)
 *
       do i=-3,3
-         xfph(i) = dreal(xfphc(i))
+         xfph(i) = dble(xfphc(i))
       enddo
 *
       return

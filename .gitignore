@@ -17,3 +17,4 @@ src/evolution/.deps/
 build/
 lib/libmela.dylib
 *~
+doc/code/VariableNf

@@ -58,7 +58,7 @@
 *
          call xDistributions(xlha(ilha),nQ,Q,xf)
 *
-         write(6,'(es7.1,7(es12.4))')
+         write(6,'(es8.2,7(es12.4))')
      1         xlha(ilha),
      2         dble(xf(1) + xf(-1)) / xlha(ilha),
      3         dble(xf(0)) / xlha(ilha),
