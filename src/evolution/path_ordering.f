@@ -34,7 +34,8 @@
       DOUBLE COMPLEX SPSG(2,2),SPNS(3)
       DOUBLE COMPLEX DEFNSG(2,2),EFNSG_TMP(2,2)
       DOUBLE COMPLEX DELTA,SH,CH
-      PARAMETER(NINT=20)
+*     gstagn, 10/11/2021: increasing value of NINT for tests
+      PARAMETER(NINT=100)
       PARAMETER(PREC=1D-7)
 **
 *     Output Variables
@@ -144,13 +145,20 @@
             AF = AI + DA
             DO I=1,2
                DO J=1,2
-                  PSG(I,J) = ( G0(I,J) + AI*G1(I,J) + AI**2D0*G2(I,J) ) 
-     1                     / ( BT0 + AI * BT1 ) / AI
+*     gstagn, 10/11/2021: expanding split.fun.                  
+*                  PSG(I,J) = ( G0(I,J) + AI*G1(I,J) + AI**2D0*G2(I,J) ) 
+*     1                 / ( BT0 + AI * BT1 ) / AI
+         PSG(I,J) = ( G0(I,J) + AI * ( G1(I,J) - G0(I,J) * BT1/BT0 ) )
+     1            / BT0 / AI
 *
-                  PSG(I,J) = PSG(I,J)
-     1                     + ( G0(I,J) + AF*G1(I,J) + AF**2D0*G2(I,J) )
-     2                     / ( BT0 + AF * BT1 ) / AF
-*
+*     gstagn, 10/11/2021: expanding split.fun.                  
+*                  PSG(I,J) = PSG(I,J)
+*     1                     + ( G0(I,J) + AF*G1(I,J) + AF**2D0*G2(I,J) )
+*     2                 / ( BT0 + AF * BT1 ) / AF
+         PSG(I,J) = PSG(I,J)
+     1            + ( G0(I,J) + AF * ( G1(I,J) - G0(I,J) * BT1/BT0 ) )
+     2            / BT0 / AF
+*     
                   SPSG(I,J) = - DA * PSG(I,J) / 2D0
                ENDDO
             ENDDO
@@ -198,12 +206,19 @@
       AI = AII
       AF = AFF
       DO I=1,3
-         PNS(I) = ( G0NS + AI * G1NS(I) + AI**2D0 * G2NS(I) )
-     1          / ( BT0 + AI * BT1 ) / AI
+*     gstagn, 10/11/2021: expanding split.fun.
+*         PNS(I) = ( G0NS + AI * G1NS(I) + AI**2D0 * G2NS(I) )
+*     1          / ( BT0 + AI * BT1 ) / AI
+         PNS(I) = ( G0NS + AI * ( G1NS(I) - G0NS * BT1/BT0 ) )
+     1          / BT0 / AI         
 *
+*     gstagn, 10/11/2021: expanding split.fun.         
+*         PNS(I) = PNS(I)
+*     1          + ( G0NS + AF * G1NS(I) + AF**2D0 * G2NS(I) )
+*     2        / ( BT0 + AF * BT1 ) / AF
          PNS(I) = PNS(I)
-     1          + ( G0NS + AF * G1NS(I) + AF**2D0 * G2NS(I) )
-     2          / ( BT0 + AF * BT1 ) / AF
+     1          + ( G0NS + AF * ( G1NS(I) - G0NS * BT1/BT0 ) )
+     2          / BT0 / AF         
 *
          SPNS(I) = - DA * PNS(I) / 2D0
       ENDDO
@@ -213,8 +228,11 @@
          AK = AK + DA
 *
          DO I=1,3
-            PNS(I) = ( G0NS + AK * G1NS(I) + AK**2D0 * G2NS(I) )
-     2             / ( BT0 + AK * BT1 ) / AK
+*     gstagn, 10/11/2021: expanding split.fun.                     
+*            PNS(I) = ( G0NS + AK * G1NS(I) + AK**2D0 * G2NS(I) )
+*     2           / ( BT0 + AK * BT1 ) / AK
+            PNS(I) = ( G0NS + AK * ( G1NS(I) - G0NS * BT1/BT0 ) )
+     1             / BT0 / AK         
 *
             SPNS(I) = SPNS(I) - DA * PNS(I)
          ENDDO
