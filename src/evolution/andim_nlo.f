@@ -37,16 +37,18 @@
       DOUBLE COMPLEX S11,S12,S13,S14,S15,S16
       DOUBLE COMPLEX SPMOM,SLC,SLV,SSCHLM,SSTR2M,SSTR3M,SSCHLP
       DOUBLE COMPLEX SSTR2P,SSTR3P
-      DOUBLE COMPLEX PPSA,PQGA,PGQA,PGGA,PQGB,PGQB,PGGB,PGQC,PGGC
-      DOUBLE COMPLEX PNPA,PNMA,PNSB,PNSC
+      DOUBLE COMPLEX PPSA,PGQA,PQGB,PGQC,PGGC
+      DOUBLE COMPLEX PNPA,PNMA,PNSC
 *
 * ---------------------------------------------------------------------
 *
 *     Input variables
 *
        DOUBLE COMPLEX N
-       INTEGER NF       
-*
+       INTEGER NF
+       DOUBLE PRECISION NFSUM2
+       DOUBLE PRECISION NFSUM4
+*      
 *     Output variables  
 *
        DOUBLE COMPLEX P1NS(3)
@@ -127,10 +129,6 @@
      3     8D0* (3D0* NT + NS -1D0) / (NT * N1T) -
      4     16D0* (2D0* NS + 2D0* N +1D0)/(NT * N1T) ) * (-0.5D0)
       
-      PNSB = ( S1 * (536D0/9D0 + 8D0* (2D0* N + 1D0) / (NS * N1S)) -
-     1     (16D0* S1 + 52D0/3D0- 8D0/(N * N1)) * S2 - 43D0/6D0 -
-     2     (151D0* NFO + 263D0* NT + 97D0* NS + 3D0* N + 9D0) *
-     3     4D0/ (9D0* NT * N1T) ) * (-0.5D0)
       PNSC = ( -160D0/9D0* S1 + 32D0/3.* S2 + 4D0/3D0 +
      1     16D0*(11D0*NS+5D0*N-3D0)/(9D0* NS * N1S))*(-0.5D0)
 *     
@@ -142,12 +140,6 @@
       PPSA = (5d0* NFI + 32d0* NFO + 49d0* NT+38d0* NS + 28d0* N + 8d0) 
      1     / (NM * NT * N1T * N2S) * 2d0
 *     
-      PQGA = (-2d0* S1 * S1 + 2d0* S2 - 2d0* SSTR2P) 
-     1     * (NS + N + 2d0) / (N * N1 * N2) 
-     2     + (8d0* S1 * (2d0* N + 3d0)) / (N1S * N2S)
-     3     + 2d0* (NN + 6d0* NE + 15d0* NSE + 25d0* NSI + 36d0* NFI
-     4     + 85d0* NFO + 128d0* NT + 104d0* NS + 64d0* N + 16d0)
-     5     / (NM * NT * N1T * N2T)
       PQGB = (2d0* S1 * S1 - 2d0* S2 + 5d0) * (NS + N + 2d0)
      1     / (N * N1 * N2) - 4d0* S1 / NS
      2     + (11d0* NFO + 26d0* NT + 15d0* NS + 8d0* N + 4d0)
@@ -161,24 +153,9 @@
      1     / (NM * N * N1)  -  2d0* S1 / N1S
      2     - (12d0* NSI + 30d0* NFI + 43d0* NFO + 28d0* NT - NS
      3     - 12d0* N - 4d0) / (2d0* NM * NT * N1T) 
-      PGQB = (S1*S1 + S2 - SSTR2P) * (NS + N + 2d0) / (NM * N * N1)
-     1     - S1 * (17d0* NFO + 41d0* NS - 22d0* N - 12d0) 
-     2     / (3d0* NMS * NS * N1)
-     3     + (109d0* NN + 621d0* NE + 1400d0* NSE + 1678d0* NSI
-     4     + 695d0* NFI - 1031d0* NFO - 1304d0* NT - 152d0* NS
-     5     + 432d0* N + 144d0) / (9d0* NMS * NT * N1T * N2S)
       PGQC = (S1 - 8d0/3d0) * (NS + N + 2d0) / (NM * N * N1) + 1d0/ N1S
       PGQC = 4d0/3d0* PGQC
 *     
-      PGGA = - (2d0* NFI + 5d0* NFO + 8d0* NT + 7d0* NS- 2d0* N - 2d0)
-     1     * 8d0* S1 / (NMS * NS * N1S * N2S) -  67d0/9d0* S1 + 8d0/3d0
-     2     - 4d0* SSTR2P * (NS + N + 1d0) / (NM * N * N1 * N2)
-     3     + 2d0* S1 * SSTR2P - 4d0* SSCHLP + 0.5d0 * SSTR3P
-     4     + (457d0* NN + 2742d0* NE + 6040d0* NSE + 6098d0* NSI
-     5     + 1567d0* NFI - 2344d0* NFO - 1632d0* NT + 560d0* NS
-     6     + 1488d0* N + 576d0) / (18d0* NMS * NT * N1T * N2T)
-      PGGB = (38d0* NFO + 76d0* NT + 94d0* NS + 56d0* N + 12d0) *(-2d0)
-     1     / (9d0* NM * NS * N1S * N2)  +  20d0/9d0* S1  -  4d0/3d0
       PGGC = (2d0* NSI + 4d0* NFI + NFO - 10d0* NT - 5d0* NS - 4d0* N
      1     - 4d0) * (-2d0) / (NM * NT * N1T * N2)  -  1d0
 *     
@@ -193,24 +170,31 @@
       do I=1,3
          P1NS(I)=0d0
       enddo
-*     
+*
+**     gstagn: hacking to add quark contributions 3D0 * CH2(5) 
+      NFSUM2    = dble(NF)
+*      NFSUM2   = dble(NF) + 3D0 * CH2(5)      
+**     gstagn: hacking to add quark contributions 3D0 * CH4(5)       
+      NFSUM4    = dble(NF)
+*      NFSUM4   = dble(NF) + 3D0 * CH4(5)            
+*      
 *     NON SINGLET
 *     
 *     Plus 
 *     
-      P1NS(1) = CF *((CF-CA/2d0)* PNPA + CA* PNSB + TR*dble(NF)* PNSC)
+      P1NS(1) = PNPA + NFSUM2 * PNSC
 *     
 *     Minus = Valence
 *     
-      P1NS(2) = CF *((CF-CA/2d0)* PNMA + CA* PNSB + TR*dble(NF)* PNSC)
+      P1NS(2) = PNMA + NFSUM2 * PNSC
       P1NS(3) = P1NS(2)
 *     
 *     SINGLET
 *     
-      P1SG(1,1) = P1NS(1) + TR*dble(NF)*CF*PPSA*4d0
-      P1SG(1,2) = TR*dble(NF) * (CA * PQGA + CF * PQGB)*4d0
-      P1SG(2,1) = (CF*CF*PGQA + CF*CA*PGQB+TR*dble(NF)*CF*PGQC)*4d0
-      P1SG(2,2) = (CA*CA*PGGA + TR*dble(NF)*(CA*PGGB+CF*PGGC))*4d0
+      P1SG(1,1) = P1NS(1) + dble(NF) * PPSA * 4d0
+      P1SG(1,2) = (dble(NF) * PQGB) * 4d0
+      P1SG(2,1) = (PGQA + NFSUM2 * PGQC) * 4d0
+      P1SG(2,2) = (NFSUM4 * PGGC) * 4d0
 *
 *     ---------------------------------------------------------------------
 *     
