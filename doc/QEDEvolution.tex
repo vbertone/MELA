@@ -1,0 +1,471 @@
+%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[twoside,english]{paper}
+\usepackage{lmodern}
+\renewcommand{\ttdefault}{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=2.5cm,lmargin=2cm,rmargin=2cm}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{esint}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]
+ {hyperref}
+\usepackage{breakurl}
+\usepackage{mathrsfs}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{babel}
+
+\@ifundefined{showcaptionsetup}{}{%
+ \PassOptionsToPackage{caption=false}{subfig}}
+\usepackage{subfig}
+\makeatother
+
+\begin{document}
+
+\title{Notes on the QED evolution to NLL accuracy}
+
+\maketitle
+
+\begin{abstract}
+  In these notes, we discuss the details of the implementation of the
+  QED collinear evolution up to next-to-leading logarithmic (NLL)
+  accuracy in the variable-flavour-number scheme (VFNS) in the
+  presence of both charged leptons and quarks.
+\end{abstract}
+
+\tableofcontents{}
+
+\vspace{20pt}
+
+\section{The structure of the DGLAP equation}
+
+Suppose one wants to study the coupled collinear evolution in pure QED
+of the photon distribution $\gamma$, the $i$-th down-type quark
+distribution with a certain colour ($rgb$)
+$d_i\in\{d^r,d^g,d^b, s^r,s^g,s^b, b^r,b^g,b^b\}$, the $k$-th
+down-type anti-quark distribution
+$\overline{d}_k\in\{\overline{d}^r, \overline{d}^g, \overline{d}^b,
+\overline{s}^r, \overline{s}^g, \overline{s}^b, \overline{b}^r,
+\overline{b}^g, \overline{b}^b\}$, the $j$-th up-type quark
+distribution $u_j\in\{u^r,u^g,u^b, c^r,c^g,c^b, t^r,t^g,t^b\}$, the
+$h$-th up-type anti-quark distribution
+$\overline{u}_k\in\{\overline{u}^r, \overline{u}^g, \overline{u}^b,
+\overline{c}^r, \overline{c}^g, \overline{c}^b, \overline{t}^r,
+\overline{t}^g, \overline{t}^b\}$, the $\alpha$-th lepton distribution
+$\ell_\alpha \in \{e^-,\mu^-,\tau^-\}$, and the $\beta$-th anti-lepton
+distribution $\overline{\ell}_\beta\in\{e^+,\mu^+,\tau^+\}$. The most
+general form of the evolution equations reads:
+\begin{equation}
+\mu^2\frac{\partial}{\partial \mu^2}
+\begin{pmatrix}
+\ell_\alpha\\
+u_j \\
+d_i\\
+\gamma\\
+\overline{d}_k\\
+\overline{u}_h\\
+\overline{\ell}_\beta
+\end{pmatrix} = \sum_{e,l,m,n,\gamma,\delta} 
+\begin{pmatrix}
+\mathcal{P}_{\ell_\alpha \ell_\gamma} & \mathcal{P}_{\ell_\alpha u_e} & \mathcal{P}_{\ell_\alpha d_l} & \mathcal{P}_{\ell_\alpha \gamma} & \mathcal{P}_{\ell_\alpha \overline{d}_m} & \mathcal{P}_{\ell_\alpha \overline{u}_n} & \mathcal{P}_{\ell_\alpha \overline{\ell}_\delta} \\ 
+\mathcal{P}_{u_j\ell_\gamma} & \mathcal{P}_{u_ju_e} & \mathcal{P}_{u_jd_l} & \mathcal{P}_{u_j\gamma} & \mathcal{P}_{u_j\overline{d}_m} & \mathcal{P}_{u_j\overline{u}_n} & \mathcal{P}_{u_j\overline{\ell}_\delta} \\ 
+\mathcal{P}_{d_i\ell_\gamma} & \mathcal{P}_{d_iu_e} & \mathcal{P}_{d_id_l} & \mathcal{P}_{d_i\gamma} & \mathcal{P}_{d_i\overline{d}_m} & \mathcal{P}_{d_i\overline{u}_n} & \mathcal{P}_{d_i\overline{\ell}_\delta} \\ 
+\mathcal{P}_{\gamma\ell_\gamma} & \mathcal{P}_{\gamma u_e} & \mathcal{P}_{\gamma d_l} & \mathcal{P}_{\gamma\gamma} & \mathcal{P}_{\gamma\overline{d}_m} & \mathcal{P}_{\gamma\overline{u}_n} & \mathcal{P}_{\gamma\overline{\ell}_\delta}\\
+\mathcal{P}_{\overline{d}_k\ell_\gamma} & \mathcal{P}_{\overline{d}_ku_e} & \mathcal{P}_{\overline{d}_kd_l} & \mathcal{P}_{\overline{d}_k\gamma} & \mathcal{P}_{\overline{d}_k\overline{d}_m} & \mathcal{P}_{\overline{d}_k\overline{u}_n} & \mathcal{P}_{\overline{d}_k\overline{\ell}_\delta}\\
+\mathcal{P}_{\overline{u}_h\ell_\gamma} & \mathcal{P}_{\overline{u}_hu_e} & \mathcal{P}_{\overline{u}_hd_l} & \mathcal{P}_{\overline{u}_h\gamma} & \mathcal{P}_{\overline{u}_h\overline{d}_m} & \mathcal{P}_{\overline{u}_h\overline{u}_n} & \mathcal{P}_{\overline{u}_h\overline{\ell}_\delta}\\
+\mathcal{P}_{\overline{\ell}_\beta\ell_\gamma} & \mathcal{P}_{\overline{\ell}_\beta u_e} & \mathcal{P}_{\overline{\ell}_\beta d_l} & \mathcal{P}_{\overline{\ell}_\beta \gamma} & \mathcal{P}_{\overline{\ell}_\beta \overline{d}_m} & \mathcal{P}_{\overline{\ell}_\beta \overline{u}_n} & \mathcal{P}_{\overline{\ell}_\beta \overline{\ell}_\delta}
+\end{pmatrix}
+\begin{pmatrix}
+\ell_\gamma\\
+u_e \\
+d_l\\
+\gamma\\
+\overline{d}_m\\
+\overline{u}_n\\
+\overline{\ell}_\delta
+\end{pmatrix}\,,
+\label{eq:evolutionsystem}
+\end{equation}
+where the index $l$ runs over the down-type quarks, the index $m$ over
+the down-type anti-quarks, the index $e$ runs over the up-type quarks,
+the index $n$ over the up-type anti-quarks, the index $\gamma$ over
+the leptons, and the index $\delta$ over the anti-leptons. In
+addition, the Mellin convolution integral between the
+splitting-function matrix and the vector of distributions in the
+r.h.s. is understood. Despite in general all entries of the
+splitting-function matrix are different from zero, in massless QED one
+can identify the following equalities for the splitting functions that
+that involve a photon:
+\begin{equation}
+  \begin{array}{l}
+\mathcal{P}_{\ell_\alpha \gamma} = \mathcal{P}_{\overline{\ell}_\beta
+    \gamma}\equiv \mathcal{P}_{\ell \gamma}\,,\\
+    \mathcal{P}_{u_j\gamma} = \mathcal{P}_{\overline{u}_h\gamma} \equiv
+    \mathcal{P}_{u\gamma}\,,\\
+    \mathcal{P}_{d_i\gamma} = \mathcal{P}_{\overline{d}_k\gamma}
+    \equiv\mathcal{P}_{d\gamma}\,,
+    \end{array}
+  \end{equation}
+  and:
+\begin{equation}
+  \begin{array}{l}
+    \mathcal{P}_{\gamma\ell_\gamma} =
+    \mathcal{P}_{\gamma\overline{\ell}_\delta} \equiv
+    \mathcal{P}_{\gamma\ell}\,,\\
+    \mathcal{P}_{\gamma u_e} = \mathcal{P}_{\gamma\overline{u}_n} \equiv
+    \mathcal{P}_{\gamma u}\,,\\
+    \mathcal{P}_{\gamma d_l} = \mathcal{P}_{\gamma\overline{d}_m} \equiv
+    \mathcal{P}_{\gamma d}\,.
+    \end{array}
+\end{equation}
+The splitting functions that only involve fermions (quarks and/or
+leptons) instead obey the following decompositions:
+\begin{equation}
+  \begin{array}{l}
+    \mathcal{P}_{\ell_\alpha
+    \ell_\gamma}=\mathcal{P}_{\overline{\ell}_\alpha
+    \overline{\ell}_\gamma} \equiv
+    \delta_{\alpha\gamma}\mathcal{P}_{\ell\ell}^V+\mathcal{P}_{\ell\ell}^S \,,\\
+    \mathcal{P}_{\overline{\ell}_\beta\ell_\gamma} \equiv
+    \mathcal{P}_{\ell_\beta \overline{\ell}_\gamma} =
+    \delta_{\beta\gamma}\mathcal{P}_{\ell\overline{\ell}}^V+\mathcal{P}_{\ell\overline{\ell}}^S\,,\\
+    \mathcal{P}_{u_ju_e} 
+    =\mathcal{P}_{\overline{u}_j\overline{u}_e}\equiv
+    \delta_{je}P_{uu}^V+P_{uu}^S
+    \,,\\
+    \mathcal{P}_{\overline{u}_hu_e} 
+    =\mathcal{P}_{u_h\overline{u}_e}\equiv
+    \delta_{he}P_{u\overline{u}}^V+P_{u\overline{u}}^S\,,\\
+    \mathcal{P}_{d_id_l} 
+    =\mathcal{P}_{\overline{d}_i\overline{d}_l}\equiv
+    \delta_{il}P_{dd}^V+P_{dd}^S
+    \,,\\
+    \mathcal{P}_{\overline{d}_kd_l} 
+    =\mathcal{P}_{d_k\overline{d}_l}\equiv \delta_{kl}P_{d\overline{d}}^V+P_{d\overline{d}}^S\,,\\
+
+    \mathcal{P}_{\ell_\alpha u_e}= \mathcal{P}_{\overline{\ell}_\alpha \overline{u}_e}\equiv \mathcal{P}_{\ell u}^S\,,\\
+    \mathcal{P}_{\ell_\alpha d_l}=\mathcal{P}_{\overline{\ell}_\alpha \overline{d}_l}\equiv \mathcal{P}_{\ell d}^S\,,\\
+    \mathcal{P}_{\ell_\alpha \overline{u}_e}= \mathcal{P}_{\overline{\ell}_\alpha u_e}\equiv \mathcal{P}_{\ell \overline{u}}^S\,,\\
+    \mathcal{P}_{\ell_\alpha \overline{d}_l}=\mathcal{P}_{\overline{\ell}_\alpha d_l}\equiv \mathcal{P}_{\ell \overline{d}}^S\,,\\
+
+    \mathcal{P}_{u_e\ell_\alpha }= \mathcal{P}_{\overline{u}_e\overline{\ell}_\alpha }\equiv \mathcal{P}_{u\ell }^S\,,\\
+    \mathcal{P}_{d_l\ell_\alpha }=\mathcal{P}_{\overline{d}_l\overline{\ell}_\alpha }\equiv \mathcal{P}_{d\ell}^S\,,\\
+    \mathcal{P}_{\overline{u}_e\ell_\alpha }= \mathcal{P}_{ u_e \overline{\ell}_\alpha}\equiv \mathcal{P}_{\overline{u}\ell }^S\,,\\
+    \mathcal{P}_{\overline{d}_l\ell_\alpha }=\mathcal{P}_{d_l \overline{\ell}_\alpha }\equiv \mathcal{P}_{ \overline{d}\ell}^S\,,\\
+    \mathcal{P}_{u_l d_k} = \mathcal{P}_{d_l u_k}=\mathcal{P}_{\overline{u}_l \overline{d}_k} =\mathcal{P}_{\overline{d}_l \overline{u}_k} \equiv \mathcal{P}_{ud}^S\,,\\
+    \mathcal{P}_{u_l \overline{d}_k} = \mathcal{P}_{\overline{d}_l u_k}=\mathcal{P}_{\overline{u}_l {d}_k} =\mathcal{P}_{{d}_l \overline{u}_k} \equiv \mathcal{P}_{u\overline{d}}^S\,.\\
+    \end{array}
+\end{equation}
+
+Each one of splitting functions on the r.h.s. of the $\equiv$ symbol
+above admits a perturbative expansion that truncated to
+next-to-leading order (as appropriate to achieve NLL accuracy at the
+level of the solution of the evolution equation), reads:
+\begin{equation}
+\mathcal{P}=\left(\frac{\alpha}{4\pi}\right)\mathcal{P}^{(0)}+\left(\frac{\alpha}{4\pi}\right)^2\mathcal{P}^{(1)}\,.
+\end{equation}
+The coefficients $\mathcal{P}^{(0)}$ and $\mathcal{P}^{(1)}$ undergo
+further simplifications. Let us start with the leading order one
+$\mathcal{P}^{(0)}$. At this order all of the pure-singlet
+contributions vanish, that is $\mathcal{P}_{xy}^{(0),S} = 0$ for all
+pairs $xy$, and so do the valence fermion/anti-fermion splitting
+functions vanish, \textit{i.e.}
+$\mathcal{P}_{\ell\overline{\ell}}^{(0),V}=\mathcal{P}_{u\overline{u}}^{(0),V}=\mathcal{P}_{d\overline{d}}^{(0),V}=0$.
+In addition, the splitting functions that survive obey the following
+equalities:
+\begin{equation}
+  \begin{array}{l}
+  \mathcal{P}_{\ell \gamma}^{(0)} = e_\ell^2 P_{f\gamma}^{(0)}\,,\\
+  \mathcal{P}_{u\gamma}^{(0)} = e_u^2P_{f\gamma}^{(0)}\,,\\
+    \mathcal{P}_{d\gamma}^{(0)} = e_d^2P_{f\gamma}^{(0)}\,,\\
+    \\
+  \mathcal{P}_{\gamma \ell }^{(0)} = e_\ell^2 P_{\gamma f}^{(0)}\,,\\
+  \mathcal{P}_{\gamma u}^{(0)} = e_u^2P_{\gamma f}^{(0)}\,,\\
+    \mathcal{P}_{\gamma d}^{(0)} = e_d^2P_{\gamma f}^{(0)}\,,\\
+    \\
+    \mathcal{P}_{\ell \ell}^{V,(0)} = e_\ell^2 P_{ff}^{V,(0)}\,,\\
+    \mathcal{P}_{uu}^{V,(0)} = e_u^2P_{ff}^{V,(0)}\,,\\
+          \mathcal{P}_{dd}^{V,(0)} = e_d^2 P_{ff}^{V,(0)}\,,\\
+    \end{array}
+\end{equation}
+where $e_\ell^2=1$, $e_u^2=4/9$, and $e_d^2=1/0$ are the electric charges of up- and
+down-type quarks, respectively.
+
+Let us now move to the next-to-leading order coefficient
+$\mathcal{P}^{(1)}$. At this order, the pure-single splitting
+functions are different from zero but all the same up to an overall
+factor:
+\begin{equation}
+  \mathcal{P}_{xy}^{S,(1)} = e_x^2e_y^2P_{ff}^{S,(1)}
+\end{equation}
+where $x$ and $y$ are either a lepton, or a down-type quark, or an
+up-type quark.  For the other splitting functions one finds:
+\begin{equation}
+  \begin{array}{l}
+    \mathcal{P}_{\ell \gamma}^{(1)} = e_\ell^4 P_{f\gamma}^{(1)}\,,\\
+    \mathcal{P}_{u\gamma}^{(1)} = e_u^4P_{f\gamma}^{(1)}\,,\\
+    \mathcal{P}_{d\gamma}^{(1)} = e_d^4P_{f\gamma}^{(1)}\,,\\
+    \\
+    \mathcal{P}_{\gamma \ell }^{(1)} = e_\ell^4 P_{\gamma f}^{(1)}+e_\ell^2 P_{\gamma f ,n}^{(1)}\,,\\
+    \mathcal{P}_{\gamma u}^{(1)} = e_u^4P_{\gamma f}^{(1)}+e_u^2 P_{\gamma f ,n}^{(1)}\,,\\
+    \mathcal{P}_{\gamma d}^{(1)} = e_d^4P_{\gamma f}^{(1)}+e_d^2 P_{\gamma f ,n}^{(1)}\,,\\
+    \\
+    \mathcal{P}_{\ell \ell}^{V,(1)} = e_\ell^4 P_{ff}^{V,(1)}+e_\ell^2 P_{ff,n}^{V,(1)}\,,\\
+    \mathcal{P}_{uu}^{V,(1)} = e_u^4P_{ff}^{V,(1)}+e_u^2P_{ff,n}^{V,(1)}\,,\\
+    \mathcal{P}_{dd}^{V,(1)} = e_d^4 P_{ff}^{V,(1)}+e_d^2P_{ff,n}^{V,(1)}\,,\\
+    \\
+    \mathcal{P}_{\ell\overline{\ell}}^{V,(1)} = e_\ell^4 P_{f\overline{f}}^{V,(1)}\,,\\
+    \mathcal{P}_{u\overline{u}}^{V,(1)} = e_u^4P_{f\overline{f}}^{V,(1)}\,,\\
+    \mathcal{P}_{d\overline{d}}^{V,(1)} = e_d^4 P_{f\overline{f}}^{V,(1)}\,.
+    \end{array}
+\end{equation}
+
+We are now in a position to rewrite the evolution system in
+Eq.~(\ref{eq:evolutionsystem}) exploiting the equalities identified
+above:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+      \tiny
+  \begin{array}{l}
+\displaystyle \mu^2\frac{\partial}{\partial \mu^2}
+\begin{pmatrix}
+\ell_\alpha^+\\
+u_j^+ \\
+d_i^+\\
+\gamma
+\end{pmatrix} =\displaystyle \left[\left(\frac{\alpha}{4\pi}\right)
+\begin{pmatrix}
+e_\ell^2P_{ff}^{V,(0)} & 0 & 0 & 2e_\ell^2{P}_{f\gamma}^{(0)}\\ 
+0 & e_u^2P_{ff}^{V,(0)} & 0 & 2e_u^2{P}_{f\gamma}^{(0)}\\ 
+0 & 0 & e_d^2P_{ff}^{V,(0)} & 2e_d^2{P}_{f\gamma}^{(0)}\\ 
+e_\ell^2{P}_{\gamma f}^{(0)} & e_u^2{P}_{\gamma f}^{(0)} & e_d^2{P}_{\gamma f}^{(0)} & {P}_{\gamma\gamma}^{(0)}
+\end{pmatrix}
+                                           \begin{pmatrix}
+                                             \ell_\alpha^+\\
+                                             u_j^+ \\
+                                             d_i^+\\
+                                             \gamma\\
+                                           \end{pmatrix}
+\right.\\
+    \\
+              +\displaystyle\left(\frac{\alpha}{4\pi}\right)^2
+\begin{pmatrix}
+e_\ell^4P_{ff}^{V,(1)}+e_\ell^2P_{ff,n}^{V,(1)}+e_\ell^4P_{f\overline{f}}^{V,(1)} & 0 & 0 & 2e_\ell^4{P}_{f\gamma}^{(1)}\\ 
+0 & e_u^4P_{ff}^{V,(1)}+e_u^2P_{ff,n}^{V,(1)}+e_u^4P_{f\overline{f}}^{V,(1)} & 0 & 2e_u^4{P}_{f\gamma}^{(1)}\\ 
+0 & 0 & e_d^4P_{ff}^{V,(1)}+e_d^2P_{ff,n}^{V,(1)}+e_d^4P_{f\overline{f}}^{V,(1)} & 2e_d^4{P}_{f\gamma}^{(1)}\\ 
+e_\ell^4{P}_{\gamma f}^{(1)} +e_\ell^2 P_{\gamma f ,n}^{(1)}& e_u^4{P}_{\gamma f}^{(1)}+e_u^2 P_{\gamma f ,n}^{(1)} & e_d^4{P}_{\gamma f}^{(1)} +e_d^2 P_{\gamma f ,n}^{(1)}& {P}_{\gamma\gamma}^{(1)}
+\end{pmatrix}
+                                                                   \begin{pmatrix}
+                                                                     \ell_\alpha^+\\
+                                                                     u_j^+ \\
+                                                                     d_i^+\\
+                                                                     \gamma
+                                                                   \end{pmatrix}\\
+    \\
+                  \left. +\displaystyle\left(\frac{\alpha}{4\pi}\right)^2
+                  2P_{ff}^{S,(1)}\begin{pmatrix}
+                     e_\ell^4 & e_\ell^2e_u^2 & e_\ell^2e_d^2 & 0 \\
+                     e_u^2e_\ell^2 & e_u^4 & e_u^2e_d^2 & 0 \\
+                    e_d^2e_\ell^2 & e_d^2e_u^2 & e_d^4 & 0 \\
+                    0 & 0 & 0 & 0
+                  \end{pmatrix}
+\begin{pmatrix}
+\Sigma_\ell\\
+\Sigma_u \\
+\Sigma_d\\
+\gamma
+\end{pmatrix} 
+\right]
+\,,
+\end{array}
+\end{equation}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+      \tiny
+  \begin{array}{l}
+\displaystyle \mu^2\frac{\partial}{\partial \mu^2}
+\begin{pmatrix}
+d_i^-\\
+u_j^-\\
+\ell_\alpha^-
+\end{pmatrix} =\displaystyle \left[\left(\frac{\alpha}{4\pi}\right)
+\begin{pmatrix}
+e_d^2{P}_{ff}^{V,(0)} & 0 & 0\\
+0 & e_u^2{P}_{ff}^{V,(0)} & 0\\
+0 & 0 & e_\ell^2{P}_{ff}^{V,(0)}
+\end{pmatrix}
+                                           \begin{pmatrix}
+                                             d_i^-\\
+                                             u_j^-\\
+                                             \ell_\alpha^-
+                                           \end{pmatrix}
+\right.\\
+    \\
+\left.               +\displaystyle\left(\frac{\alpha}{4\pi}\right)^2
+\begin{pmatrix}
+e_d^4P_{ff}^{V,(1)}+e_d^2P_{ff,n}^{V,(1)}-e_d^4P_{f\overline{f}}^{V,(1)} & 0 & 0\\
+0 & e_u^4P_{ff}^{V,(1)}+e_u^2P_{ff,n}^{V,(1)}-e_u^4P_{f\overline{f}}^{V,(1)} & 0\\
+0 & 0 & e_\ell^4P_{ff}^{V,(1)}+e_\ell^2P_{ff,n}^{V,(1)}-e_\ell^4P_{f\overline{f}}^{V,(1)}
+\end{pmatrix}
+                                           \begin{pmatrix}
+                                             d_i^-\\
+                                             u_j^-\\
+                                             \ell_\alpha^-
+                                           \end{pmatrix}
+        \right]
+\,,
+\end{array}
+\end{equation}
+where we have used the following definitions:
+\begin{equation}
+  \begin{array}{l}
+    \ell_\alpha^{\pm} = \ell_\alpha \pm \overline{\ell}_\alpha\\
+    u_j^{\pm} = u_j \pm \overline{u}_j\\
+    d_i^{\pm} = d_i \pm \overline{d}_i\,
+    \end{array}
+\end{equation}
+and also introduced:
+\begin{equation}
+\begin{array}{lll}
+\displaystyle \Sigma_\ell = \sum_{\alpha=e,\mu,\tau} \ell_{\alpha}^+&\quad \displaystyle\Sigma_u = \sum_{k=i}^{N_c n_u} u_k^+ & \qquad \displaystyle \Sigma_d
+= \sum_{k=i}^{N_c n_d} d_k^+ \,.
+\end{array}
+\end{equation}
+For completeness we also introduce:
+\begin{equation}
+\begin{array}{lll}
+\displaystyle  V_\ell = \sum_{\alpha=e,\mu,\tau} \ell_{\alpha}^-&\quad\displaystyle V_u = \sum_{k=i}^{N_c n_u} u_k^- & \qquad \displaystyle V_d
+= \sum_{k=i}^{N_c n_d} d_k^-\,.
+\end{array}
+\end{equation}
+Notice that quarks are summed also over their colour degree of freedom.
+
+In order to diagonalise as much as possible the evolution matrix in
+the presence of QED corrections avoiding unnecessary couplings between
+parton distributions, we propose the following evolution basis:
+\begin{equation}
+\begin{array}{ll}
+  \mbox{1) }\gamma & \\
+  \mbox{2) }\displaystyle \Sigma_\ell & \quad \mbox{11) }\displaystyle V_\ell\\
+  \mbox{3) }\displaystyle \Sigma_u & \quad \mbox{12) }\displaystyle V_u\\
+  \mbox{4) }\displaystyle \Sigma_d & \quad \mbox{13) }\displaystyle V_d\\
+  \mbox{5) }\displaystyle  T_{1}^{\ell} = \ell_e^+ - \ell_\mu^+&\quad \mbox{14) }\displaystyle  T_{2}^{\ell} = \ell_e^+ + \ell_\mu^+-2\ell_\tau^+\\
+  \mbox{6) }\displaystyle  V_{1}^{\ell} = \ell_e^- - \ell_\mu^-&\quad \mbox{15) }\displaystyle  V_{2}^{\ell} = \ell_e^- + \ell_\mu^--2\ell_\tau^-\\
+  \mbox{7) }T_1^u = u^+ - c^+ &\quad \mbox{16) }V_1^u = u^- - c^- \\
+  \mbox{8) }T_2^u = u^+ + c^+ - 2t^+ &\quad \mbox{17) }V_2^u = u^- + c^- - 2t^-\\
+  \mbox{9) }T_1^d = d^+ - s^+ &\quad \mbox{18) }V_1^d = d^- - s^- \\
+  \mbox{10) }T_2^d = d^+ + s^+ - 2b^+ &\quad \mbox{19) }V_2^d = d^- + s^- - 2b^-
+\end{array}
+\label{eq:EvolutionBasis}
+\end{equation}
+we the introduce the following splitting functions:
+\begin{equation}
+\begin{array}{l}
+\displaystyle P_p^{\pm} = \left(\frac{\alpha}{4\pi}\right)
+e_p^2P_{ff}^{V,(0)}+\left(\frac{\alpha}{4\pi}\right)^2\left[e_p^4P_{ff}^{V,(1)}+e_p^2P_{ff,n}^{V,(1)}\pm
+e_p^4P_{f\overline{f}}^{V,(1)}\right]\\
+\\
+\displaystyle P_{p\gamma}=\left(\frac{\alpha}{4\pi}\right)
+e_p^2P_{f\gamma}^{V,(0)}+\left(\frac{\alpha}{4\pi}\right)^2e_p^4P_{f\gamma}^{V,(1)}\\
+\\
+\displaystyle P_{\gamma p}=\left(\frac{\alpha}{4\pi}\right)
+e_p^2P_{\gamma
+  f}^{V,(0)}+\left(\frac{\alpha}{4\pi}\right)^2\left[e_p^4P_{\gamma
+  f}^{V,(1)}+e_p^2P_{\gamma f,n}^{V,(1)}\right]\\
+\\
+\displaystyle
+P_{pp'}^{\rm PS} = \left(\frac{\alpha}{4\pi}\right)^22N_c^{(p)}n_pe_p^2e_{p'}^2P_{ff}^{S,(1)}\\
+\\
+\displaystyle
+P_{pp} = \displaystyle
+  P_p^{+}+P_{pp}^{\rm PS}\\
+\\
+\displaystyle P_{\gamma \gamma}=\left(\frac{\alpha}{4\pi}\right)
+P_{\gamma \gamma}^{V,(0)}+\left(\frac{\alpha}{4\pi}\right)^2P_{\gamma\gamma}^{V,(1)}
+\end{array}
+\end{equation}
+with $p,p'=\ell,u,d$, and $N_c^{(\ell)}=1$ and
+$N_c^{(u)}=N_c^{(d)}=N_c=3$.
+With these definitions at hand we can finally write the full set of
+systems of evolution equation using the basis given in Eq.~(\ref{eq:EvolutionBasis}):
+\begin{equation}
+\mu^2\frac{\partial}{\partial \mu^2}
+\begin{pmatrix}
+\gamma\\
+\Sigma_\ell\\
+\Sigma_u\\
+\Sigma_d
+\end{pmatrix} =
+\begin{pmatrix}
+P_{\gamma\gamma} & P_{\gamma \ell} & P_{\gamma u}& P_{\gamma d}\\
+2n_\ell P_{\ell \gamma} & {P}_{\ell\ell} & P_{\ell u}^{\rm PS}& P_{\ell d}^{\rm PS}\\
+2N_cn_u P_{u \gamma} & P_{u\ell}^{\rm PS} & {P}_{uu} & P_{ud}^{\rm PS} \\
+2N_cn_d P_{d \gamma} & P_{d\ell}^{\rm PS} & P_{du}^{\rm PS} & {P}_{dd}
+\end{pmatrix}
+\begin{pmatrix}
+\gamma\\
+\Sigma_\ell\\
+\Sigma_u\\
+\Sigma_d
+\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+\mu^2\frac{\partial V_{p}}{\partial \mu^2} = P_p^- V_{p}
+\end{equation}
+
+\begin{equation}
+\mu^2\frac{\partial T_{1,2}^{p}}{\partial \mu^2} = P_p^+ T_{1,2}^{p}
+\end{equation}
+
+\begin{equation}
+\mu^2\frac{\partial V_{1,2}^{p}}{\partial \mu^2} = P_p^- T_{1,2}^{p}
+\end{equation}
+
+\section{Threshold crossing}
+
+In order to implement the evolution in the variable-flavour-number
+scheme (VFNS), it is necessary to introduce thresholds. Thresholds
+need to be ordered in value. To do so we use the PDG mass values:
+\begin{equation}
+\begin{array}{l}
+m_e = 0.5109989461\cdot 10^{-3} \mbox{ GeV}\\ 
+m_u = 2.16\cdot 10^{-3} \mbox{ GeV}\\
+m_d = 4.67\cdot 10^{-3} \mbox{ GeV}\\ 
+m_s = 0.093 \mbox{ GeV}\\
+m_\mu = 0.1056583745 \mbox{ GeV}\\
+m_c = 1.27\mbox{ GeV}\\
+m_\tau = 1.77686 \mbox{ GeV}\\
+m_b = 4.18 \mbox{ GeV}\\
+m_t = 172.76 \mbox{ GeV}
+\end{array}
+\end{equation}
+
+\end{document}
+

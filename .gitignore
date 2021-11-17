@@ -18,3 +18,7 @@ build/
 lib/libmela.dylib
 *~
 doc/code/VariableNf
+*.aux
+*.log
+*.out
+*.toc
