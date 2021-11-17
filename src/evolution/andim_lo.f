@@ -38,7 +38,8 @@
 *     Input variables
 *     
       DOUBLE COMPLEX N
-      INTEGER NF       
+      INTEGER NF
+      DOUBLE PRECISION NFSUM2
 *     
 *     Output variables  
 *     
@@ -57,17 +58,20 @@
       PQQA = (3d0,0d0) - 4d0* S1 + 2d0/(N * N1)
       PQGA = 4d0* (NS + N + 2d0) / (N * N1 * N2)
       PGQA = 2d0 * (NS + N + 2d0) / (N * N1 * NM)
-      PGGA = 11d0/3D0 - 4d0* S1 + 4d0/(N * NM) + 4d0/(N1 * N2) 
       PGGB = - 4d0/3D0
 *     
 *     Output to the array
 *     
-      P0NS      = CF * PQQA
-*     
-      P0SG(1,1) = CF * PQQA
-      P0SG(1,2) = TR * dble(NF) * PQGA
-      P0SG(2,1) = CF * PGQA
-      P0SG(2,2) = CA * PGGA + TR * dble(NF) * PGGB
+      P0NS      = PQQA
+*
+**     gstagn: hacking to add quark contributions 3D0 * CH2(5)       
+      NFSUM2    = dble(NF)
+*      NFSUM2    = dble(NF) + 3D0 * CH2(5)
+*      
+      P0SG(1,1) = PQQA
+      P0SG(1,2) = dble(NF) * PQGA
+      P0SG(2,1) = PGQA
+      P0SG(2,2) = NFSUM2 * PGGB
 *     
       RETURN
       END
