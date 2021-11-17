@@ -434,25 +434,26 @@ P_{\gamma\gamma} & P_{\gamma \ell} & P_{\gamma u}& P_{\gamma d}\\
 \Sigma_u\\
 \Sigma_d
 \end{pmatrix}
+\label{eq:singletevol}
 \end{equation}
-
 \begin{equation}
 \mu^2\frac{\partial V_{p}}{\partial \mu^2} = P_p^- V_{p}
+\label{eq:valenceevol}
 \end{equation}
-
 \begin{equation}
 \mu^2\frac{\partial T_{1,2}^{p}}{\partial \mu^2} = P_p^+ T_{1,2}^{p}
+\label{eq:Tevol}
 \end{equation}
-
 \begin{equation}
 \mu^2\frac{\partial V_{1,2}^{p}}{\partial \mu^2} = P_p^- T_{1,2}^{p}
+\label{eq:Vevol}
 \end{equation}
 
 \section{Threshold crossing}
 
 In order to implement the evolution in the variable-flavour-number
 scheme (VFNS), it is necessary to introduce thresholds. Thresholds
-need to be ordered in value. To do so we use the PDG mass values:
+need to be ordered in value. To do so, we use the PDG mass values:
 \begin{equation}
 \begin{array}{l}
 m_e = 0.5109989461\cdot 10^{-3} \mbox{ GeV}\\ 
@@ -466,6 +467,81 @@ m_b = 4.18 \mbox{ GeV}\\
 m_t = 172.76 \mbox{ GeV}
 \end{array}
 \end{equation}
+Assuming this order, the number of active leptons $n_\ell$, dow-type
+quark $n_d$ and up-type quarks $n_u$ changes as follows as the scale
+increases. In addition, while Eq.~(\ref{eq:singletevol})
+and~(\ref{eq:valenceevol}) are valid as they are at all scales, the
+$T_{1,2}^{p}$ and $V_{1,2}^{p}$ evolves as in Eqs.~(\ref{eq:Tevol})
+and ~(\ref{eq:Vevol}) only for $n_p=3$. Assuming no intrinsic
+contributions, they reduce to the corresponding singlet $\Sigma_{p}$
+or total valence $V_{p}$ distributions:
+\begin{itemize}
+\item $Q<m_e$:
+  \begin{itemize}
+  \item $n_\ell=0$, $n_d=0$, $n_u=0$
+  \item $T_1^\ell = T_2^\ell = \Sigma_\ell$
+  \item $T_1^d = T_2^d = \Sigma_d$
+  \item $T_1^u = T_2^u = \Sigma_u$
+  \end{itemize}
+\item $m_e\leq Q < m_u$:
+  \begin{itemize}
+  \item $n_\ell=1$, $n_d=0$, $n_u=0$
+  \item $T_1^\ell = T_2^\ell = \Sigma_\ell$
+  \item $T_1^d = T_2^d = \Sigma_d$
+  \item $T_1^u = T_2^u = \Sigma_u$
+  \end{itemize}
+\item $m_u\leq Q < m_d$:
+  \begin{itemize}
+  \item $n_\ell=1$, $n_d=0$, $n_u=1$
+  \item $T_1^\ell = T_2^\ell = \Sigma_\ell$
+  \item $T_1^d = T_2^d = \Sigma_d$
+  \item $T_1^u = T_2^u = \Sigma_u$
+  \end{itemize}
+\item $m_d\leq Q < m_s$:
+  \begin{itemize}
+  \item $n_\ell=1$, $n_d=1$, $n_u=1$
+  \item $T_1^\ell = T_2^\ell = \Sigma_\ell$
+  \item $T_1^d = T_2^d = \Sigma_d$
+  \item $T_1^u = T_2^u = \Sigma_u$
+  \end{itemize}
+\item $m_s\leq Q < m_\mu$:
+  \begin{itemize}
+  \item $n_\ell=1$, $n_d=2$, $n_u=1$
+  \item $T_1^\ell = T_2^\ell = \Sigma_\ell$
+  \item $T_2^d = \Sigma_d$
+  \item $T_1^u = T_2^u = \Sigma_u$
+  \end{itemize}
+\item $m_\mu\leq Q < m_c$:
+  \begin{itemize}
+  \item $n_\ell=2$, $n_d=2$, $n_u=1$
+  \item $T_2^\ell = \Sigma_\ell$
+  \item $T_2^d = \Sigma_d$
+  \item $T_1^u = T_2^u = \Sigma_u$
+  \end{itemize}
+\item $m_c\leq Q < m_\tau$:
+  \begin{itemize}
+  \item $n_\ell=2$, $n_d=2$, $n_u=2$
+  \item $T_2^\ell = \Sigma_\ell$
+  \item $T_2^d = \Sigma_d$
+  \item $T_2^u = \Sigma_u$
+  \end{itemize}
+\item $m_\tau\leq Q < m_b$:
+  \begin{itemize}
+  \item $n_\ell=3$, $n_d=2$, $n_u=2$
+  \item $T_2^d = \Sigma_d$
+  \item $T_2^u = \Sigma_u$
+  \end{itemize}
+\item $m_b\leq Q < m_t$:
+  \begin{itemize}
+  \item $n_\ell=3$, $n_d=3$, $n_u=2$
+  \item $T_2^u = \Sigma_u$
+  \end{itemize}
+\item $Q \geq m_t$:
+  \begin{itemize}
+  \item $n_\ell=3$, $n_d=3$, $n_u=3$
+  \end{itemize}
+\end{itemize}
+
 
 \end{document}
 
