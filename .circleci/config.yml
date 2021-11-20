@@ -9,4 +9,3 @@ jobs:
       - run: sudo apt-get install gfortran g++ gcc
       - run: cmake . && make -j8
       - run: cd run/; echo "Reference.ini" | ./Evolution; cd ..;
-      - run: cd run/; echo "Reference.ini" | ./Timing; cd ..;
