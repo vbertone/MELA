@@ -51,6 +51,7 @@
 *
 *     Coupling at the final scale
 *
+      ath(nfi)   = ath(1)
       ath(nff+1) = aQED(Q**2d0)
 *
       t = - dlog(x)
