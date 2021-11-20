@@ -85,7 +85,7 @@
 *     Check that thresholds are ordered
 *
       do nf = 2, 9
-         if (dsqrt(q2th(nf - 1)).lt.dsqrt(q2th(nf))) then
+         if (dsqrt(q2th(nf - 1)).gt.dsqrt(q2th(nf))) then
             write(6,*) "In InitializeEvolution.f:"
             write(6,*) "Fermion masses are not ordered"
             call exit(-10)
