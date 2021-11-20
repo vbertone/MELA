@@ -36,7 +36,7 @@
       DOUBLE COMPLEX EFNS(2,3),EFSG(4,4)
       PARAMETER(NINT=100)
       PARAMETER(PREC=1D-7)
-      PARAMETER(NEXP=5)
+      PARAMETER(NEXP=10)
       DATA MP / 1, 2, 8, 14 /
 **
 *     Output Variables

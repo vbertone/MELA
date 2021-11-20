@@ -31,7 +31,7 @@
 *     Intialise to zero
 *
       do i=1,19
-          fout(i) = 0d0
+         fout(i) = 0d0
       enddo
 
 *     Gamma
@@ -87,7 +87,7 @@
 *     Intialise to zero
 *
       do i=-9,9
-          fout(i) = 0d0
+         fout(i) = 0d0
       enddo
 
 *     Gamma

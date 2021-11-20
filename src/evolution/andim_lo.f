@@ -77,17 +77,17 @@
       P0SG(1,3) = EU2T * PGFA
       P0SG(1,4) = ED2T * PGFA
 
-      P0SG(2,1) = 2D0 * NL(NF) * EL2T * PGFA
+      P0SG(2,1) = 2D0 * NL(NF) * EL2T * PFGA
       P0SG(2,2) = P0NS(1)
       P0SG(2,3) = (0D0, 0D0)
       P0SG(2,4) = (0D0, 0D0)
 
-      P0SG(3,1) = 2D0 * NC * NU(NF) * EU2T * PGFA
+      P0SG(3,1) = 2D0 * NC * NU(NF) * EU2T * PFGA
       P0SG(3,2) = (0D0, 0D0)
       P0SG(3,3) = P0NS(2)
       P0SG(3,4) = (0D0, 0D0)
 
-      P0SG(4,1) = 2D0 * NC * ND(NF) * ED2T * PGFA
+      P0SG(4,1) = 2D0 * NC * ND(NF) * ED2T * PFGA
       P0SG(4,2) = (0D0, 0D0)
       P0SG(4,3) = (0D0, 0D0)
       P0SG(4,4) = P0NS(3)

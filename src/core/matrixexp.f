@@ -36,7 +36,7 @@
       DO K=1,NT
          CALL MMULTF(TKM1,N,N,M,N,N,TK,1D0/DBLE(K))
          CALL SUMM(EXPM,N,N,TK)
-         CALL EQUATEM(TKM1,N,N,TK)
+         CALL EQUATEM(TK,N,N,TKM1)
       ENDDO
 *
       RETURN

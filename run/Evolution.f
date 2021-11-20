@@ -33,8 +33,8 @@ c      read(5,*) card
 *
 *     Final scale (initial scale assumed to be the electron mass)
 *
-      !Q = 100d0
-      Q = 0.000510998928d0
+      Q = 100d0
+      !Q = 0.000510998928d0
 *
       write(6,*) "alpha(Q) = ", aQED(Q**2) * 12.566370614359173d0
       write(6,*)
