@@ -27,7 +27,6 @@
 **
 *     Internal Variables
 *
-      integer i
       integer nfi,nff
       integer dnf,snf
       double precision mur20

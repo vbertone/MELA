@@ -25,7 +25,7 @@
       DOUBLE PRECISION EL2T,EU2T,ED2T
       DOUBLE COMPLEX NS,N1,N2,NM
       DOUBLE COMPLEX PSI,S1
-      DOUBLE COMPLEX PFFA,PFGA,PGFA,PGGA,PGGB
+      DOUBLE COMPLEX PFFA,PFGA,PGFA,PGGB
 *
 *     ---------------------------------------------------------------------
 *     

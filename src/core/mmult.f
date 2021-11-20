@@ -2,7 +2,7 @@
 *
 *      mmult.f:
 *
-*      Multply a matrix by another matrix.
+*      Matrix multiplication utilities
 *
 ************************************************************************
       SUBROUTINE MMULT(A,ROWSA,COLSA,B,ROWSB,COLSB,C)
@@ -22,10 +22,10 @@
 *
       DOUBLE COMPLEX C(ROWSA,COLSB)
 *
-*     Check that the matrices to multiply have the  correct dimensions.
+*     Check that the matrices to multiply have the correct dimensions.
 *
       IF(COLSA.NE.ROWSB)THEN
-          WRITE(6,*) "In mmult.f:"
+          WRITE(6,*) "In mmult:"
           WRITE(6,*) "Input matrices do not match"
           CALL EXIT(-10)
       ENDIF
@@ -43,6 +43,42 @@
             DO K=1,COLSA
 	       C(I,J) = C(I,J) + A(I,K) * B(K,J)
 	    ENDDO
+	 ENDDO
+      ENDDO
+*
+      RETURN
+      END
+*
+************************************************************************
+      SUBROUTINE MVMULT(M,ROWSM,COLSM,V,ROWSV,W)
+*
+      IMPLICIT NONE
+**
+*     Input Variables
+*
+      INTEGER ROWSM,COLSM,ROWSV
+      DOUBLE COMPLEX M(ROWSM,COLSM),V(ROWSV)
+**
+*     Internal Variables
+*
+      INTEGER I,J
+**
+*     Output Variables
+*
+      DOUBLE COMPLEX W(ROWSM)
+*
+*     Check that dimenstions match.
+*
+      IF(COLSM.NE.ROWSV)THEN
+          WRITE(6,*) "In mvmult:"
+          WRITE(6,*) "Input matrices do not match"
+          CALL EXIT(-10)
+      ENDIF
+*
+      DO I=1,ROWSM
+         W(I) = (0D0,0D0)
+         DO J=1,COLSM
+            W(I) = W(I) + M(I,J) * V(J)
 	 ENDDO
       ENDDO
 *
@@ -71,7 +107,7 @@
 *     Check that the matrices to multiply have the  correct dimensions.
 *
       IF(COLSA.NE.ROWSB)THEN
-          WRITE(6,*) "In mmult.f:"
+          WRITE(6,*) "In mmultf:"
           WRITE(6,*) "Input matrices do not match"
           CALL EXIT(-10)
       ENDIF

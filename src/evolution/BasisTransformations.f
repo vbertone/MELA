@@ -102,8 +102,8 @@
             fout(i+3)  = fout(i+3)  + e2p(i,j) * (fin(j+7) + fin(j+10))
             fout(-i-3) = fout(-i-3) + e2p(i,j) * (fin(j+7) - fin(j+10))
 *     Down-quarks
-            fout(i+6)  = fout(i+6)  + e2p(i,j) * (fin(i+13) + fin(i+16))
-            fout(-i-6) = fout(-i-6) + e2p(i,j) * (fin(i+13) - fin(i+16))
+            fout(i+6)  = fout(i+6)  + e2p(i,j) * (fin(j+13) + fin(j+16))
+            fout(-i-6) = fout(-i-6) + e2p(i,j) * (fin(j+13) - fin(j+16))
          enddo
       enddo
 *

@@ -18,15 +18,9 @@
       integer i
       double precision aQED
 *
-      AE  = AQED(q2th(1))
-      AU  = AQED(q2th(2))
-      AD  = AQED(q2th(3))
-      AS  = AQED(q2th(4))
-      AM  = AQED(q2th(5))
-      AC  = AQED(q2th(6))
-      AT  = AQED(q2th(7))
-      AB  = AQED(q2th(8))
-      ATP = AQED(q2th(9))
+      do i=1,9
+         ath(i) = aQED(q2th(i))
+      enddo
 *
       return
       end

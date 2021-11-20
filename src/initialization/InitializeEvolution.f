@@ -15,6 +15,7 @@
       include "../commons/massthrs.h"
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
+      include "../commons/activeflavours.h"
 **
 *     Internal variables
 *
@@ -68,6 +69,14 @@
       write(6,*) "Alpha reference value:"
       write(6,"(a,f14.9,a)") "   Qref = ",sqrt(Q2REF)," GeV"
       write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF
+*
+*     Quark are included in the evolution
+*
+      if (quarks) then
+         write(6,*) "Quarks are included in the evolution"
+      else
+         write(6,*) "Quarks are NOT included in the evolution"
+      endif
 *
 *     Thresholds
 *

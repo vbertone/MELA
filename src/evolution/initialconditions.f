@@ -47,8 +47,8 @@
       sg = 1d0
       gm = 0d0
       if (ipt.gt.0) then
-         sg = sg + ae * deN
-         gm = gm + ae * dgmN
+         sg = sg + ath(1) * deN
+         gm = gm + ath(1) * dgmN
       endif
 *
 *     Set electron and photon PDFs in the evolution basis

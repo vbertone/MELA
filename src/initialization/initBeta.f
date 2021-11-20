@@ -60,8 +60,13 @@
 *     electric charges
 *
       el2 = 1d0
-      eu2 = 4d0 / 9d0
-      ed2 = 1d0 / 9d0
+      if (quarks) then
+         eu2 = 4d0 / 9d0
+         ed2 = 1d0 / 9d0
+      else
+         eu2 = 0d0
+         ed2 = 0d0
+      endif
 *
       el4 = el2**2
       eu4 = eu2**2

@@ -17,9 +17,10 @@
       data xlha / 0.1d0, 0.2d0, 0.3d0, 0.4d0, 0.5d0, 0.6d0, 0.7d0,
      1            0.8d0, 0.9d0, 0.95d0, 0.99d0, 0.999d0/
 *
-      write(6,*)
-      write(6,*) "Type the name of the input card (e.g. Reference.ini)"
-      read(5,*) card
+c      write(6,*)
+c      write(6,*) "Type the name of the input card (e.g. Reference.ini)"
+c      read(5,*) card
+      card = "Reference.ini"
 *
 *     Read parameters of the evolution from the card
 *
