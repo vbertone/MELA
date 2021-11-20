@@ -10,13 +10,15 @@
       implicit none
 *
       include "../commons/ipt.h"
-      include "../commons/modev.h"
       include "../commons/ns.h"
       include "../commons/alpha.h"
       include "../commons/massthrs.h"
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
-      include "../commons/evol.h"
+**
+*     Internal variables
+*
+      integer nf
 *
 *     Initialize the coefficient of the beta functions in QED
 *
@@ -31,15 +33,6 @@
       write(6,*) "  "
       write(6,*) "======= Evolution parameters ======="
       write(6,*) "  "
-      if(evol.eq."SPACE")then
-         write(6,*) "Space-like evolution (PDFs)"
-      elseif(evol(1:4).eq."TIME")then
-         write(6,*) "Time-like evolution (FFs)"
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Invalid evolution mode, evol = ",evol
-         call exit(-10)
-      endif
 *
 *     Perturbative order
 *
@@ -53,26 +46,10 @@
          call exit(-10)
       endif
 *
-*     Mode of solution of PT evolution equations
-*
-      if(MODEV.eq."TRN")then
-         write(6,*) "Truncated solution chosen"
-      elseif(MODEV.EQ."ITE")then
-         write(6,*) "Iterated solution chosen"
-      elseif(MODEV.EQ."PTH")then
-         write(6,*) "Path-ordering solution chosen"
-      elseif(MODEV.EQ."GFN")then
-         write(6,*) "g-functions solution chosen"
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Unknown solution mode, MODEV = ",MODEV
-         call exit(-10)
-      endif
-*
 *     Evolution scheme
 *
       if(NS.eq."FFNS")then
-         if(NFFN.lt.0.or.NFFN.gt.3)then
+         if(NFFN.lt.0.or.NFFN.gt.9)then
             write(6,*)"In InitializeEvolution.f:"
             write(6,*)"NFFN out or range, NFFN =",NFFN
             call exit(-10)
@@ -89,19 +66,35 @@
 *     Alpha reference values
 *
       write(6,*) "Alpha reference value:"
-      write(6,"(a,f14.9,a,f14.9,a)")"   Qref = (",real(sqrt(Q2REF)),",",
-     1                             imag(sqrt(Q2REF))," ) GeV"
-      write(6,"(a,f14.9,a,f14.9,a)")"   Alpha(Qref) = (",
-     1                             real(AREF),",",imag(AREF)," )"
+      write(6,"(a,f14.9,a)") "   Qref = ",sqrt(Q2REF)," GeV"
+      write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF
 *
-      write(6,*) "Lepton thresholds:"
-      write(6,"(a,f14.9,a)") "   me =",dsqrt(real(q2th(1)))," GeV"
-      write(6,"(a,f14.9,a)") "   mm =",dsqrt(real(q2th(2)))," GeV"
-      write(6,"(a,f14.9,a)") "   mt =",dsqrt(real(q2th(3)))," GeV"
+*     Thresholds
+*
+      write(6,*) "Fermion thresholds:"
+      write(6,"(a,f14.9,a)") "   me  =",dsqrt(q2th(1))," GeV"
+      write(6,"(a,f14.9,a)") "   mu  =",dsqrt(q2th(2))," GeV"
+      write(6,"(a,f14.9,a)") "   md  =",dsqrt(q2th(3))," GeV"
+      write(6,"(a,f14.9,a)") "   ms  =",dsqrt(q2th(4))," GeV"
+      write(6,"(a,f14.9,a)") "   mm  =",dsqrt(q2th(5))," GeV"
+      write(6,"(a,f14.9,a)") "   mc  =",dsqrt(q2th(6))," GeV"
+      write(6,"(a,f14.9,a)") "   mt  =",dsqrt(q2th(7))," GeV"
+      write(6,"(a,f14.9,a)") "   mb  =",dsqrt(q2th(8))," GeV"
+      write(6,"(a,f14.9,a)") "   mtp =",dsqrt(q2th(9))," GeV"
+*
+*     Check that thresholds are ordered
+*
+      do nf = 2, 9
+         if (dsqrt(q2th(nf - 1)).lt.dsqrt(q2th(nf))) then
+            write(6,*) "In InitializeEvolution.f:"
+            write(6,*) "Fermion masses are not ordered"
+            call exit(-10)
+         endif
+      enddo
 *
 *     Maximum number of active flavours
 *
-      if(nfmax.ge.0.and.nfmax.le.3)then
+      if(nfmax.ge.0.and.nfmax.le.9)then
          write(6,"(a,i1)") " Maximum number of active flavours = ",nfmax
       else
          write(6,*) "In InitializeEvolution.f:"

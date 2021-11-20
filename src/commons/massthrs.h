@@ -2,6 +2,6 @@
 *
 *     Values of the heavy lepton mass threholds
 *
-      double complex q2th(3)
+      double precision q2th(9)
 *
       common / MassThresholdsMELA / q2th

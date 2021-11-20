@@ -8,70 +8,89 @@
 *     Input variables: N  : Mellin variable
 *                      NF : Number of flavours
 *
-*     Functions: PSI from data/theo/harmsums/psi.f
-*
-*     Output: P0NS : Complex valued Non-singlet LO anomalous
-*                    dimension in N space
-*
-*             P0SG(2,2) : matrix of the complex valued LO
-*                         singlet anomalous dimensions in 
-*                         N space
-*
 *************************************************************
       SUBROUTINE ANDIM_LO(N,NF,P0NS,P0SG)
-*     
+*
       IMPLICIT NONE
-*     
-      include "../commons/colfact.h"
+*
       include "../commons/consts.h"
-*     
+      include "../commons/charges.h"
+      include "../commons/activeflavours.h"
+*
 *     ---------------------------------------------------------------------
-*     
+*
 *     Internal variables
-*     
+*
+      DOUBLE PRECISION NFSUM2
+      DOUBLE PRECISION EL2T,EU2T,ED2T
       DOUBLE COMPLEX NS,N1,N2,NM
       DOUBLE COMPLEX PSI,S1
-      DOUBLE COMPLEX PQQA,PQGA,PGQA,PGGA,PGGB
-*     
+      DOUBLE COMPLEX PFFA,PFGA,PGFA,PGGA,PGGB
+*
 *     ---------------------------------------------------------------------
 *     
 *     Input variables
 *     
       DOUBLE COMPLEX N
       INTEGER NF
-      DOUBLE PRECISION NFSUM2
 *     
 *     Output variables  
 *     
-      DOUBLE COMPLEX P0NS
-      DOUBLE COMPLEX P0SG(2,2)
+      DOUBLE COMPLEX P0NS(3)
+      DOUBLE COMPLEX P0SG(4,4)
 *     
 *     ---------------------------------------------------------------------
 *     
       NS = N * N
-      N1 = N + cmplx(1d0,0d0)
-      N2 = N + (2d0,0d0)
-      NM = N - (1d0,0d0)
+      N1 = N + 1D0
+      N2 = N + 2D0
+      NM = N - 1D0
 *     
-      S1 = cmplx(EMC,0d0) + PSI(N1)
+      S1 = EMC + PSI(N1)
 *     
-      PQQA = (3d0,0d0) - 4d0* S1 + 2d0/(N * N1)
-      PQGA = 4d0* (NS + N + 2d0) / (N * N1 * N2)
-      PGQA = 2d0 * (NS + N + 2d0) / (N * N1 * NM)
-      PGGB = - 4d0/3D0
-*     
-*     Output to the array
-*     
-      P0NS      = PQQA
+      PFFA = 3D0 - 4D0 * S1 + 2D0 / ( N * N1 )
+      PFGA = 2D0 * ( NS + N + 2D0 ) / ( N * N1 * N2 )
+      PGFA = 2D0 * ( NS + N + 2D0 ) / ( N * N1 * NM )
+      PGGB = - 4D0 / 3D0
 *
-**     gstagn: hacking to add quark contributions 3D0 * CH2(5)       
-      NFSUM2    = dble(NF)
-*      NFSUM2    = dble(NF) + 3D0 * CH2(5)
-*      
-      P0SG(1,1) = PQQA
-      P0SG(1,2) = dble(NF) * PQGA
-      P0SG(2,1) = PGQA
-      P0SG(2,2) = NFSUM2 * PGGB
+*     Sum of charges
+*
+      NFSUM2 = EL2 * NL(NF) + NC * ( EU2 * NU(NF) + ED2 * ND(NF) )
+
+      EL2T = EL2
+      EU2T = EU2
+      ED2T = ED2
+      IF (NL(NF).EQ.0) EL2T = 0D0
+      IF (NU(NF).EQ.0) EU2T = 0D0
+      IF (ND(NF).EQ.0) ED2T = 0D0
+*
+*     Non-singlet
+*
+      P0NS(1) = EL2T * PFFA
+      P0NS(2) = EU2T * PFFA
+      P0NS(3) = ED2T * PFFA
+*
+*     Singlet
+*
+      P0SG(1,1) = NFSUM2 * PGGB
+      P0SG(1,2) = EL2T * PGFA
+      P0SG(1,3) = EU2T * PGFA
+      P0SG(1,4) = ED2T * PGFA
+
+      P0SG(2,1) = 2D0 * NL(NF) * EL2T * PGFA
+      P0SG(2,2) = P0NS(1)
+      P0SG(2,3) = (0D0, 0D0)
+      P0SG(2,4) = (0D0, 0D0)
+
+      P0SG(3,1) = 2D0 * NC * NU(NF) * EU2T * PGFA
+      P0SG(3,2) = (0D0, 0D0)
+      P0SG(3,3) = P0NS(2)
+      P0SG(3,4) = (0D0, 0D0)
+
+      P0SG(4,1) = 2D0 * NC * ND(NF) * ED2T * PGFA
+      P0SG(4,2) = (0D0, 0D0)
+      P0SG(4,3) = (0D0, 0D0)
+      P0SG(4,4) = P0NS(3)
 *     
       RETURN
       END

@@ -4,55 +4,51 @@
 *                                                                              *
 ********************************************************************************
 *                                                                              *
-*     Returns the NLO space-like anomalous dimensions in the a=alpha/4pi   *
+*     Returns the NLO space-like anomalous dimensions in the a=alpha/4pi       *
 *     notation                                                                 *
 *                                                                              *
 *     Input variables:                                                         *
 *     N  : Mellin variable                                                     *
 *     NF : Number of flavours                                                  *
 *                                                                              *
-*     Output:                                                                  *
-*     P1NS(3) : Complex valued non-singlet NLO anomalous dimension in N space  *
-*     P1SG(2,2) : matrix of the complex-valued singlet                         *
-*                 NLO anomalous dimension in N space                           *
-*                                                                              *
 ********************************************************************************
       SUBROUTINE ANDIM_NLO(N,NF,P1NS,P1SG)
 *
       IMPLICIT NONE
 *
-      include "../commons/colfact.h"
       include "../commons/consts.h"
-*
-      DOUBLE COMPLEX DPSI,PSI, S1, S2
+      include "../commons/charges.h"
+      include "../commons/activeflavours.h"
 *
 * ---------------------------------------------------------------------
 *
 *     Internal variables
 *
-      INTEGER I,J
+      DOUBLE PRECISION NFSUM2
+      DOUBLE PRECISION NFSUM4
+      DOUBLE PRECISION EL2T,EU2T,ED2T
+      DOUBLE PRECISION EL4T,EU4T,ED4T
       DOUBLE COMPLEX NS,NT,NFO,NFI,NSI,NSE,NE,NN
       DOUBLE COMPLEX N1,N2,NM,NMS,N1S,N1T,N2S,N2T
       DOUBLE COMPLEX N3,N4,N5,N6
       DOUBLE COMPLEX S11,S12,S13,S14,S15,S16
       DOUBLE COMPLEX SPMOM,SLC,SLV,SSCHLM,SSTR2M,SSTR3M,SSCHLP
       DOUBLE COMPLEX SSTR2P,SSTR3P
-      DOUBLE COMPLEX PPSA,PGQA,PQGB,PGQC,PGGC
+      DOUBLE COMPLEX PPSA,PGFA,PFGB,PGFC,PGGC
       DOUBLE COMPLEX PNPA,PNMA,PNSC
+      DOUBLE COMPLEX DPSI,PSI,S1,S2
 *
 * ---------------------------------------------------------------------
 *
 *     Input variables
 *
-       DOUBLE COMPLEX N
-       INTEGER NF
-       DOUBLE PRECISION NFSUM2
-       DOUBLE PRECISION NFSUM4
+      DOUBLE COMPLEX N
+      INTEGER NF
 *      
 *     Output variables  
 *
-       DOUBLE COMPLEX P1NS(3)
-       DOUBLE COMPLEX P1SG(2,2)
+      DOUBLE COMPLEX P1NS(2,3)
+      DOUBLE COMPLEX P1SG(4,4)
 *
 * ---------------------------------------------------------------------
 *
@@ -135,68 +131,86 @@
 *     ---------------------------------------------------------------------
 *     
 *     ..The contributions to P1SG as given in Floratos et al. (1981) 
-*     ..Pure singlet (PS) and QG
+*     ..Pure singlet (PS) and FG
 *     
       PPSA = (5d0* NFI + 32d0* NFO + 49d0* NT+38d0* NS + 28d0* N + 8d0) 
      1     / (NM * NT * N1T * N2S) * 2d0
 *     
-      PQGB = (2d0* S1 * S1 - 2d0* S2 + 5d0) * (NS + N + 2d0)
+      PFGB = (2d0* S1 * S1 - 2d0* S2 + 5d0) * (NS + N + 2d0)
      1     / (N * N1 * N2) - 4d0* S1 / NS
      2     + (11d0* NFO + 26d0* NT + 15d0* NS + 8d0* N + 4d0)
      3     / (NT * N1T * N2)
 *     
 *     ---------------------------------------------------------------------
 *     
-*     ..GQ and GG
+*     ..GF and GG
 *     
-      PGQA = (- S1 * S1 + 5d0* S1 - S2) * (NS + N + 2d0) 
+      PGFA = (- S1 * S1 + 5d0* S1 - S2) * (NS + N + 2d0) 
      1     / (NM * N * N1)  -  2d0* S1 / N1S
      2     - (12d0* NSI + 30d0* NFI + 43d0* NFO + 28d0* NT - NS
      3     - 12d0* N - 4d0) / (2d0* NM * NT * N1T) 
-      PGQC = (S1 - 8d0/3d0) * (NS + N + 2d0) / (NM * N * N1) + 1d0/ N1S
-      PGQC = 4d0/3d0* PGQC
+      PGFC = (S1 - 8d0/3d0) * (NS + N + 2d0) / (NM * N * N1) + 1d0/ N1S
+      PGFC = 4d0/3d0* PGFC
 *     
       PGGC = (2d0* NSI + 4d0* NFI + NFO - 10d0* NT - 5d0* NS - 4d0* N
      1     - 4d0) * (-2d0) / (NM * NT * N1T * N2)  -  1d0
-*     
-*     Output to the array
-*     
-      DO I=1,2
-         DO J=1,2
-            P1SG(I,J)=0d0
-         ENDDO
-      ENDDO
+*
+*     Sum of charges
+*
+      NFSUM2 = NL(NF) + NC * ( EU2 * NU(NF) + ED2 * ND(NF) )
+      NFSUM4 = NL(NF) + NC * ( EU4 * NU(NF) + ED4 * ND(NF) )
 
-      do I=1,3
-         P1NS(I)=0d0
-      enddo
+      EL2T = EL2
+      EU2T = EU2
+      ED2T = ED2
+      IF (NL(NF).EQ.0) EL2T = 0D0
+      IF (NU(NF).EQ.0) EU2T = 0D0
+      IF (ND(NF).EQ.0) ED2T = 0D0
+
+      EL4T = EL4
+      EU4T = EU4
+      ED4T = ED4
+      IF (NL(NF).EQ.0) EL4T = 0D0
+      IF (NU(NF).EQ.0) EU4T = 0D0
+      IF (ND(NF).EQ.0) ED4T = 0D0
 *
-**     gstagn: hacking to add quark contributions 3D0 * CH2(5) 
-      NFSUM2    = dble(NF)
-*      NFSUM2   = dble(NF) + 3D0 * CH2(5)      
-**     gstagn: hacking to add quark contributions 3D0 * CH4(5)       
-      NFSUM4    = dble(NF)
-*      NFSUM4   = dble(NF) + 3D0 * CH4(5)            
-*      
-*     NON SINGLET
-*     
-*     Plus 
-*     
-      P1NS(1) = PNPA + NFSUM2 * PNSC
-*     
-*     Minus = Valence
-*     
-      P1NS(2) = PNMA + NFSUM2 * PNSC
-      P1NS(3) = P1NS(2)
-*     
-*     SINGLET
-*     
-      P1SG(1,1) = P1NS(1) + dble(NF) * PPSA * 4d0
-      P1SG(1,2) = (dble(NF) * PQGB) * 4d0
-      P1SG(2,1) = (PGQA + NFSUM2 * PGQC) * 4d0
-      P1SG(2,2) = (NFSUM4 * PGGC) * 4d0
+*     Non-singlet
 *
-*     ---------------------------------------------------------------------
+      P1NS(1,1) = (0D0,0D0)
+      P1NS(1,2) = (0D0,0D0)
+      P1NS(1,3) = (0D0,0D0)
+      IF (NL(NF).GT.0) P1NS(1,1) = EL4 * PNPA + EL2T * NFSUM2 * PNSC
+      IF (NU(NF).GT.0) P1NS(1,2) = EU4 * PNPA + EU2T * NFSUM2 * PNSC
+      IF (ND(NF).GT.0) P1NS(1,3) = ED4 * PNPA + ED2T * NFSUM2 * PNSC
+
+      P1NS(2,1) = (0D0,0D0)
+      P1NS(2,2) = (0D0,0D0)
+      P1NS(2,3) = (0D0,0D0)
+      IF (NL(NF).GT.0) P1NS(2,1) = EL4 * PNMA + EL2T * NFSUM2 * PNSC
+      IF (NU(NF).GT.0) P1NS(2,2) = EU4 * PNMA + EU2T * NFSUM2 * PNSC
+      IF (ND(NF).GT.0) P1NS(2,3) = ED4 * PNMA + ED2T * NFSUM2 * PNSC
+*
+*     Singlet
+*
+      P1SG(1,1) = 4D0 * NFSUM4 * PGGC
+      P1SG(1,2) = 4D0 * ( EL4 * PGFA + EL2T * NFSUM2 * PGFC )
+      P1SG(1,3) = 4D0 * ( EU4 * PGFA + EU2T * NFSUM2 * PGFC )
+      P1SG(1,4) = 4D0 * ( ED4 * PGFA + ED2T * NFSUM2 * PGFC )
+
+      P1SG(2,1) = 4D0 * 2D0 * NL(NF) * EL4 * PFGB
+      P1SG(2,2) = 4D0 * NL(NF) * EL2T * EL2T * PPSA + P1NS(1,1)
+      P1SG(2,3) = 4D0 * NL(NF) * EL2T * EU2T * PPSA
+      P1SG(2,4) = 4D0 * NL(NF) * EL2T * ED2T * PPSA
+
+      P1SG(3,1) = 4D0 * 2D0 * NC * NU(NF) * EU4 * PFGB
+      P1SG(3,2) = 4D0 * NC * NU(NF) * EU2T * EL2T * PPSA
+      P1SG(3,3) = 4D0 * NC * NU(NF) * EU2T * EU2T * PPSA + P1NS(1,2)
+      P1SG(3,4) = 4D0 * NC * NU(NF) * EU2T * ED2T * PPSA
+
+      P1SG(4,1) = 4D0 * 2D0 * NC * NU(NF) * ED4 * PFGB
+      P1SG(4,2) = 4D0 * NC * ND(NF) * ED2T * EL2T * PPSA
+      P1SG(4,3) = 4D0 * NC * ND(NF) * ED2T * EU2T * PPSA
+      P1SG(4,4) = 4D0 * NC * ND(NF) * ED2T * ED2T * PPSA + P1NS(1,3)
 *     
       RETURN
       END

@@ -16,23 +16,17 @@
 *     Internal Variables
 *
       integer i
-      double precision eps
-      double complex aQED
-      double complex q2thm(3)
-      parameter(eps=1d-7)
-*
-      do i=1,3
-         q2thm(i) = q2th(i) * ( 1d0 - eps )
-      enddo
+      double precision aQED
 *
       AE  = AQED(q2th(1))
-      AEM = AQED(q2thm(1))
-*
-      AM  = AQED(q2th(2))
-      AMM = AQED(q2thm(2))
-*
-      AT  = AQED(q2th(3))
-      ATM = AQED(q2thm(3))
+      AU  = AQED(q2th(2))
+      AD  = AQED(q2th(3))
+      AS  = AQED(q2th(4))
+      AM  = AQED(q2th(5))
+      AC  = AQED(q2th(6))
+      AT  = AQED(q2th(7))
+      AB  = AQED(q2th(8))
+      ATP = AQED(q2th(9))
 *
       return
       end

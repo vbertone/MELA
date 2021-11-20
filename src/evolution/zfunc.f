@@ -4,9 +4,7 @@
 *     It returns the evolution kernels in N space from Q20 to Q2
 *
 ************************************************************************
-      SUBROUTINE ZFUNC(ZN,Q20,Q2,
-     1                 ZFUNCNS,ZFUNCNS3,ZFUNCNS8,
-     2                 ZFUNCSG,ZFUNCNSV3,ZFUNCNSV8)
+      SUBROUTINE ZFUNC(ZN,Q2,EFSG,EFV,EFT1,EFT2)
 *
       IMPLICIT NONE
 *
@@ -14,146 +12,191 @@
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
       include "../commons/ns.h"
-      include "../commons/nf.h"
+      include "../commons/alpha.h"
 **
 *     Input Variables
 *
-      DOUBLE COMPLEX Q20,Q2
+      DOUBLE PRECISION Q2
       DOUBLE COMPLEX ZN
 **
 *     Output Variables
 *
-      DOUBLE COMPLEX ZFUNCNS(3),ZFUNCSG(2,2)
-      DOUBLE COMPLEX ZFUNCNS3(2),ZFUNCNS8(2)
-      DOUBLE COMPLEX ZFUNCNSV3,ZFUNCNSV8
+      INTEGER I,J
+      DOUBLE COMPLEX EFSG(4,4),EFNS(2,3)
+      DOUBLE COMPLEX EFV(3)
+      DOUBLE COMPLEX EFT1(3,4),EFT2(3,4)
 *
 *     Evolution Kernels
+*
+*     1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19
+*     g Sgl T1l T2l  Vl V1l V2l Sgu T1u T2u  Vu V1u V2u Sgd T1d T2d  Vd V1d V2d
 *
 *     Fixed Flavour Number Schemes
 *
       IF(NS.EQ."FFNS")THEN
-         NFI = NFFN
-         NFF = NFFN
-         IF(NFFN.EQ.0)THEN
-            CALL CROSS01(ZN,Q20,Q2,NFFN,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS3,ZFUNCNS8,
-     2                   ZFUNCNSV3,ZFUNCNSV8)
-         ELSEIF(NFFN.EQ.1)THEN
-            CALL CROSS02(ZN,Q20,Q2,NFFN,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS3,ZFUNCNS8,
-     2                   ZFUNCNSV3,ZFUNCNSV8)
-         ELSEIF(NFFN.EQ.2)THEN
-            CALL CROSS03(ZN,Q20,Q2,NFFN,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS3,ZFUNCNS8,
-     2                   ZFUNCNSV3,ZFUNCNSV8)
-         ELSEIF(NFFN.EQ.3)THEN
-            CALL CROSS04(ZN,Q20,Q2,NFFN,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS3,ZFUNCNS8,
-     2                   ZFUNCNSV3,ZFUNCNSV8)
+*
+*     Singlet and photon
+*
+         CALL PATH_ORDERING(ZN,AE,AQ,NFFN,EFNS,EFSG)
+*
+*     Total and non-singlet valence
+*
+         DO I=1,3
+            EFV(I) = EFNS(2,I)
+         ENDDO
+*
+*     Non singlet non-valence
+*
+         IF (NFFN.GE.1.AND.NFFN.LE.3) THEN
+            DO I=1,3
+               DO J=1,4
+                  EFT1(I,J) = EFSG(I+1,J)
+                  EFT2(I,J) = EFSG(I+1,J)
+               ENDDO
+            ENDDO
+
+         ELSEIF (NFFN.EQ.4) THEN
+            DO I=1,2
+               DO J=1,4
+                  EFT1(I,J) = EFSG(I+1,J)
+               ENDDO
+            ENDDO
+            EFT1(3,1) = (0D0,0D0)
+            EFT1(3,2) = (0D0,0D0)
+            EFT1(3,3) = (0D0,0D0)
+            EFT1(3,4) = EFNS(1,3)
+
+            DO I=1,3
+               DO J=1,4
+                  EFT2(I,J) = EFSG(I+1,J)
+               ENDDO
+            ENDDO
+
+         ELSEIF (NFFN.EQ.5) THEN
+            EFT1(1,1) = (0D0,0D0)
+            EFT1(1,2) = EFNS(1,1)
+            EFT1(1,3) = (0D0,0D0)
+            EFT1(1,4) = (0D0,0D0)
+            DO J=1,4
+               EFT1(2,J) = EFSG(3,J)
+            ENDDO
+            EFT1(3,1) = (0D0,0D0)
+            EFT1(3,2) = (0D0,0D0)
+            EFT1(3,3) = (0D0,0D0)
+            EFT1(3,4) = EFNS(1,3)
+            DO I=1,3
+               DO J=1,4
+                  EFT2(I,J) = EFSG(I+1,J)
+               ENDDO
+            ENDDO
+
+         ELSEIF (NFFN.EQ.6) THEN
+            EFT1(1,1) = (0D0,0D0)
+            EFT1(1,2) = EFNS(1,1)
+            EFT1(1,3) = (0D0,0D0)
+            EFT1(1,4) = (0D0,0D0)
+            EFT1(2,1) = (0D0,0D0)
+            EFT1(2,2) = (0D0,0D0)
+            EFT1(2,3) = EFNS(1,2)
+            EFT1(2,4) = (0D0,0D0)
+            EFT1(3,1) = (0D0,0D0)
+            EFT1(3,2) = (0D0,0D0)
+            EFT1(3,3) = (0D0,0D0)
+            EFT1(3,4) = EFNS(1,3)
+            DO I=1,3
+               DO J=1,4
+                  EFT2(I,J) = EFSG(I+1,J)
+               ENDDO
+            ENDDO
+
+         ELSEIF (NFFN.EQ.7) THEN
+            EFT1(1,1) = (0D0,0D0)
+            EFT1(1,2) = EFNS(1,1)
+            EFT1(1,3) = (0D0,0D0)
+            EFT1(1,4) = (0D0,0D0)
+            EFT1(2,1) = (0D0,0D0)
+            EFT1(2,2) = (0D0,0D0)
+            EFT1(2,3) = EFNS(1,2)
+            EFT1(2,4) = (0D0,0D0)
+            EFT1(3,1) = (0D0,0D0)
+            EFT1(3,2) = (0D0,0D0)
+            EFT1(3,3) = (0D0,0D0)
+            EFT1(3,4) = EFNS(1,3)
+            EFT2(1,1) = (0D0,0D0)
+            EFT2(1,1) = EFNS(1,1)
+            EFT2(1,1) = (0D0,0D0)
+            EFT2(1,1) = (0D0,0D0)
+            DO I=2,3
+               DO J=1,4
+                  EFT2(I,J) = EFSG(I+1,J)
+               ENDDO
+            ENDDO
+
+         ELSEIF (NFFN.EQ.8) THEN
+            EFT1(1,1) = (0D0,0D0)
+            EFT1(1,2) = EFNS(1,1)
+            EFT1(1,3) = (0D0,0D0)
+            EFT1(1,4) = (0D0,0D0)
+            EFT1(2,1) = (0D0,0D0)
+            EFT1(2,2) = (0D0,0D0)
+            EFT1(2,3) = EFNS(1,2)
+            EFT1(2,4) = (0D0,0D0)
+            EFT1(3,1) = (0D0,0D0)
+            EFT1(3,2) = (0D0,0D0)
+            EFT1(3,3) = (0D0,0D0)
+            EFT1(3,4) = EFNS(1,3)
+            EFT2(1,1) = (0D0,0D0)
+            EFT2(1,1) = EFNS(1,1)
+            EFT2(1,1) = (0D0,0D0)
+            EFT2(1,1) = (0D0,0D0)
+            DO J=1,4
+               EFT2(2,J) = EFSG(3,J)
+            ENDDO
+            EFT2(3,1) = (0D0,0D0)
+            EFT2(3,1) = (0D0,0D0)
+            EFT2(3,1) = (0D0,0D0)
+            EFT2(3,1) = EFNS(1,3)
+
+         ELSEIF (NFFN.EQ.9) THEN
+            EFT1(1,1) = (0D0,0D0)
+            EFT1(1,2) = EFNS(1,1)
+            EFT1(1,3) = (0D0,0D0)
+            EFT1(1,4) = (0D0,0D0)
+            EFT1(2,1) = (0D0,0D0)
+            EFT1(2,2) = (0D0,0D0)
+            EFT1(2,3) = EFNS(1,2)
+            EFT1(2,4) = (0D0,0D0)
+            EFT1(3,1) = (0D0,0D0)
+            EFT1(3,2) = (0D0,0D0)
+            EFT1(3,3) = (0D0,0D0)
+            EFT1(3,4) = EFNS(1,3)
+            EFT2(1,1) = (0D0,0D0)
+            EFT2(1,1) = EFNS(1,1)
+            EFT2(1,1) = (0D0,0D0)
+            EFT2(1,1) = (0D0,0D0)
+            EFT2(2,1) = (0D0,0D0)
+            EFT2(2,1) = (0D0,0D0)
+            EFT2(2,1) = EFNS(1,2)
+            EFT2(2,1) = (0D0,0D0)
+            EFT2(3,1) = (0D0,0D0)
+            EFT2(3,1) = (0D0,0D0)
+            EFT2(3,1) = (0D0,0D0)
+            EFT2(3,1) = EFNS(1,3)
+
+         ELSE
+            WRITE(6,*) "In src/evolution/zfunc.f:"
+            WRITE(6,*) 'Undefined NFFN =',NFFN
+            CALL EXIT(-10)
          ENDIF
 *
 *     Variable Flavour Number Schemes
 *
       ELSEIF(NS.EQ."VFNS")THEN
-*
-*     Determine number of active flavours at the initial (NFI) and
-*     final (NFF) scale.
-*
-         IF(ABS(Q20).GT.ABS(Q2TH(3)))THEN
-            NFI = 3
-         ELSEIF(ABS(Q20).GT.ABS(Q2TH(2)))THEN
-            NFI = 2
-         ELSEIF(ABS(Q20).GT.ABS(Q2TH(1)))THEN
-            NFI = 1
-         ELSE
-            NFI = 0
-         ENDIF
-         IF(NFI.GT.NFMAX) NFI = NFMAX
-*     
-         IF(ABS(Q2).GT.ABS(Q2TH(3)))THEN
-            NFF = 3
-         ELSEIF(ABS(Q2).GT.ABS(Q2TH(2)))THEN
-            NFF = 2
-         ELSEIF(ABS(Q2).GT.ABS(Q2TH(1)))THEN
-            NFF = 1
-         ELSE
-            NFF = 0
-         ENDIF
-         IF(NFF.GT.NFMAX) NFF = NFMAX
-*
-         IF(NFI.EQ.0)THEN
-            IF(NFF.EQ.0)THEN
-*     NO CROSSING
-               CALL CROSS01(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8)
-            ELSEIF(NFF.EQ.1)THEN
-*     ME2 CROSSING
-               CALL CROSS11(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8)
-            ELSEIF(NFF.EQ.2)THEN
-*     ME2 AND MM2 CROSSING
-               CALL CROSS21(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8)
-            ELSEIF(NFF.EQ.3)THEN
-*     ME2, MM2 AND MT2 CROSSING
-               CALL CROSS31(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8)
-            ELSE
-               WRITE(6,*) "In src/evolution/zfunc.f:"
-               WRITE(6,*) 'Undefined Final Flavour Number, NFF =',NFF
-               CALL EXIT(-10)
-            ENDIF
-         ELSEIF(NFI.EQ.1)THEN
-            IF(NFF.EQ.1)THEN
-*     NO CROSSING
-               CALL CROSS02(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8)
-            ELSEIF(NFF.EQ.2)THEN
-*     MM2 CROSSING
-               CALL CROSS12(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8)
-            ELSEIF(NFF.EQ.3)THEN
-*     MM2 AND MT2 CROSSING
-               CALL CROSS22(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8)
-            ELSE
-               WRITE(6,*) "In src/evolution/zfunc.f:"
-               WRITE(6,*) 'Undefined Final Flavour Number, NFF =',NFF
-               CALL EXIT(-10)
-            ENDIF
-         ELSEIF(NFI.EQ.2)THEN
-            IF(NFF.EQ.2)THEN
-*     NO CROSSING
-               CALL CROSS03(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8) 
-            ELSEIF(NFF.EQ.3)THEN
-*     MT2 CROSSING
-               CALL CROSS13(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                      ZFUNCNS3,ZFUNCNS8,
-     2                      ZFUNCNSV3,ZFUNCNSV8)
-            ELSE
-               WRITE(6,*) "In src/evolution/zfunc.f:"
-               WRITE(6,*) 'Undefined Final Flavour Number, NFF =',NFF
-               CALL EXIT(-10)
-            ENDIF
-         ELSEIF(NFI.EQ.3)THEN
-*     NO CROSSING
-            CALL CROSS04(ZN,Q20,Q2,NFI,ZFUNCNS,ZFUNCSG,
-     1                   ZFUNCNS3,ZFUNCNS8,
-     2                   ZFUNCNSV3,ZFUNCNSV8)
-         ELSE
-            WRITE(6,*) "In src/evolution/zfunc.f:"
-            WRITE(6,*) 'Undefined Initial Flavour Number, NFI =',NFI
-            CALL EXIT(-10)
-         ENDIF
+
+*=========================================================
+*=========================================================
+*=========================================================
+
       ENDIF
 *
       RETURN
