@@ -1,6 +1,6 @@
 *     -*-fortran-*-
 *
-*     Ratations
+*     Ratations (transposed)
 *
       double precision p2e(3,3)
       double precision e2p(3,3)

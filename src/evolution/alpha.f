@@ -31,8 +31,8 @@
       integer dnf,snf
       double precision mur20
       double precision ai,ar0
-      double precision a_expanded_MELA,a_exact_MELA
-      external a_expanded_MELA,a_exact_MELA
+      double precision a_exact_MELA
+      external a_exact_MELA
 **
 *     Output Variables
 *
@@ -47,12 +47,12 @@
          nff = nffn
       elseif(ns.eq."VFNS")then
          do nff=1,9
-            if (q2.ge.q2th(nff)) exit
+            if (q2.le.q2th(nff)) exit
          enddo
          if(nff.gt.nfmax) nff = nfmax
 
          do nfi=1,9
-            if (mur20.ge.q2th(nfi)) exit
+            if (mur20.le.q2th(nfi)) exit
          enddo
       endif
 *

@@ -40,14 +40,14 @@
       do i=1,3
          do j=1,3
 *     Leptons
-            fout(i+1) = fout(i+1) + p2e(i,j) * (fin(j) + fin(-j))
-            fout(i+4) = fout(i+4) + p2e(i,j) * (fin(j) - fin(-j))
+            fout(i+1) = fout(i+1) + p2e(j,i) * (fin(j) + fin(-j))
+            fout(i+4) = fout(i+4) + p2e(j,i) * (fin(j) - fin(-j))
 *     Up-quarks
-            fout(i+7)  = fout(i+7)  + p2e(i,j) * (fin(j+3) + fin(-j-3))
-            fout(i+10) = fout(i+10) + p2e(i,j) * (fin(j+3) - fin(-j-3))
+            fout(i+7)  = fout(i+7)  + p2e(j,i) * (fin(j+3) + fin(-j-3))
+            fout(i+10) = fout(i+10) + p2e(j,i) * (fin(j+3) - fin(-j-3))
 *     Down-quarks
-            fout(i+13) = fout(i+13) + p2e(i,j) * (fin(j+6) + fin(-j-6))
-            fout(i+16) = fout(i+16) + p2e(i,j) * (fin(j+6) - fin(-j-6))
+            fout(i+13) = fout(i+13) + p2e(j,i) * (fin(j+6) + fin(-j-6))
+            fout(i+16) = fout(i+16) + p2e(j,i) * (fin(j+6) - fin(-j-6))
          enddo
       enddo
 *
@@ -96,14 +96,14 @@
       do i=1,3
          do j=1,3
 *     Leptons
-            fout(i)  = fout(i)  + e2p(i,j) * (fin(j+1) + fin(j+4))
-            fout(-i) = fout(-i) + e2p(i,j) * (fin(j+1) - fin(j+4))
+            fout(i)  = fout(i)  + e2p(j,i) * (fin(j+1) + fin(j+4))
+            fout(-i) = fout(-i) + e2p(j,i) * (fin(j+1) - fin(j+4))
 *     Up-quarks
-            fout(i+3)  = fout(i+3)  + e2p(i,j) * (fin(j+7) + fin(j+10))
-            fout(-i-3) = fout(-i-3) + e2p(i,j) * (fin(j+7) - fin(j+10))
+            fout(i+3)  = fout(i+3)  + e2p(j,i) * (fin(j+7) + fin(j+10))
+            fout(-i-3) = fout(-i-3) + e2p(j,i) * (fin(j+7) - fin(j+10))
 *     Down-quarks
-            fout(i+6)  = fout(i+6)  + e2p(i,j) * (fin(j+13) + fin(j+16))
-            fout(-i-6) = fout(-i-6) + e2p(i,j) * (fin(j+13) - fin(j+16))
+            fout(i+6)  = fout(i+6)  + e2p(j,i) * (fin(j+13) + fin(j+16))
+            fout(-i-6) = fout(-i-6) + e2p(j,i) * (fin(j+13) - fin(j+16))
          enddo
       enddo
 *

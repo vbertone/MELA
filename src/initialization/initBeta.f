@@ -79,7 +79,6 @@
      1        + nc * ( ed2 * nd(i) + eu2 * nu(i) ) ) / 3d0
          beta1(i) = - 4d0 * ( nl(i)
      1        + nc * ( ed4 * nd(i) + eu4 * nu(i) ) )
-         b1(i) = beta1(i) / beta0(i)
       enddo
 *
       return
