@@ -33,7 +33,7 @@
       DOUBLE COMPLEX G0NS(3),G1NS(2,3)
       DOUBLE COMPLEX SPSG(4,4),SPNS(2,3)
       DOUBLE COMPLEX DEFSG(4,4)
-      DOUBLE COMPLEX EFNS(2,3),EFSG(4,4)
+      DOUBLE COMPLEX EFNS(2,3),EFSG(4,4),EFSGTMP(4,4)
       PARAMETER(NINT=100)
       PARAMETER(PREC=1D-7)
       PARAMETER(NEXP=10)
@@ -91,16 +91,18 @@
 *     Solution at NLO
 *
       ELSE
-         EFSG(1,1) = (1D0,0D0)
-         EFSG(1,2) = (0D0,0D0)
-         EFSG(2,1) = (0D0,0D0)
-         EFSG(2,2) = (1D0,0D0)
+         DO I=1,4
+            DO J=1,4
+               EFSG(I,J) = (0D0,0D0)
+            ENDDO
+            EFSG(I,I) = (1D0,0D0)
+         ENDDO
 *
          AI = AII
          DO K=1,NINT
             AF = AI + DA
-            DO I=1,2
-               DO J=1,2
+            DO I=1,4
+               DO J=1,4
                   SPSG(I,J) = - DA * ( ( G0(I,J) + AI * ( G1(I,J)
      1                 - G0(I,J) * BT1 / BT0 ) ) / BT0 / AI
      2                 + ( G0(I,J) + AF * ( G1(I,J)
@@ -113,7 +115,8 @@
 *     expanded approach truncating the series to the first NEXP+1 terms.
 *
             CALL MATRIXEXP(NEXP,4,SPSG,DEFSG)
-            CALL MMULT(DEFSG,4,4,EFSG,4,4,EFSG)
+            CALL MMULT(DEFSG,4,4,EFSG,4,4,EFSGTMP)
+            CALL EQUATEM(EFSGTMP,4,4,EFSG)
 *
             AI = AI + DA
          ENDDO
