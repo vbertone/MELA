@@ -30,16 +30,9 @@
           CALL EXIT(-10)
       ENDIF
 *
-*     Initialize the output matrix to zero.
-*
       DO I=1,ROWSA
          DO J=1,COLSB
             C(I,J) = (0D0,0D0)
-         ENDDO
-      ENDDO
-*
-      DO I=1,ROWSA
-         DO J=1,COLSB
             DO K=1,COLSA
 	       C(I,J) = C(I,J) + A(I,K) * B(K,J)
 	    ENDDO
@@ -50,7 +43,7 @@
       END
 *
 ************************************************************************
-      SUBROUTINE MVMULT(M,ROWSM,COLSM,V,ROWSV,W)
+      SUBROUTINE MVMULT(M,ROWSM,COLSM,V,ROWSV)
 *
       IMPLICIT NONE
 **
@@ -62,9 +55,6 @@
 *     Internal Variables
 *
       INTEGER I,J
-**
-*     Output Variables
-*
       DOUBLE COMPLEX W(ROWSM)
 *
 *     Check that dimenstions match.
@@ -80,6 +70,9 @@
          DO J=1,COLSM
             W(I) = W(I) + M(I,J) * V(J)
 	 ENDDO
+      ENDDO
+      DO I=1,COLSM
+         V(I) = W(I)
       ENDDO
 *
       RETURN
@@ -112,16 +105,9 @@
           CALL EXIT(-10)
       ENDIF
 *
-*     Initialize the output matrix to zero.
-*
       DO I=1,ROWSA
          DO J=1,COLSB
             C(I,J) = (0D0,0D0)
-         ENDDO
-      ENDDO
-*
-      DO I=1,ROWSA
-         DO J=1,COLSB
             DO K=1,COLSA
 	       C(I,J) = C(I,J) + A(I,K) * B(K,J)
 	    ENDDO
@@ -162,7 +148,7 @@
       END
 *
 ************************************************************************
-      SUBROUTINE SUMM(A,B,ROWS,COLS,C)
+      SUBROUTINE SUMM(A,ROWS,COLS,B)
 *
       IMPLICIT NONE
 **
@@ -174,16 +160,12 @@
 *     Internal Variables
 *
       INTEGER I,J
-**
-*     Output Variables
-*
-      DOUBLE COMPLEX C(ROWS,COLS)
 *
 *     Initialize the output matrix to zero.
 *
       DO I=1,ROWS
          DO J=1,COLS
-            C(I,J) = A(I,J) + B(I,J)
+            A(I,J) = A(I,J) + B(I,J)
          ENDDO
       ENDDO
 *

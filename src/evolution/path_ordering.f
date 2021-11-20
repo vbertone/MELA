@@ -18,7 +18,7 @@
 *     Input Variables
 *
       INTEGER NF
-      DOUBLE COMPLEX AII,AFF
+      DOUBLE PRECISION AII,AFF
       DOUBLE COMPLEX ZN
 **
 *     Internal Variables
@@ -28,7 +28,7 @@
       INTEGER MP(0:3)
       DOUBLE PRECISION PREC
       DOUBLE PRECISION BT0,BT1
-      DOUBLE COMPLEX AF,AI,DA,AK
+      DOUBLE PRECISION AF,AI,DA,AK
       DOUBLE COMPLEX G0(4,4),G1(4,4)
       DOUBLE COMPLEX G0NS(3),G1NS(2,3)
       DOUBLE COMPLEX SPSG(4,4),SPNS(2,3)
@@ -175,7 +175,7 @@
 *     Total valence
 *
       DO I=1,3
-         EVF(MP(I)+3,MP(I)+3) = EFSG(I,J)
+         EVF(MP(I)+3,MP(I)+3) = EFNS(2,I)
       ENDDO
 *
       DO K=1,3
@@ -188,7 +188,7 @@
                EVF(MP(K)+I+3,MP(K)+I+3) = EFNS(2,K)
             ELSE
                DO J=1,4
-                  EVF(MP(K)+I,MP(J-1)) = EFSG(2,J)
+                  EVF(MP(K)+I,MP(J-1)) = EFSG(K+1,J)
                ENDDO
                EVF(MP(K)+I+3,MP(K)+3)  = EFNS(2,K)
             ENDIF

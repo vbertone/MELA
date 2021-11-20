@@ -39,7 +39,7 @@
 *
 *     Convolute with vector of PDFs
 *
-         call mvmult(evf,19,19,fn,19,fn)
+         call mvmult(evf,19,19,fn,19)
       enddo
 *
       return
