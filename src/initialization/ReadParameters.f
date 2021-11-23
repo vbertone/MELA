@@ -2,7 +2,7 @@
 *
 *     ReadParameters.f:
 *
-*     It read the parameters of the evolution from the input card.
+*     It reads the parameters of the evolution from the input card.
 *
 ************************************************************************
       subroutine ReadParameters(card)
@@ -26,27 +26,12 @@
       integer lp,lu
       double precision me,mu,md,ms,mm,mc,mt,mb,mtp
       double precision QR
-      double precision AR
       character*50 str
 *
-*     Overwritten by the values read from the input card if found.
+*     Set default parameteres that are overwritten by the values read
+*     from the input card if found.
 *
-      IPT    = 1
-      NS     = "VFNS"
-      NFMAX  = 9
-      NFFN   = 8
-      QR     = 0.000510998928d0
-      AR     = 0.0072973525693d0
-      QUARKS = .TRUE.
-      ME     = 0.000510998928d0
-      MU     = 0.00216d0
-      MD     = 0.00467D0
-      MS     = 0.093d0
-      MM     = 0.10566d0
-      MC     = 1.27D0
-      MT     = 1.77686d0
-      MB     = 4.18d0
-      MTP    = 172.76d0
+      call SetDefaultParameters
 *
       open(unit = 10, status = "old", file = card)
       do
@@ -59,7 +44,7 @@
             if(str(1:lp).eq."NFMAX")  read(str(lu:50),*) NFMAX
             if(str(1:lp).eq."NFFN")   read(str(lu:50),*) NFFN
             if(str(1:lp).eq."QREF")   read(str(lu:50),*) QR
-            if(str(1:lp).eq."AREF")   read(str(lu:50),*) AR
+            if(str(1:lp).eq."AREF")   read(str(lu:50),*) AREF
             if(str(1:lp).eq."QUARKS") read(str(lu:50),*) QUARKS
             if(str(1:lp).eq."ME")     read(str(lu:50),*) ME
             if(str(1:lp).eq."MU")     read(str(lu:50),*) MU
@@ -77,7 +62,6 @@
 *     Some redefinitions
 *
       Q2REF   = QR**2
-      AREF    = AR
       Q2TH(1) = ME**2
       Q2TH(2) = MU**2
       Q2TH(3) = MD**2

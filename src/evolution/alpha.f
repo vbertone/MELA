@@ -46,13 +46,13 @@
          nfi = nffn
          nff = nffn
       elseif(ns.eq."VFNS")then
-         do nff=1,9
-            if (q2.le.q2th(nff)) exit
+         do nff=9,1,-1
+            if (q2.ge.q2th(nff)) exit
          enddo
          if(nff.gt.nfmax) nff = nfmax
 
-         do nfi=1,9
-            if (mur20.le.q2th(nfi)) exit
+         do nfi=9,1,-1
+            if (mur20.ge.q2th(nfi)) exit
          enddo
       endif
 *

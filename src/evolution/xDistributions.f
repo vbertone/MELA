@@ -43,8 +43,8 @@
          nff = nffn
       elseif(ns.eq."VFNS")then
          nfi = 1
-         do nff = 1, 9
-            if (Q**2.le.q2th(nff)) exit
+         do nff = 9, 1, -1
+            if (Q**2.ge.q2th(nff)) exit
          enddo
          if(nff.gt.nfmax) nff = nfmax
       endif

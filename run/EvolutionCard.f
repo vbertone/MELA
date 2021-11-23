@@ -1,11 +1,12 @@
 ************************************************************************
 *
-*     Evolution.f:
+*     EvolutionCard.f:
 *
-*     Driver for the generation of the evolution tables.
+*     Driver for the generation of the evolution tables using an input
+*     card.
 *
 ************************************************************************
-      program Evolution
+      program EvolutionCard
 *
       implicit none
 *
@@ -14,26 +15,17 @@
       double precision xlha(12)
       double precision Q
       double precision xf(-9:9)
+      character*100 card
       data xlha / 0.1d0, 0.2d0, 0.3d0, 0.4d0, 0.5d0, 0.6d0, 0.7d0,
      1            0.8d0, 0.9d0, 0.95d0, 0.99d0, 0.999d0/
 *
-*     Start by setting default values. This will always need to be
-*     called at first to set all parameters and avoid
-*     misbehaviours. Parameters can be adjusted after wards using the
-*     setting functions.
+      write(6,*)
+      write(6,*) "Type the name of the input card (e.g. Reference.ini)"
+      read(5,*) card
 *
-      call SetDefaultParameters
+*     Read parameters of the evolution from the card
 *
-*     Set custom parameters
-*
-      call SetPerturbativeOrder(1)
-      call SetFlavourScheme("VFNS")
-      call SetNFmax(8)
-      call SetNFFN(8)
-      call SetAlpha(0.0072973525693d0, 0.000510998928d0)
-      call EnableQuarks(.false.)
-      call SetThresholds(0.000510998928d0,0.00216d0,0.00467d0,
-     1     0.093d0,0.10566d0,1.27d0,1.77686d0,4.18d0,172.76d0)
+      call ReadParameters(card)
 *
 *     Initialization of evolution parameters
 *
