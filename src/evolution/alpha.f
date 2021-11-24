@@ -234,3 +234,15 @@
 *
       return
       end
+****************************************************************************
+      subroutine aQEDreal(q2real, aval)
+      implicit none
+      double precision q2real
+      double precision aval
+      double complex q2
+      double complex aQED
+      external aQED
+      q2 = dcmplx(q2real,0d0)
+      aval = dreal(aQED(q2))
+      return
+      end      
