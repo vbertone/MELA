@@ -2,7 +2,6 @@
 
 # These variables need to exist
 prefix=@prefix@
-exec_prefix=@exec_prefix@
 
 if [[ $# -eq 0 || -n $( echo $* | egrep -- "--help|-h" ) ]]; then
     echo
@@ -13,7 +12,10 @@ if [[ $# -eq 0 || -n $( echo $* | egrep -- "--help|-h" ) ]]; then
     echo "Options:"
     echo "  --help | -h    : show this help message"
     echo "  --prefix       : show the installation prefix (cf. autoconf)"
+    echo "  --incdir       : show the path to the MELA header directory (for C++ interface)"
     echo "  --libdir       : show the path to the MELA library directory"
+    echo "  --cppflags     : get compiler flags for use with the C preprocessor stage of C++ compilation"
+    echo "  --cxxflags     : get compiler flags for use with the C preprocessor stage of C++ compilation"
     echo "  --ldflags      : get compiler flags for use with the linker stage of any compilation"
     echo
     echo "  --version      : returns MELA release version number"
@@ -23,6 +25,15 @@ OUT=""
 
 tmp=$( echo "$*" | egrep -- '--\<prefix\>')
 test -n "$tmp" && OUT="$OUT @prefix@"
+
+tmp=$( echo "$*" | egrep -- '--\<incdir\>')
+test -n "$tmp" && OUT="$OUT @includedir@"
+
+tmp=$( echo "$*" | egrep -- '--\<cppflags\>')
+test -n "$tmp" && OUT="$OUT -I@includedir@"
+
+tmp=$( echo "$*" | egrep -- '--\<cxxflags\>')
+test -n "$tmp" && OUT="$OUT -I@includedir@"
 
 tmp=$( echo "$*" | egrep -- '--\<libdir\>')
 test -n "$tmp" && OUT="$OUT @libdir@"

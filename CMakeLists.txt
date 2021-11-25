@@ -27,9 +27,13 @@ set(mela_VERSION 2.0.2)
 # Configuration script
 set(prefix ${CMAKE_INSTALL_PREFIX})
 set(libdir "${prefix}/lib")
+set(includedir "${prefix}/include")
 configure_file("${PROJECT_SOURCE_DIR}/bin/mela-config.in" "${PROJECT_SOURCE_DIR}/bin/mela-config")
 
 # FINALIZE ==================================================================================
+
+# include directory
+include_directories(${PROJECT_SOURCE_DIR}/inc)
 
 # generate list of source files
 file(GLOB_RECURSE  source_files src/*f src/*cc)
@@ -48,6 +52,7 @@ add_library(mela SHARED ${source_files})
 install(TARGETS mela
            RUNTIME DESTINATION bin
            LIBRARY DESTINATION lib)
+install(DIRECTORY inc/MELA DESTINATION include)
 install(FILES ${PROJECT_SOURCE_DIR}/bin/mela-config DESTINATION bin
 PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ
 GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)

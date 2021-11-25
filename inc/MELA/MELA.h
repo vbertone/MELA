@@ -1,0 +1,49 @@
+#pragma once
+
+#include <string>
+#include <map>
+
+/// Namespace containing all the MELA wrapper functions.
+namespace MELA {
+  /*
+   * Main Methods
+   */ 
+  /// Initialize the library
+  void InitializeEvolution(void);
+
+  /// Read parameters from card
+  void ReadParameters(std::string const& fcard);
+
+  /// Set default parameters 
+  void SetDefaultParameters(void);
+
+  /// Enable quarks in the evolution
+  void EnableQuarks(int);
+
+  /// Set reference values for alpha
+  void SetAlpha(double ain, double Qin);
+
+  /// Set the flavour scheme to be used in the evolution as a string
+  void SetFlavourScheme(std::string const& fnsin);
+
+  /// Set the flavour scheme to be used in the evolution as a int
+  void SetFlavourSchemeInt(int fnsin);
+
+  /// Set the number of fermions in the FFNS
+  void SetNFFN(int NFFNin);
+
+  /// Set maximum number of fermions in the VFNS
+  void SetNFmax(int NFmaxin);
+
+  /// Set the perturbative order
+  void SetPerturbativeOrder(int iptin);
+
+  /// Set fermion thresholds
+  void SetThresholds(double me, double mu, double md, double ms, double mm, double mc, double mt, double mb, double mtp);
+
+  /// Coupling
+  double aQED(double q2);
+
+  /// PDFs
+  std::map<int, double> xDistributions(double x, double Q);
+}

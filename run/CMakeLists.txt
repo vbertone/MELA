@@ -6,3 +6,12 @@ foreach(testsource ${testcodes})
   target_link_libraries(${filename} mela)
   add_test(${filename} ${filename})
 endforeach()
+
+# build tests
+file(GLOB testcodescpp *.cc)
+foreach(testsourcecpp ${testcodescpp})
+  GET_FILENAME_COMPONENT(filename ${testsourcecpp} NAME_WE)
+  add_executable(${filename} ${filename}.cc)
+  target_link_libraries(${filename} mela)
+  add_test(${filename} ${filename})
+endforeach()
