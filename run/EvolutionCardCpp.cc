@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <vector>
+#include <math.h>
+#include <cstring>
 
 int main(int argc, char* argv[])
 {
