@@ -61,7 +61,7 @@
          npdf(ipdf) = sg
       enddo
 *
-*     set the resto to zero
+*     Set the rest to zero
 *      
       do ipdf = 8, 19
          npdf(ipdf) = (0d0,0d0)

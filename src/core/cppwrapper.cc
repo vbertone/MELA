@@ -119,7 +119,7 @@ namespace MELA {
     std::map<int, double> xfout;
     for (int i = -9; i < 10; i++)
       xfout.insert({i, xfph[i+9]});
-    delete xfph;
+    delete[] xfph;
     return xfout;
   };
 
@@ -130,7 +130,7 @@ namespace MELA {
     std::vector<double> q2thrs;
     for (int i = 0; i < 8; i++)
       q2thrs.push_back(q2thrsf[i]);
-    delete q2thrsf;
+    delete[] q2thrsf;
     return q2thrs;
   }
 
@@ -153,7 +153,7 @@ namespace MELA {
     double* C2f = new double[8];
     getc2_(C2f);
     double res =  C2f[region];
-    delete C2f;
+    delete[] C2f;
     return res;
   }
 
@@ -162,7 +162,7 @@ namespace MELA {
     double* C4f = new double[8];
     getc4_(C4f);
     double res = C4f[region];
-    delete C4f;
+    delete[] C4f;
     return res;
   }
 
@@ -171,7 +171,7 @@ namespace MELA {
     double* b0f = new double[8];
     getb0_(b0f);
     double res = b0f[region];
-    delete b0f;
+    delete[] b0f;
     return res;
   }
 
@@ -180,7 +180,7 @@ namespace MELA {
     double* b1f = new double[8];
     getb1_(b1f);
     double res = b1f[region];
-    delete b1f;
+    delete[] b1f;
     return res;
   }
 }
