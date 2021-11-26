@@ -24,3 +24,12 @@
 *
       return
       end
+************************************************************************
+      subroutine Geta0(a0)
+      implicit none
+      include "../commons/alpha.h"
+      double precision a0
+      a0 = ath(1)
+      return
+      end
+      

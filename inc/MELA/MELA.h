@@ -2,6 +2,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 /// Namespace containing all the MELA wrapper functions.
 namespace MELA {
@@ -42,8 +43,17 @@ namespace MELA {
   void SetThresholds(double me, double mu, double md, double ms, double mm, double mc, double mt, double mb, double mtp);
 
   /// Coupling
+  double aQED4pi(double q2);  
   double aQED(double q2);
-
+  double aQEDinit();
+  
   /// PDFs
   std::map<int, double> xDistributions(double x, double Q);
+
+  std::vector<double> GetThresholds();
+  int GetRegionMU2(double mu2);  
+  double GetC2(int region);
+  double GetC4(int region);
+  double Getb0(int region);
+  double Getb1(int region);
 }

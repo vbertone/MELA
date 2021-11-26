@@ -83,3 +83,40 @@
 *
       return
       end
+************************************************************************
+      subroutine GetC2(C2)
+      implicit none
+      include "../commons/beta.h"
+      double precision C2(9)
+      C2(:) = -beta0(:)*3d0/4d0
+      return
+      end
+************************************************************************
+      subroutine GetC4(C4)
+      implicit none
+      include "../commons/beta.h"
+      double precision C4(9)
+      C4(:) = -beta1(:)/4d0
+      return
+      end
+************************************************************************
+      subroutine Getb0(b0)
+      implicit none
+      include "../commons/beta.h"
+      include "../commons/consts.h"
+      double precision b0(9)
+      b0(:) = -beta0(:)/4d0/pi
+      return
+      end
+************************************************************************
+      subroutine Getb1(b1)
+      implicit none
+      include "../commons/beta.h"
+      include "../commons/consts.h"      
+      double precision b1(9)
+      b1(:) = -beta1(:)/4d0/4d0/pi/pi
+      return
+      end
+      
+      
+      
