@@ -16,6 +16,7 @@ run/SIDISStructureFunctions
 src/evolution/.deps/
 build/
 lib/libmela.dylib
+lib/libmela.so
 *~
 doc/code/VariableNf
 *.aux
