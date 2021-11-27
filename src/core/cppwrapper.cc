@@ -26,6 +26,7 @@ namespace MELA {
     void getb1_(double* b1);
     void getthresholds_(double* q2thrs);
     void geta0_(double* a0);
+    int getnfmax_(int* nfmax);
   }
 
   /// Initialize the library
@@ -81,6 +82,13 @@ namespace MELA {
     setnfmax_(&NFmaxin);
   };
 
+  int GetNFmax()
+  {
+    int nfmax;
+    getnfmax_(&nfmax);
+    return nfmax;
+  }
+  
   /// Set the perturbative order
   void SetPerturbativeOrder(int iptin)
   {
@@ -137,12 +145,15 @@ namespace MELA {
   int GetRegionMU2(double mu2)
   {
     std::vector<double> q2thrs = GetThresholds();
-    int region = 8;
+    int region;
+    // Initialize region to nfmax-1
+    getnfmax_(&region);
+    region = region - 1;
     while (region >= 0) {
       if (mu2 > q2thrs[region]) {
 	break;
       } else {
-	region -= 1;
+	region = region - 1;
       }
     }
     return region;

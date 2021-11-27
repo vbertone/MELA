@@ -19,3 +19,11 @@
 *
       return
       end
+************************************************************************      
+      subroutine GetNFmax(nfmaxout)
+      implicit none
+      include "../commons/nfmax.h"      
+      integer nfmaxout
+      nfmaxout=nfmax
+      return
+      end

@@ -35,7 +35,8 @@ namespace MELA {
 
   /// Set maximum number of fermions in the VFNS
   void SetNFmax(int NFmaxin);
-
+  int  GetNFmax();
+  
   /// Set the perturbative order
   void SetPerturbativeOrder(int iptin);
 
