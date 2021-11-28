@@ -12,6 +12,7 @@
       include "../commons/activeflavours.h"
       include "../commons/charges.h"
       include "../commons/beta.h"
+      include "../commons/nfsum.h"
 **
 *     Internal Variables
 *
@@ -75,28 +76,17 @@
 *     Beta function and mass anomalous dimension coefficients
 *
       do i = 1, 9
-         beta0(i) = - 4d0 * ( nl(i)
-     1        + nc * ( ed2 * nd(i) + eu2 * nu(i) ) ) / 3d0
-         beta1(i) = - 4d0 * ( nl(i)
-     1        + nc * ( ed4 * nd(i) + eu4 * nu(i) ) )
+         nfsum2(i) = el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) )
+         nfsum4(i) = el4 * nl(i) + nc * ( eu4 * nu(i) + ed4 * nd(i) )
+         if (quarksalpha) then
+            beta0(i) = - 4d0 * nfsum2(i) / 3d0
+            beta1(i) = - 4d0 * nfsum4(i)
+         else
+            beta0(i) = - 4d0 * nl(i) / 3d0
+            beta1(i) = - 4d0 * nl(i)
+         endif         
       enddo
 *
-      return
-      end
-************************************************************************
-      subroutine GetC2(C2)
-      implicit none
-      include "../commons/beta.h"
-      double precision C2(9)
-      C2(:) = -beta0(:)*3d0/4d0
-      return
-      end
-************************************************************************
-      subroutine GetC4(C4)
-      implicit none
-      include "../commons/beta.h"
-      double precision C4(9)
-      C4(:) = -beta1(:)/4d0
       return
       end
 ************************************************************************
@@ -116,7 +106,20 @@
       double precision b1(9)
       b1(:) = -beta1(:)/4d0/4d0/pi/pi
       return
+      end      
+************************************************************************
+      subroutine GetC2(C2)
+      implicit none
+      include "../commons/nfsum.h"
+      double precision C2(9)
+      C2(:) = nfsum2(:)
+      return
       end
-      
-      
-      
+************************************************************************
+      subroutine GetC4(C4)
+      implicit none
+      include "../commons/nfsum.h"
+      double precision C4(9)
+      C4(:) = nfsum4(:)
+      return
+      end

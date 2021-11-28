@@ -2,6 +2,6 @@
 *
 *     Maximum number of active flavours for alphas and PDF evolution for bot LHA evolution and experimental FK tables
 *
-      integer nfmax
+      integer nfmax,nfmaxalpha
 *
-      common / cnfmaxMELA / nfmax
+      common / cnfmaxMELA / nfmax,nfmaxalpha

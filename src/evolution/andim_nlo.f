@@ -19,13 +19,14 @@
       include "../commons/consts.h"
       include "../commons/charges.h"
       include "../commons/activeflavours.h"
+      include "../commons/nfsum.h"
 *
 * ---------------------------------------------------------------------
 *
 *     Internal variables
 *
-      DOUBLE PRECISION NFSUM2
-      DOUBLE PRECISION NFSUM4
+      DOUBLE PRECISION NFS2
+      DOUBLE PRECISION NFS4
       DOUBLE PRECISION EL2T,EU2T,ED2T
       DOUBLE PRECISION EL4T,EU4T,ED4T
       DOUBLE COMPLEX NS,NT,NFO,NFI,NSI,NSE,NE,NN
@@ -157,8 +158,8 @@
 *
 *     Sum of charges
 *
-      NFSUM2 = NL(NF) + NC * ( EU2 * NU(NF) + ED2 * ND(NF) )
-      NFSUM4 = NL(NF) + NC * ( EU4 * NU(NF) + ED4 * ND(NF) )
+      NFS2 = NFSUM2(NF)
+      NFS4 = NFSUM4(NF)
 
       EL2T = EL2
       EU2T = EU2
@@ -179,23 +180,23 @@
       P1NS(1,1) = (0D0,0D0)
       P1NS(1,2) = (0D0,0D0)
       P1NS(1,3) = (0D0,0D0)
-      IF (NL(NF).GT.0) P1NS(1,1) = EL4 * PNPA + EL2T * NFSUM2 * PNSC
-      IF (NU(NF).GT.0) P1NS(1,2) = EU4 * PNPA + EU2T * NFSUM2 * PNSC
-      IF (ND(NF).GT.0) P1NS(1,3) = ED4 * PNPA + ED2T * NFSUM2 * PNSC
+      IF (NL(NF).GT.0) P1NS(1,1) = EL4 * PNPA + EL2T * NFS2 * PNSC
+      IF (NU(NF).GT.0) P1NS(1,2) = EU4 * PNPA + EU2T * NFS2 * PNSC
+      IF (ND(NF).GT.0) P1NS(1,3) = ED4 * PNPA + ED2T * NFS2 * PNSC
 
       P1NS(2,1) = (0D0,0D0)
       P1NS(2,2) = (0D0,0D0)
       P1NS(2,3) = (0D0,0D0)
-      IF (NL(NF).GT.0) P1NS(2,1) = EL4 * PNMA + EL2T * NFSUM2 * PNSC
-      IF (NU(NF).GT.0) P1NS(2,2) = EU4 * PNMA + EU2T * NFSUM2 * PNSC
-      IF (ND(NF).GT.0) P1NS(2,3) = ED4 * PNMA + ED2T * NFSUM2 * PNSC
+      IF (NL(NF).GT.0) P1NS(2,1) = EL4 * PNMA + EL2T * NFS2 * PNSC
+      IF (NU(NF).GT.0) P1NS(2,2) = EU4 * PNMA + EU2T * NFS2 * PNSC
+      IF (ND(NF).GT.0) P1NS(2,3) = ED4 * PNMA + ED2T * NFS2 * PNSC
 *
 *     Singlet
 *
-      P1SG(1,1) = 4D0 * NFSUM4 * PGGC
-      P1SG(1,2) = 4D0 * ( EL4 * PGFA + EL2T * NFSUM2 * PGFC )
-      P1SG(1,3) = 4D0 * ( EU4 * PGFA + EU2T * NFSUM2 * PGFC )
-      P1SG(1,4) = 4D0 * ( ED4 * PGFA + ED2T * NFSUM2 * PGFC )
+      P1SG(1,1) = 4D0 * NFS4 * PGGC
+      P1SG(1,2) = 4D0 * ( EL4 * PGFA + EL2T * NFS2 * PGFC )
+      P1SG(1,3) = 4D0 * ( EU4 * PGFA + EU2T * NFS2 * PGFC )
+      P1SG(1,4) = 4D0 * ( ED4 * PGFA + ED2T * NFS2 * PGFC )
 
       P1SG(2,1) = 4D0 * 2D0 * NL(NF) * EL4 * PFGB
       P1SG(2,2) = 4D0 * NL(NF) * EL2T * EL2T * PPSA + P1NS(1,1)

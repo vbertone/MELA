@@ -43,13 +43,13 @@
       mur20 = q2ref
 *
       if(ns.eq."FFNS")then
-         nfi = nffn
-         nff = nffn
+         nfi = nffnalpha
+         nff = nffnalpha
       elseif(ns.eq."VFNS")then
          do nff=9,1,-1
             if (q2.ge.q2th(nff)) exit
          enddo
-         if(nff.gt.nfmax) nff = nfmax
+         if(nff.gt.nfmaxalpha) nff = nfmaxalpha
 
          do nfi=9,1,-1
             if (mur20.ge.q2th(nfi)) exit

@@ -11,11 +11,14 @@ namespace MELA {
     void readparameters_(char* fcard);
     void setdefaultparameters_(void);
     void enablequarks_(int*);
+    void enablequarksalpha_(int*);
     void setalpha_(double* ain, double* qin);
     void setflavourscheme_(char* fnsin);
     void setflavourschemeint_(int* fnsin);
     void setnffn_(int* nffnin);
     void setnfmax_(int* nfmaxin);
+    void setnffnalpha_(int* nffnalphain);
+    void setnfmaxalpha_(int* nfmaxalphain);    
     void setperturbativeorder_(int* iptin);
     void setthresholds_(double* me, double* mu, double* md, double* ms, double* mm, double* mc, double* mt, double* mb, double* mtp);
     double aqed_(double* q2);
@@ -50,7 +53,11 @@ namespace MELA {
   {
     enablequarks_(&eq);
   };
-
+  void EnableQuarksalpha(int eq)
+  {
+    enablequarksalpha_(&eq);
+  };
+  
   /// Set reference values for alpha
   void SetAlpha(double ain, double Qin)
   {
@@ -82,6 +89,16 @@ namespace MELA {
     setnfmax_(&NFmaxin);
   };
 
+  void SetNFFNalpha(int NFFNalphain)
+  {
+    setnffnalpha_(&NFFNalphain);
+  };
+  void SetNFmaxalpha(int NFmaxalphain)
+  {
+    setnfmaxalpha_(&NFmaxalphain);
+  };
+
+  
   int GetNFmax()
   {
     int nfmax;

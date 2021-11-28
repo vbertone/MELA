@@ -20,6 +20,7 @@ namespace MELA {
 
   /// Enable quarks in the evolution
   void EnableQuarks(int);
+  void EnableQuarksalpha(int);
 
   /// Set reference values for alpha
   void SetAlpha(double ain, double Qin);
@@ -31,11 +32,14 @@ namespace MELA {
   void SetFlavourSchemeInt(int fnsin);
 
   /// Set the number of fermions in the FFNS
-  void SetNFFN(int NFFNin);
+  void SetNFFN(int);
 
   /// Set maximum number of fermions in the VFNS
-  void SetNFmax(int NFmaxin);
+  void SetNFmax(int);
   int  GetNFmax();
+  
+  void SetNFFNalpha(int);
+  void SetNFmaxalpha(int);
   
   /// Set the perturbative order
   void SetPerturbativeOrder(int iptin);

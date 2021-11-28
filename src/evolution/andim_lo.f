@@ -16,12 +16,13 @@
       include "../commons/consts.h"
       include "../commons/charges.h"
       include "../commons/activeflavours.h"
+      include "../commons/nfsum.h"      
 *
 *     ---------------------------------------------------------------------
 *
 *     Internal variables
 *
-      DOUBLE PRECISION NFSUM2
+      DOUBLE PRECISION NFS2
       DOUBLE PRECISION EL2T,EU2T,ED2T
       DOUBLE COMPLEX NS,N1,N2,NM
       DOUBLE COMPLEX PSI,S1
@@ -55,8 +56,8 @@
 *
 *     Sum of charges
 *
-      NFSUM2 = EL2 * NL(NF) + NC * ( EU2 * NU(NF) + ED2 * ND(NF) )
-
+      NFS2 = NFSUM2(NF)
+*
       EL2T = EL2
       EU2T = EU2
       ED2T = ED2
@@ -72,7 +73,7 @@
 *
 *     Singlet
 *
-      P0SG(1,1) = NFSUM2 * PGGB
+      P0SG(1,1) = NFS2 * PGGB
       P0SG(1,2) = EL2T * PGFA
       P0SG(1,3) = EU2T * PGFA
       P0SG(1,4) = ED2T * PGFA

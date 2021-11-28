@@ -16,9 +16,25 @@
       integer NFmaxin
 *
       NFmax = NFmaxin
+      NFmaxalpha = NFmaxin
 *
       return
       end
+************************************************************************      
+      subroutine SetNFmaxalpha(NFmaxalphain)
+*
+      implicit none
+*
+      include "../commons/nfmax.h"
+**
+*     Input Variables
+*
+      integer NFmaxalphain
+*
+      NFmaxalpha = NFmaxalphain
+*
+      return
+      end      
 ************************************************************************      
       subroutine GetNFmax(nfmaxout)
       implicit none

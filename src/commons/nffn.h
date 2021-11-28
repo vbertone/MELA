@@ -2,6 +2,6 @@
 *
 *     Number of active flavours in the FFNS
 *
-      integer nffn
+      integer nffn,nffnalpha
 *
-      common / numffnsMELA / nffn
+      common / numffnsMELA / nffn,nffnalpha

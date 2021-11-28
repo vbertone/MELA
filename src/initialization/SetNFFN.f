@@ -16,6 +16,22 @@
       integer NFFNin
 *
       NFFN = NFFNin
+      NFFNalpha = NFFNin
+*
+      return
+      end
+************************************************************************      
+      subroutine SetNFFNalpha(NFFNalphain)
+*
+      implicit none
+*
+      include "../commons/nffn.h"
+**
+*     Input Variables
+*
+      integer NFFNalphain
+*
+      NFFNalpha = NFFNalphain
 *
       return
       end

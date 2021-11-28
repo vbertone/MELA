@@ -16,6 +16,9 @@
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
       include "../commons/activeflavours.h"
+*
+      include "../commons/beta.h"
+      include "../commons/charges.h"      
 **
 *     Internal variables
 *
@@ -57,27 +60,23 @@
          endif
          write(6,"(a,i1)") " Evolution scheme: FFNS with NF = ",NFFN
       elseif(NS.eq."VFNS")then
-         write(6,*) "Evolution scheme: VFNS"
+         write(6,*) " Evolution scheme: VFNS"
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Unknown mass scheme = ",NS
          call exit(-10)
       endif
 *
-*     Alpha reference values
+*     Maximum number of active flavours
 *
-      write(6,*) "Alpha reference value:"
-      write(6,"(a,f14.9,a)") "   Qref = ",sqrt(Q2REF)," GeV"
-      write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF
-*
-*     Quark are included in the evolution
-*
-      if (quarks) then
-         write(6,*) "Quarks are included in the evolution"
+      if(nfmax.ge.0.and.nfmax.le.9)then
+         write(6,"(a,i1)") " Maximum number of active flavours = ",nfmax
       else
-         write(6,*) "Quarks are NOT included in the evolution"
+         write(6,*) "In InitializeEvolution.f:"
+         write(6,*) "Invalid value for nfmax =",nfmax
+         call exit(-10)
       endif
-*
+**            
 *     Thresholds
 *
       write(6,*) "Fermion thresholds:"
@@ -101,15 +100,56 @@
          endif
       enddo
 *
-*     Maximum number of active flavours
+*     Quark are included in the evolution
 *
-      if(nfmax.ge.0.and.nfmax.le.9)then
-         write(6,"(a,i1)") " Maximum number of active flavours = ",nfmax
+      if (quarks) then
+         write(6,*) " Quarks are included in the evolution"
+      else
+         write(6,*) " Quarks are NOT included in the evolution"
+      endif
+*      
+*     Alpha reference values
+*
+      write(6,*) "Alpha reference value:"
+      write(6,"(a,f14.9,a)") "   Qref = ",sqrt(Q2REF)," GeV"
+      write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF
+      if(NS.eq."FFNS")then
+         if(NFFNalpha.lt.0.or.NFFNalpha.gt.9)then
+            write(6,*)"In InitializeEvolution.f:"
+            write(6,*)"NFFNalpha out or range, NFFNalpha =",NFFNalpha
+            call exit(-10)
+         endif
+         write(6,"(a,i1)") " Alpha evolution: FFNS with NF = ",NFFNalpha
+      elseif(NS.eq."VFNS")then
+         write(6,*) " Alpha evolution: VFNS"
       else
          write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Invalid value for nffac =",nfmax
+         write(6,*) "Unknown mass scheme = ",NS
          call exit(-10)
       endif
+      if(nfmaxalpha.ge.0.and.nfmaxalpha.le.9)then
+        write(6,"(a,i1)") " Max.num. active flav in alpha = ",nfmaxalpha
+      else
+         write(6,*) "In InitializeEvolution.f:"
+         write(6,*) "Invalid value for nfmaxalpha =",nfmaxalpha
+         call exit(-10)
+      endif
+      if (quarksalpha) then
+         write(6,*) " Quarks are included in the evolution of alpha"
+      else
+         write(6,*) " Quarks are NOT included in the evolution of alpha"
+      endif      
 *
+c$$$*     Printing more stuff for debugging
+c$$$*
+c$$$      write(6,*)"quarks, nl, nu, nd, nc",quarks, nl, nu, nd, nc
+c$$$      write(6,*)"aref,Q2ref,ath",aref,Q2ref,ath
+c$$$      write(6,*)"beta0,beta1",beta0,beta1
+c$$$      write(6,*)"el2,el4,eu2,eu4,ed2,ed4",el2,el4,eu2,eu4,ed2,ed4
+c$$$      write(6,*)"ipt",ipt
+c$$$      write(6,*)"q2th",q2th
+c$$$      write(6,*)"nffn,nfmax",nffn,nfmax
+c$$$      write(6,*)"ns",ns
+*            
       return
       end
