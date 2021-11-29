@@ -85,6 +85,29 @@
 *     expanded approach truncating the series to the first NEXP+1 terms.
 *
          CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
+*     
+*     Non Singlet
+*     
+         AI = AII
+         AF = AFF
+         DO I=1,2
+            DO J=1,3
+               SPNS(I,J) = - DA * ( G0NS(J) / BT0 / AI         
+     1              + G0NS(J) / BT0 / AF ) / 2D0
+            ENDDO
+         ENDDO
+*     
+         AK = AI
+         DO K=1,NINT-1
+            AK = AK + DA
+*     
+            DO I=1,2
+               DO J=1,3
+                  SPNS(I,J) = SPNS(I,J)
+     1                 - DA * G0NS(J) / BT0 / AK
+               ENDDO
+            ENDDO
+         ENDDO
 *
 *     Solution at NLO
 *
@@ -118,33 +141,33 @@
 *
             AI = AI + DA
          ENDDO
-      ENDIF
-*
+*     
 *     Non Singlet
-*
-      AI = AII
-      AF = AFF
-      DO I=1,2
-         DO J=1,3
-            SPNS(I,J) = - DA * ( ( G0NS(J)
-     1           + AI * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) ) / BT0 / AI         
-     2           + ( G0NS(J) + AF * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) )
-     3           / BT0 / AF ) / 2D0
-         ENDDO
-      ENDDO
-*
-      AK = AI
-      DO K=1,NINT-1
-         AK = AK + DA
-*
+*     
+         AI = AII
+         AF = AFF
          DO I=1,2
             DO J=1,3
-               SPNS(I,J) = SPNS(I,J)
-     1              - DA * ( G0NS(J)
-     2              + AK * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) )/BT0/AK
+               SPNS(I,J) = - DA * ( ( G0NS(J)
+     1            + AI * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) ) / BT0 / AI         
+     2            + ( G0NS(J) + AF * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) )
+     3            / BT0 / AF ) / 2D0
             ENDDO
          ENDDO
-      ENDDO
+*     
+         AK = AI
+         DO K=1,NINT-1
+            AK = AK + DA
+*     
+            DO I=1,2
+               DO J=1,3
+                  SPNS(I,J) = SPNS(I,J)
+     1                 - DA * ( G0NS(J)
+     2                 + AK * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) )/BT0/AK
+               ENDDO
+            ENDDO
+         ENDDO
+      ENDIF
 *
       DO I=1,2
          DO J=1,3
