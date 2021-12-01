@@ -16,11 +16,13 @@
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
       include "../commons/activeflavours.h"
+      include "../commons/facscheme.h"
 *
 *     Default values
 *
       IPT         = 1
       NS          = "VFNS"
+      FACSCHEME   = "MSBAR"
       NFMAX       = 8
       NFFN        = 8
       QUARKS      = .TRUE.      

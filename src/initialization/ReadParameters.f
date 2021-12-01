@@ -16,6 +16,7 @@
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
       include "../commons/activeflavours.h"
+      include "../commons/facscheme.h"
 **
 *     Input Variables
 *
@@ -39,22 +40,23 @@
          if(str(1:1).ne."#")then
             lp = index(str," ") - 1
             lu = index(str,"=") + 1
-            if(str(1:lp).eq."IPT")    read(str(lu:50),*) IPT
-            if(str(1:lp).eq."NS")     read(str(lu:50),*) NS
-            if(str(1:lp).eq."NFMAX")  read(str(lu:50),*) NFMAX
-            if(str(1:lp).eq."NFFN")   read(str(lu:50),*) NFFN
-            if(str(1:lp).eq."QREF")   read(str(lu:50),*) QR
-            if(str(1:lp).eq."AREF")   read(str(lu:50),*) AREF
-            if(str(1:lp).eq."QUARKS") read(str(lu:50),*) QUARKS
-            if(str(1:lp).eq."ME")     read(str(lu:50),*) ME
-            if(str(1:lp).eq."MU")     read(str(lu:50),*) MU
-            if(str(1:lp).eq."MD")     read(str(lu:50),*) MD
-            if(str(1:lp).eq."MS")     read(str(lu:50),*) MS
-            if(str(1:lp).eq."MM")     read(str(lu:50),*) MM
-            if(str(1:lp).eq."MC")     read(str(lu:50),*) MC
-            if(str(1:lp).eq."MT")     read(str(lu:50),*) MT
-            if(str(1:lp).eq."MB")     read(str(lu:50),*) MB
-            if(str(1:lp).eq."MTP")    read(str(lu:50),*) MTP
+            if(str(1:lp).eq."IPT")       read(str(lu:50),*) IPT
+            if(str(1:lp).eq."NS")        read(str(lu:50),*) NS
+            if(str(1:lp).eq."FACSCHEME") read(str(lu:50),*) FACSCHEME
+            if(str(1:lp).eq."NFMAX")     read(str(lu:50),*) NFMAX
+            if(str(1:lp).eq."NFFN")      read(str(lu:50),*) NFFN
+            if(str(1:lp).eq."QREF")      read(str(lu:50),*) QR
+            if(str(1:lp).eq."AREF")      read(str(lu:50),*) AREF
+            if(str(1:lp).eq."QUARKS")    read(str(lu:50),*) QUARKS
+            if(str(1:lp).eq."ME")        read(str(lu:50),*) ME
+            if(str(1:lp).eq."MU")        read(str(lu:50),*) MU
+            if(str(1:lp).eq."MD")        read(str(lu:50),*) MD
+            if(str(1:lp).eq."MS")        read(str(lu:50),*) MS
+            if(str(1:lp).eq."MM")        read(str(lu:50),*) MM
+            if(str(1:lp).eq."MC")        read(str(lu:50),*) MC
+            if(str(1:lp).eq."MT")        read(str(lu:50),*) MT
+            if(str(1:lp).eq."MB")        read(str(lu:50),*) MB
+            if(str(1:lp).eq."MTP")       read(str(lu:50),*) MTP
          endif
       enddo
  101  close(10)

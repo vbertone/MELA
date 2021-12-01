@@ -542,6 +542,92 @@ or total valence $V_{p}$ distributions:
   \end{itemize}
 \end{itemize}
 
+\section{The $\Delta$ scheme}
+
+In order to implemet the $\Delta$ scheme, we need to apply a
+tranformation to the matrix of evolution kernels. The transformed
+system of evolution equations reads:
+\begin{equation}
+\mu^2\frac{d}{d\mu^2}\mathbf{f} =
+\beta(a(\mu))\mathbb{J}(1+a(\mu)\mathbb{J})^{-1} + (1+a(\mu)\mathbb{J})\mathcal{P}(a(\mu))(1+a(\mu)\mathbb{J})^{-1}\mathbf{f}\,,
+\end{equation}
+where $\mathbf{f}$ is the vector of PDFs, $\mathcal{P}$ the matrix of
+splitting functions, and $\mathbb{J}$ the matrix that parametrises the
+transformation from the $\overline{\mbox{MS}}$ to the $\Delta$
+scheme. Since the evolution is effectivelly written as differential in
+$a$, one finds that:
+\begin{equation}
+\frac{d}{da}\mathbf{f} =
+\mathbb{J}(1+a(\mu)\mathbb{J})^{-1} + (1+a(\mu)\mathbb{J})\frac{\mathcal{P}(a(\mu))}{\beta(a(\mu))}(1+a(\mu)\mathbb{J})^{-1}\mathbf{f}\,.
+\end{equation}
+Now we need to specify the form of the matrix $\mathbb{J}$. In the
+evolution basis in Eq.~(\ref{eq:evolutionsystem}), the explicit form
+of $\mathbb{J}$ is:
+\begin{equation}
+\mathbb{J} =
+\begin{pmatrix}
+\delta_{\ell_\alpha e^-} \delta_{\ell_\gamma e^-}J_{\ell\ell}& 0 & 0 & 0 & 0 & 0 & 0\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+\delta_{\ell_\gamma e^-}J_{\gamma\ell} & 0 & 0 & 0 & 0 & 0 & \delta_{\ell_\delta e^+}J_{\gamma\ell}\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+ 0 & 0 & 0 & 0 & 0 & 0 & \delta_{\ell_\beta e^+} \delta_{\ell_\delta e^+}J_{\ell\ell}
+\end{pmatrix}\,.
+\end{equation}
+Finally, in the $\Delta$ scheme, the system of evolution equations
+takes the form:
+\begin{equation}
+\frac{\partial}{\partial a}
+\begin{pmatrix}
+\gamma\\
+\Sigma_\ell\\
+\Sigma_u\\
+\Sigma_d
+\end{pmatrix} =\left[\begin{pmatrix}
+0 &\frac{ J_{\gamma \ell}}{1+a J_{\ell\ell}} & 0&0\\
+0 &\frac{ J_{\ell\ell}}{1+a J_{\ell\ell}} & 0 & 0 \\
+0 &0 & 0 & 0 \\
+0 &0 & 0 & 0
+\end{pmatrix}
++\frac{1}{\beta}
+\begin{pmatrix}
+1 & aJ_{\gamma \ell} & 0&0\\
+0 & 1+aJ_{\ell\ell} & 0 & 0 \\
+0 &0 & 1 & 0 \\
+0 &0 & 0 & 1
+\end{pmatrix}\begin{pmatrix}
+P_{\gamma\gamma} & P_{\gamma \ell} & P_{\gamma u}& P_{\gamma d}\\
+P_{\ell \gamma} & {P}_{\ell\ell} & P_{\ell u}^{\rm PS}& P_{\ell d}^{\rm PS}\\
+P_{u \gamma} & P_{u\ell}^{\rm PS} & {P}_{uu} & P_{ud}^{\rm PS} \\
+P_{d \gamma} & P_{d\ell}^{\rm PS} & P_{du}^{\rm PS} & {P}_{dd}
+\end{pmatrix}\begin{pmatrix}
+1 & -\frac{aJ_{\gamma \ell}}{1+a J_{\ell\ell}} & 0&0\\
+0 & \frac{1}{1+aJ_{\ell\ell}} & 0 & 0 \\
+0 &0 & 1 & 0 \\
+0 &0 & 0 & 1
+\end{pmatrix}\right]
+\begin{pmatrix}
+\gamma\\
+\Sigma_\ell\\
+\Sigma_u\\
+\Sigma_d
+\end{pmatrix}
+\label{eq:singletevolDelta}
+\end{equation}
+\begin{equation}
+\frac{\partial V_{p}}{\partial a} = \left[\frac{J_{\ell\ell}}{1+aJ_{\ell\ell}}+\frac{P_p^-}{\beta} \right] V_{p}
+\label{eq:valenceevolDelta}
+\end{equation}
+\begin{equation}
+\frac{\partial T_{1,2}^{p}}{\partial a} = \left[\frac{J_{\ell\ell}}{1+aJ_{\ell\ell}}+\frac{P_p^+}{\beta} \right] T_{1,2}^{p}
+\label{eq:TevolDelta}
+\end{equation}
+\begin{equation}
+\frac{\partial V_{1,2}^{p}}{\partial a} = \left[\frac{J_{\ell\ell}}{1+aJ_{\ell\ell}}+\frac{P_p^-}{\beta} \right]T_{1,2}^{p}
+\label{eq:VevolDelta}
+\end{equation}
+
 
 \end{document}
 

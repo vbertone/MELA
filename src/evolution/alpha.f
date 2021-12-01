@@ -54,6 +54,7 @@
          do nfi=9,1,-1
             if (mur20.ge.q2th(nfi)) exit
          enddo
+         if(nfi.gt.nfmaxalpha) nfi = nfmaxalpha
       endif
 *
  10   if(nff.eq.nfi) then

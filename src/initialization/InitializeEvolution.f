@@ -16,9 +16,7 @@
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
       include "../commons/activeflavours.h"
-*
-      include "../commons/beta.h"
-      include "../commons/charges.h"      
+      include "../commons/facscheme.h"
 **
 *     Internal variables
 *
@@ -50,6 +48,18 @@
          call exit(-10)
       endif
 *
+*     Factorisation scheme
+*
+      if(FACSCHEME.eq."MSBAR")then
+         write(6,*) "Factorisation scheme: MSbar"
+      elseif(FACSCHEME.eq."DELTA")then
+         write(6,*) "Factorisation scheme: Delta"
+      else
+         write(6,*) "In InitializeEvolution.f:"
+         write(6,*) "Unknown factorisation scheme = ",FACSCHEME
+         call exit(-10)
+      endif
+*
 *     Evolution scheme
 *
       if(NS.eq."FFNS")then
@@ -60,7 +70,7 @@
          endif
          write(6,"(a,i1)") " Evolution scheme: FFNS with NF = ",NFFN
       elseif(NS.eq."VFNS")then
-         write(6,*) " Evolution scheme: VFNS"
+         write(6,*) "Evolution scheme: VFNS"
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Unknown mass scheme = ",NS
@@ -103,9 +113,9 @@
 *     Quark are included in the evolution
 *
       if (quarks) then
-         write(6,*) " Quarks are included in the evolution"
+         write(6,*) "Quarks are included in the evolution"
       else
-         write(6,*) " Quarks are NOT included in the evolution"
+         write(6,*) "Quarks are NOT included in the evolution"
       endif
 *      
 *     Alpha reference values
@@ -121,7 +131,7 @@
          endif
          write(6,"(a,i1)") " Alpha evolution: FFNS with NF = ",NFFNalpha
       elseif(NS.eq."VFNS")then
-         write(6,*) " Alpha evolution: VFNS"
+         write(6,*) "Alpha evolution: VFNS"
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Unknown mass scheme = ",NS
@@ -135,21 +145,10 @@
          call exit(-10)
       endif
       if (quarksalpha) then
-         write(6,*) " Quarks are included in the evolution of alpha"
+         write(6,*) "Quarks are included in the evolution of alpha"
       else
-         write(6,*) " Quarks are NOT included in the evolution of alpha"
+         write(6,*) "Quarks are NOT included in the evolution of alpha"
       endif      
-*
-c$$$*     Printing more stuff for debugging
-c$$$*
-c$$$      write(6,*)"quarks, nl, nu, nd, nc",quarks, nl, nu, nd, nc
-c$$$      write(6,*)"aref,Q2ref,ath",aref,Q2ref,ath
-c$$$      write(6,*)"beta0,beta1",beta0,beta1
-c$$$      write(6,*)"el2,el4,eu2,eu4,ed2,ed4",el2,el4,eu2,eu4,ed2,ed4
-c$$$      write(6,*)"ipt",ipt
-c$$$      write(6,*)"q2th",q2th
-c$$$      write(6,*)"nffn,nfmax",nffn,nfmax
-c$$$      write(6,*)"ns",ns
 *            
       return
       end

@@ -10,9 +10,9 @@
 *
       implicit none
 *
-      include "../commons/consts.h"
       include "../commons/alpha.h"
       include "../commons/ipt.h"
+      include "../commons/facscheme.h"
 **
 *     Input Variables
 *
@@ -21,28 +21,20 @@
 *     Internal Variables
 *
       integer ipdf
-      double complex Nm, N1
-      double complex s1, s2
-      double complex psi, dpsi
       double complex deN, dgmN
+      double complex fdeN, fdgmN
       double complex sg, gm
 **
 *     Output Variables
 *
       double complex npdf(19)
 *
-*     Useful definitions
-*
-      Nm = N - 1d0
-      N1 = N + 1d0
-      s1 = emc + psi(N1)
-      s2 = zeta2 - dpsi(N1, 1)
-*
-      deN  = 2d0 * ( - ( 1d0 / N - 1d0 / N1 - 2d0 * s1 + 3d0 / 2d0 )
-     1     - 2d0 * ( s1**2 + s2 - s1 / N + s1 / N1 + 1d0 / N1**2
-     2     - 7d0 / 4d0 ) )
-      dgmN = 2d0 * ( - ( 2d0 / Nm - 2d0 / N + 1d0 / N1 )
-     1     - 2d0 * ( - 2d0 / Nm**2 + 2d0 / N**2 - 1d0 / N1**2 ) )
+      deN  = (0d0, 0d0)
+      dgmN = (0d0, 0d0)
+      if (facscheme.eq."MSBAR") then
+         deN  = - fdeN(N)
+         dgmN = - fdgmN(N)
+      endif
 *
       sg = 1d0
       gm = 0d0
@@ -66,6 +58,65 @@
       do ipdf = 8, 19
          npdf(ipdf) = (0d0,0d0)
       enddo
+*
+      return
+      end
+*
+************************************************************************
+      function fdeN(N)
+*
+      implicit none
+*
+      include "../commons/consts.h"
+**
+*     Input Variables
+*
+      double complex N
+**
+*     Internal Variables
+*
+      double complex Nm, N1
+      double complex s1, s2
+      double complex psi, dpsi
+**
+*     Output Variables
+*
+      double complex fdeN
+*
+      Nm = N - 1d0
+      N1 = N + 1d0
+      s1 = emc + psi(N1)
+      s2 = zeta2 - dpsi(N1, 1)
+*
+      fdeN = - 2d0 * ( - ( 1d0 / N - 1d0 / N1 - 2d0 * s1 + 3d0 / 2d0 )
+     1     - 2d0 * ( s1**2 + s2 - s1 / N + s1 / N1 + 1d0 / N1**2
+     2     - 7d0 / 4d0 ) )
+*
+      return
+      end
+*
+************************************************************************
+      function fdgmN(N)
+*
+      implicit none
+**
+*     Input Variables
+*
+      double complex N
+**
+*     Internal Variables
+*
+      double complex Nm, N1
+**
+*     Output Variables
+*
+      double complex fdgmN
+*
+      Nm = N - 1d0
+      N1 = N + 1d0
+*
+      fdgmN = - 2d0 * ( - ( 2d0 / Nm - 2d0 / N + 1d0 / N1 )
+     1     - 2d0 * ( - 2d0 / Nm**2 + 2d0 / N**2 - 1d0 / N1**2 ) )
 *
       return
       end

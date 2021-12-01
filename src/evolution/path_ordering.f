@@ -14,6 +14,7 @@
       include "../commons/ipt.h"
       include "../commons/beta.h"
       include "../commons/activeflavours.h"
+      include "../commons/facscheme.h"
 **
 *     Input Variables
 *
@@ -30,7 +31,12 @@
       DOUBLE PRECISION AF,AI,DA,AK
       DOUBLE COMPLEX G0(4,4),G1(4,4)
       DOUBLE COMPLEX G0NS(3),G1NS(2,3)
+      DOUBLE COMPLEX JLL,JGL,FDEN,FDGMN
+      DOUBLE COMPLEX JM(4,4),JSI(4,4),JSF(4,4),JSIINV(4,4),JSFINV(4,4)
       DOUBLE COMPLEX SPSG(4,4),SPNS(2,3)
+      DOUBLE COMPLEX SGITMP1(4,4),SGFTMP1(4,4)
+      DOUBLE COMPLEX SGITMP2(4,4),SGFTMP2(4,4)
+      DOUBLE COMPLEX SGI(4,4),SGF(4,4)
       DOUBLE COMPLEX DEFSG(4,4)
       DOUBLE COMPLEX EFNS(2,3),EFSG(4,4),EFSGTMP(4,4)
       PARAMETER(NINT=200)
@@ -44,11 +50,11 @@
       BT0 = BETA0(NF)
       BT1 = 0D0
 *
-*     LO
+*     LO splitting functions
 *
       CALL ANDIM_LO(ZN,NF,G0NS,G0)
 *
-*     NLO
+*     NLO splitting functions
 *
       IF(IPT.GE.1)THEN
          CALL ANDIM_NLO(ZN,NF,G1NS,G1)
@@ -115,19 +121,63 @@
          DO I=1,4
             DO J=1,4
                EFSG(I,J) = (0D0,0D0)
+               JM(I,J)   = (0D0,0D0)
             ENDDO
             EFSG(I,I) = (1D0,0D0)
          ENDDO
+*
+*     Delta-scheme corrections
+*
+         JLL = (0D0, 0D0)
+         JGL = (0D0, 0D0)
+         IF (FACSCHEME.EQ."DELTA") THEN
+            JLL = FDEN(ZN)
+            JGL = FDGMN(ZN)
+            JM(1,2) = JGL
+            JM(2,2) = JLL
+         ENDIF
 *
          AI = AII
          DO K=1,NINT
             AF = AI + DA
             DO I=1,4
                DO J=1,4
-                  SPSG(I,J) = - DA * ( ( G0(I,J) + AI * ( G1(I,J)
+                  SGITMP1(I,J) = - ( G0(I,J) + AI * ( G1(I,J)
      1                 - G0(I,J) * BT1 / BT0 ) ) / BT0 / AI
-     2                 + ( G0(I,J) + AF * ( G1(I,J)
-     3                 - G0(I,J) * BT1 / BT0 ) ) / BT0 / AF ) / 2D0
+                  SGFTMP1(I,J) = - ( G0(I,J) + AF * ( G1(I,J)
+     1                 - G0(I,J) * BT1 / BT0 ) ) / BT0 / AF
+                  JSI(I,J) = AI * JM(I,J)
+                  JSF(I,J) = AF * JM(I,J)
+               ENDDO
+               JSI(I,I) = 1D0 + JSI(I,I)
+               JSF(I,I) = 1D0 + JSF(I,I)
+            ENDDO
+*
+            DO I=1,4
+               DO J=1,4
+                  JSIINV(I,J) = (0D0, 0D0)
+                  JSFINV(I,J) = (0D0, 0D0)
+               ENDDO
+               JSIINV(I,I) = (1D0, 0D0)
+               JSFINV(I,I) = (1D0, 0D0)
+            ENDDO
+            JSIINV(1,2) = JSIINV(1,2) - AI * JGL / ( 1D0 + AI * JLL )
+            JSIINV(2,2) = JSIINV(2,2) / ( 1D0 + AI * JLL )
+            JSFINV(1,2) = JSFINV(1,2) - AF * JGL / ( 1D0 + AF * JLL )
+            JSFINV(2,2) = JSFINV(2,2) / ( 1D0 + AF * JLL )
+
+*
+            CALL MMULT(JSI,4,4,SGITMP1,4,4,SGITMP2)
+            CALL MMULT(SGITMP2,4,4,JSIINV,4,4,SGI)
+            CALL MMULT(JSF,4,4,SGFTMP1,4,4,SGFTMP2)
+            CALL MMULT(SGFTMP2,4,4,JSFINV,4,4,SGF)
+*
+            DO I=1,4
+               DO J=1,4
+                  SGI(I,J) = SGI(I,J) + JM(I,J) / ( 1D0 + AI * JLL )
+                  SGF(I,J) = SGF(I,J) + JM(I,J) / ( 1D0 + AF * JLL )
+
+                  SPSG(I,J) = DA * ( SGI(I,J) + SGF(I,J) ) / 2D0
                ENDDO
             ENDDO
 *
@@ -148,22 +198,26 @@
          AF = AFF
          DO I=1,2
             DO J=1,3
-               SPNS(I,J) = - DA * ( ( G0NS(J)
-     1            + AI * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) ) / BT0 / AI         
-     2            + ( G0NS(J) + AF * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) )
-     3            / BT0 / AF ) / 2D0
+               SPNS(I,J) = DA * (
+     1              JLL / ( 1D0 + AI * JLL)
+     2              - ( G0NS(J) + AI * ( G1NS(I,J)
+     3              - G0NS(J) * BT1/BT0 ) ) / BT0 / AI +
+     4              JLL / ( 1D0 + AF * JLL)
+     5              - ( G0NS(J) + AF * ( G1NS(I,J)
+     6              - G0NS(J) * BT1/BT0 ) ) / BT0 / AF
+     7              ) / 2D0
             ENDDO
          ENDDO
 *     
          AK = AI
          DO K=1,NINT-1
             AK = AK + DA
-*     
             DO I=1,2
                DO J=1,3
                   SPNS(I,J) = SPNS(I,J)
-     1                 - DA * ( G0NS(J)
-     2                 + AK * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) )/BT0/AK
+     1                 + DA * ( JLL / ( 1D0 + AK * JLL) - ( G0NS(J)
+     2                 + AK * ( G1NS(I,J) - G0NS(J) * BT1/BT0 ) )
+     3                 / BT0 / AK )
                ENDDO
             ENDDO
          ENDDO
