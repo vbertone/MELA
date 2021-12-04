@@ -57,6 +57,8 @@
          elseif(evol(1:4).eq."TIME")then
             call HKNSFFsn(N,xfph0N) ! HKNS for pi+ at NLO
          endif
+      elseif(distf.eq."deltag")then
+         call GluonDelta(xfph0N)
       elseif(distf.eq."XFitter")then
          call XFitterParametrization(N-1d0,xfph0N) ! XFitter PDFs
       elseif(distf(1:9).eq."ZeroScale")then

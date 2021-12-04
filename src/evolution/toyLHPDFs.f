@@ -434,3 +434,32 @@
 *
       return
       end
+*
+************************************************************************
+*
+*     Gluon delta function multiplied by alpha_s
+*
+************************************************************************
+      subroutine GluonDelta(nff)
+*
+      implicit none
+*
+      include "../commons/alphas.h"
+**
+*     Internal Variables
+*
+      integer iff
+**
+*     Output Variables
+*
+      double complex nff(-6:6)
+*
+*     Initialize PDFs to zero
+*
+      do iff=-6,6
+         nff(iff) = (0d0,0d0)
+      enddo
+      nff(0) = 12.566370614359173d0 * asEvolIni(1) * (1d0, 0d0)
+*
+      return
+      end
