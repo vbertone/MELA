@@ -4,6 +4,8 @@
 *
       double precision aref,Q2ref
       double precision ath(10)
+      logical aemfix
 *
       common / alpharefMELA / aref,Q2ref
       common / alphathrMELA / ath
+      common / alphafixMELA / aemfix

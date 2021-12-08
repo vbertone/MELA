@@ -10,6 +10,7 @@
       implicit none
 *
       include "../commons/alpha.h"
+      include "../commons/massthrs.h"      
 **
 *     Input Variables
 *
@@ -35,7 +36,11 @@
 *
 *     Call evolution kernels
 *
-         call path_ordering(N,ath(ifl),ath(ifl+1),ifl,evf)
+         if(aemfix)then
+            call alpha_fixed(N,q2th(ifl),q2th(ifl+1),ifl,evf)
+         else         
+            call path_ordering(N,ath(ifl),ath(ifl+1),ifl,evf)
+         endif
 *
 *     Convolute with vector of PDFs
 *

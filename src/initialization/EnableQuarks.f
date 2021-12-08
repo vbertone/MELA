@@ -35,3 +35,18 @@
 *
       return
       end
+************************************************************************      
+      subroutine GetEnableQuarks(quarksout)
+      implicit none
+      include "../commons/activeflavours.h"
+      logical quarksout
+      quarksout = quarks
+      return
+      end
+************************************************************************
+      subroutine GetEnableQuarksalpha(quarksout)
+      include "../commons/activeflavours.h"
+      logical quarksout
+      quarksout = quarksalpha
+      return
+      end

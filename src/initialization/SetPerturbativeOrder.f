@@ -19,3 +19,11 @@
 *
       return
       end
+************************************************************************      
+      subroutine GetPerturbativeOrder(iptout)
+      implicit none
+      include "../commons/ipt.h"
+      integer iptout
+      iptout = ipt
+      return
+      end

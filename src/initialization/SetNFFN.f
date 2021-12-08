@@ -35,3 +35,20 @@
 *
       return
       end
+************************************************************************
+      subroutine GetNFFN(nffnout)
+      implicit none
+      include "../commons/nffn.h"      
+      integer nffnout
+      nffnout=nffn
+      return
+      end
+************************************************************************
+      subroutine GetNFFNalpha(nffnalphaout)
+      implicit none
+      include "../commons/nffn.h"      
+      integer nffnalphaout
+      nffnalphaout=nffnalpha
+      return
+      end
+      

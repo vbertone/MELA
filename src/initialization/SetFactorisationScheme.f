@@ -45,5 +45,17 @@
 *
       return
       end
+************************************************************************
+      subroutine GetFactorisationSchemeInt(fsintout)
+      implicit none
+      include "../commons/facscheme.h"      
+      integer fsintout
+      if (facscheme.eq."MSBAR") then
+         fsintout = 0
+      elseif (facscheme.eq."DELTA") then
+         fsintout = 1
+      endif
+      return
+      end
 
       

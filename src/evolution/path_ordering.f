@@ -15,6 +15,10 @@
       include "../commons/beta.h"
       include "../commons/activeflavours.h"
       include "../commons/facscheme.h"
+      include "../commons/ns.h"
+      include "../commons/nffn.h"
+      include "../commons/nfmax.h"
+      include "../commons/tecparam.h"
 **
 *     Input Variables
 *
@@ -24,7 +28,6 @@
 **
 *     Internal Variables
 *
-      INTEGER NINT,NEXP
       INTEGER I,J,K,NA
       INTEGER MP(0:3)
       DOUBLE PRECISION BT0,BT1
@@ -39,15 +42,18 @@
       DOUBLE COMPLEX SGI(4,4),SGF(4,4)
       DOUBLE COMPLEX DEFSG(4,4)
       DOUBLE COMPLEX EFNS(2,3),EFSG(4,4),EFSGTMP(4,4)
-      PARAMETER(NINT=200)
-      PARAMETER(NEXP=10)
       DATA MP / 1, 2, 8, 14 /
 **
 *     Output Variables
 *
       DOUBLE COMPLEX EVF(19,19)
 *
-      BT0 = BETA0(NF)
+c     BT0 = BETA0(NF)
+      IF (NS.EQ."FFNS") THEN
+         BT0 = BETA0(NFFNALPHA)
+      ELSEIF (NS.EQ."VFNS") THEN
+         BT0 = BETA0(NF)
+      ENDIF      
       BT1 = 0D0
 *
 *     LO splitting functions
@@ -58,7 +64,12 @@
 *
       IF(IPT.GE.1)THEN
          CALL ANDIM_NLO(ZN,NF,G1NS,G1)
-         BT1 = BETA1(NF)
+C        BT1 = BETA1(NF)
+         IF (NS.EQ."FFNS") THEN
+            BT1 = BETA1(NFFNALPHA)
+         ELSEIF (NS.EQ."VFNS") THEN
+            BT1 = BETA1(NF)
+         ENDIF       
       ENDIF
 *
 *     Singlet
@@ -66,31 +77,58 @@
 *     Solution at LO
 *
       DA = ( AFF - AII ) / DBLE(NINT)
+*      
       IF(IPT.EQ.0)THEN
-         AI = AII
-         AF = AFF
+*
+c$$$         AI = AII
+c$$$         AF = AFF
+c$$$         DO I=1,4
+c$$$            DO J=1,4
+c$$$               SPSG(I,J) = - DA * G0(I,J) * ( 1D0 / AF + 1D0 / AI )
+c$$$     1              / BT0 / 2D0
+c$$$            ENDDO
+c$$$         ENDDO
+c$$$*
+c$$$         AK = AI
+c$$$         DO K=1,NINT-1
+c$$$            AK = AK + DA
+c$$$            DO I=1,4
+c$$$               DO J=1,4
+c$$$                  SPSG(I,J) = SPSG(I,J) - DA * G0(I,J) / BT0 / AK
+c$$$               ENDDO
+c$$$            ENDDO
+c$$$         ENDDO
+c$$$*
+c$$$*     Now we need to exponentiate SPSG that is a 4x4 matrix. In this
+c$$$*     case, analytical formulas are too involved, therefore we adopt an
+c$$$*     expanded approach truncating the series to the first NEXP+1 terms.
+c$$$*
+c$$$  CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
+*
          DO I=1,4
             DO J=1,4
-               SPSG(I,J) = - DA * G0(I,J) * ( 1D0 / AF + 1D0 / AI )
-     1              / BT0 / 2D0
+               EFSG(I,J) = (0D0,0D0)
             ENDDO
+            EFSG(I,I) = (1D0,0D0)
          ENDDO
-*
-         AK = AI
-         DO K=1,NINT-1
-            AK = AK + DA
+*     
+         AI = AII
+         DO K=1,NINT
+            AF = AI + DA
             DO I=1,4
                DO J=1,4
-                  SPSG(I,J) = SPSG(I,J) - DA * G0(I,J) / BT0 / AK
+                  SGI(I,J) = - G0(I,J) / AI / BT0
+                  SGF(I,J) = - G0(I,J) / AF / BT0
+                  SPSG(I,J) = DA * ( SGI(I,J) + SGF(I,J) ) / 2D0
                ENDDO
             ENDDO
-         ENDDO
-*
-*     Now we need to exponentiate SPSG that is a 4x4 matrix. In this
-*     case, analytical formulas are too involved, therefore we adopt an
-*     expanded approach truncating the series to the first NEXP+1 terms.
-*
-         CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
+*     
+            CALL MATRIXEXP(NEXP,4,SPSG,DEFSG)
+            CALL MMULT(DEFSG,4,4,EFSG,4,4,EFSGTMP)
+            CALL EQUATEM(EFSGTMP,4,4,EFSG)
+*     
+            AI = AI + DA
+         ENDDO                  
 *     
 *     Non Singlet
 *     
@@ -176,7 +214,6 @@
                DO J=1,4
                   SGI(I,J) = SGI(I,J) + JM(I,J) / ( 1D0 + AI * JLL )
                   SGF(I,J) = SGF(I,J) + JM(I,J) / ( 1D0 + AF * JLL )
-
                   SPSG(I,J) = DA * ( SGI(I,J) + SGF(I,J) ) / 2D0
                ENDDO
             ENDDO

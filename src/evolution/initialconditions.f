@@ -13,6 +13,7 @@
       include "../commons/alpha.h"
       include "../commons/ipt.h"
       include "../commons/facscheme.h"
+      include "../commons/consts.h"
 **
 *     Input Variables
 *
@@ -24,11 +25,19 @@
       double complex deN, dgmN
       double complex fdeN, fdgmN
       double complex sg, gm
+      double precision amu0
 **
 *     Output Variables
 *
       double complex npdf(19)
 *
+*     Set the value of alpha(mu0)
+      if(aemfix)then
+         amu0 = aref / 4d0 / pi
+      else
+         amu0 = ath(1)
+      endif
+*      
       deN  = (0d0, 0d0)
       dgmN = (0d0, 0d0)
       if (facscheme.eq."MSBAR") then
@@ -39,8 +48,8 @@
       sg = 1d0
       gm = 0d0
       if (ipt.gt.0) then
-         sg = sg + ath(1) * deN
-         gm = gm + ath(1) * dgmN
+         sg = sg + amu0 * deN
+         gm = gm + amu0 * dgmN
       endif
 *
 *     Set electron and photon PDFs in the evolution basis

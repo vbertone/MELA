@@ -28,7 +28,7 @@
       return
       end
 ************************************************************************
-      subroutine GetThresholds(q2thrs)
+      subroutine GetThresholds2(q2thrs)
       implicit none
       include "../commons/massthrs.h"      
       double precision q2thrs(9)

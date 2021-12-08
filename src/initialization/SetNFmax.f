@@ -43,3 +43,11 @@
       nfmaxout=nfmax
       return
       end
+************************************************************************      
+      subroutine GetNFmaxalpha(nfmaxout)
+      implicit none
+      include "../commons/nfmax.h"      
+      integer nfmaxout
+      nfmaxout=nfmaxalpha
+      return
+      end

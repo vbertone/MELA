@@ -61,30 +61,38 @@
 *     electric charges
 *
       el2 = 1d0
-      if (quarks) then
-         eu2 = 4d0 / 9d0
-         ed2 = 1d0 / 9d0
-      else
-         eu2 = 0d0
-         ed2 = 0d0
-      endif
+      eu2 = 4d0 / 9d0
+      ed2 = 1d0 / 9d0
 *
       el4 = el2**2
       eu4 = eu2**2
       ed4 = ed2**2
 *
-*     Beta function and mass anomalous dimension coefficients
-*
-      do i = 1, 9
+*     Beta function coefficients
+*     
+      do i = 1,9
+         if (quarksalpha) then
+            beta0(i) = - 4d0 / 3d0 *
+     .           ( el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) ) )
+            beta1(i) = - 4d0 *
+     .           ( el4 * nl(i) + nc * ( eu4 * nu(i) + ed4 * nd(i) ) )
+         else
+            beta0(i) = - 4d0 * el2 * nl(i) / 3d0
+            beta1(i) = - 4d0 * el4 * nl(i)    
+         endif
+      enddo
+*     
+*     Turn off quark charges if option quark on
+      if (.not.quarks) then
+         eu2 = 0d0
+         ed2 = 0d0
+         eu4 = 0d0
+         ed4 = 0d0
+      endif
+*     
+      do i = 1,9      
          nfsum2(i) = el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) )
          nfsum4(i) = el4 * nl(i) + nc * ( eu4 * nu(i) + ed4 * nd(i) )
-         if (quarksalpha) then
-            beta0(i) = - 4d0 * nfsum2(i) / 3d0
-            beta1(i) = - 4d0 * nfsum4(i)
-         else
-            beta0(i) = - 4d0 * nl(i) / 3d0
-            beta1(i) = - 4d0 * nl(i)
-         endif         
       enddo
 *
       return

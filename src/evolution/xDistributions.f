@@ -15,6 +15,7 @@
       include "../commons/ns.h"
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
+      include "../commons/tecparam.h"
 **
 *     Input Variables
 *
@@ -29,12 +30,12 @@
       double precision xfev(19)
       double precision integrand
       external integrand
-      integer j,m
+      integer j
       double precision r
       double precision theta,sigma,t
       double complex s,tmp(19)
       double complex xfN(19)
-      parameter(m=51) ! Must be odd      
+      double precision sq2thnfi,sq2thnffp1      
 **
 *     Output Variables
 *
@@ -58,20 +59,24 @@ c$$$      common/integvar/xval,nfival,nffval,ipval,mval
          if(nff.gt.nfmax) nff = nfmax
       endif
 *
-*     Coupling at the final scale
-*
-      ath(nfi)   = ath(1)
-      ath(nff+1) = aQED(Q**2d0)
-*     write(*,*)"Q,ath(nff+1)",Q,ath(nff+1)
-*
+      if(aemfix)then
+         sq2thnfi = q2th(nfi)
+         sq2thnffp1 = q2th(nff+1)      
+         q2th(nfi)  = q2th(1)
+         q2th(nff+1) = Q**2d0
+      else
+         ath(nfi)   = ath(1)
+         ath(nff+1) = aQED(Q**2d0)
+      endif
+*     
 *     trapezioidal integration with Talbot path
       do ip=1,19
          tmp(ip) = (0d0,0d0)
       enddo      
       t = - dlog(x)
-      r = 2d0 * 16 / 5d0 / t
-      do j=1,m-1
-         theta = - pi + dble(j) * ( 2d0 * pi / dble(m) )
+      r = 2d0 * rinvmel / 5d0 / t
+      do j=1,minvmel-1
+         theta = - pi + dble(j) * ( 2d0 * pi / dble(minvmel) )
          sigma = theta + (theta/tan(theta)-1d0)/tan(theta)
          s     = r * theta * dcmplx(1d0/tan(theta),1d0) + 1d0
          call NDistributions(s,nfi,nff,xfN)
@@ -81,7 +86,7 @@ c$$$      common/integvar/xval,nfival,nffval,ipval,mval
          enddo
       enddo
       do ip=1,19
-         xfev(ip) = x * r * dble(tmp(ip)) / m
+         xfev(ip) = x * r * dble(tmp(ip)) / minvmel
       enddo
 *
 *     Try a different integrator. Slower because xfN is evaluated
@@ -104,9 +109,14 @@ c$$$*
 *
       call evln2lha(xfev,xfph)
 *
-*     Restore ath(nff+1) to its proper value
-      call initCouplings
-*      
+*     Restore thresholds or ath(nff+1) to proper values
+      if(aemfix)then
+         q2th(nfi) = sq2thnfi
+         q2th(nff+1) = sq2thnffp1
+      else
+         call initCouplings
+      endif         
+*     
       return
       end
 ************************************************************************

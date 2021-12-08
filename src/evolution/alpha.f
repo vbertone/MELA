@@ -38,6 +38,11 @@
 *
       double precision aQED
 *
+      if(aemfix)then
+         aQED = aref / 4d0 / pi
+         return
+      endif
+*
       ar0 = aref / 4d0 / pi
 *
       mur20 = q2ref
@@ -95,6 +100,7 @@
 *
       include "../commons/beta.h" 
       include "../commons/consts.h"
+      include "../commons/tecparam.h"
 **
 *     Input Variables
 *
@@ -104,14 +110,12 @@
 **
 *     Inernal Variables
 *
-      INTEGER NSTEP,K1
+      INTEGER K1
       DOUBLE PRECISION AQED
       DOUBLE PRECISION SXTH
       DOUBLE PRECISION FBETAMELA
       DOUBLE PRECISION XK0,XK1,XK2,XK3
-      DOUBLE PRECISION DLR,LRRAT
-      
-      PARAMETER(NSTEP=10)
+      DOUBLE PRECISION DLR,LRRAT      
       PARAMETER(SXTH=0.166666666666666D0)
 **
 *     Output Variables

@@ -10,115 +10,78 @@ namespace MELA {
     void initializeevolution_(void);
     void readparameters_(char* fcard);
     void setdefaultparameters_(void);
-    void enablequarks_(int*);
-    void enablequarksalpha_(int*);
-    void setalpha_(double* ain, double* qin);
+    double aqed_(double* q2);
+    void geta0_(double* a0);    
+    void xdistributions_(double* x, double* q, double* xfph);
+
+    void setperturbativeorder_(int* iptin);
+    void getperturbativeorder_(int* iptout);
+
     void setflavourscheme_(char* fnsin);
     void setflavourschemeint_(int* fnsin);
-    void setnffn_(int* nffnin);
+    void getflavourschemeint_(int* fscheme);
+
+    void setfactorisationscheme_(char* fsin);
+    void setfactorisationschemeint_(int* fsinint);
+    void getfactorisationschemeint_(int* fsintout);
+
     void setnfmax_(int* nfmaxin);
-    void setnffnalpha_(int* nffnalphain);
-    void setnfmaxalpha_(int* nfmaxalphain);    
-    void setperturbativeorder_(int* iptin);
-    void setthresholds_(double* me, double* mu, double* md, double* ms, double* mm, double* mc, double* mt, double* mb, double* mtp);
-    double aqed_(double* q2);
-    void xdistributions_(double* x, double* q, double* xfph);
+    void getnfmax_(int* nfmax);
+
+    void setnffn_(int* nffnin);
+    void getnffn_(int* nffn);
+    
+    void enablequarks_(int*);
+    void getenablequarks_(int*);
+    
+    void setalpha_(double* ain, double* qin);
+    void getalpharef_(double*);
+    void getalphaqref_(double*);
+    
+    void enablequarksalpha_(int*);
+    void getenablequarksalpha_(int*);
+    void setnffnalpha_(int*);
+    void getnffnalpha_(int*);
+    void setnfmaxalpha_(int*);
+    void getnfmaxalpha_(int*);
+    
+    void setthresholds_(double* me, double* mu, double* md, double* ms, double* mm,
+			double* mc, double* mt, double* mb, double* mtp);
+    void getthresholds2_(double* q2thrs);
+
     void getc2_(double* C2);
     void getc4_(double* C4);
     void getb0_(double* b0);
     void getb1_(double* b1);
-    void getthresholds_(double* q2thrs);
-    void geta0_(double* a0);
-    int getnfmax_(int* nfmax);
+
+    void setnint_(int*);
+    void getnint_(int*);
+    void setnexp_(int*);
+    void getnexp_(int*);
+    void setnstep_(int*);
+    void getnstep_(int*);
+    void setminvmel_(int*);
+    void getminvmel_(int*);
+    void setrinvmel_(int*);
+    void getrinvmel_(int*);
+
+    void setalphafix_(int*);
+    void getalphafix_(int*);    
   }
 
-  /// Initialize the library
   void InitializeEvolution(void)
   {
     initializeevolution_();
   };
 
-  /// Read parameters from card
   void ReadParameters(std::string const& fcard)
   {
     std::vector<char> cstr(fcard.c_str(), fcard.c_str() + fcard.size() + 1);
     readparameters_(cstr.data());
   };
 
-  /// Set default parameters 
   void SetDefaultParameters(void) { setdefaultparameters_(); };
 
-  /// Enable quarks in the evolution
-  void EnableQuarks(int eq)
-  {
-    enablequarks_(&eq);
-  };
-  void EnableQuarksalpha(int eq)
-  {
-    enablequarksalpha_(&eq);
-  };
-  
-  /// Set reference values for alpha
-  void SetAlpha(double ain, double Qin)
-  {
-    setalpha_(&ain, &Qin);
-  };
-
-  /// Set the flavour scheme to be used in the evolution as a string
-  void SetFlavourScheme(std::string const& fnsin)
-  {
-    std::vector<char> cstr(fnsin.c_str(), fnsin.c_str() + fnsin.size() + 1);
-    setflavourscheme_(cstr.data());
-  };
-
-  /// Set the flavour scheme to be used in the evolution as a int
-  void SetFlavourSchemeInt(int fnsin)
-  {
-    setflavourschemeint_(&fnsin);
-  };
-
-  /// Set the number of fermions in the FFNS
-  void SetNFFN(int NFFNin)
-  {
-    setnffn_(&NFFNin);
-  };
-
-  /// Set maximum number of fermions in the VFNS
-  void SetNFmax(int NFmaxin)
-  {
-    setnfmax_(&NFmaxin);
-  };
-
-  void SetNFFNalpha(int NFFNalphain)
-  {
-    setnffnalpha_(&NFFNalphain);
-  };
-  void SetNFmaxalpha(int NFmaxalphain)
-  {
-    setnfmaxalpha_(&NFmaxalphain);
-  };
-
-  
-  int GetNFmax()
-  {
-    int nfmax;
-    getnfmax_(&nfmax);
-    return nfmax;
-  }
-  
-  /// Set the perturbative order
-  void SetPerturbativeOrder(int iptin)
-  {
-    setperturbativeorder_(&iptin);
-  };
-
-  /// Set fermion thresholds
-  void SetThresholds(double me, double mu, double md, double ms, double mm, double mc, double mt, double mb, double mtp)
-  {
-    setthresholds_(&me, &mu, &md, &ms, &mm, &mc, &mt, &mb, &mtp);
-  };
-
-  /// Coupling
   double aQED4pi(double q2)
   {
     return aqed_(&q2);
@@ -128,14 +91,13 @@ namespace MELA {
     return aqed_(&q2)*4.0*M_PI;
   };
   
-  /// Coupling at the initial scale
   double aQEDinit()
   {
     double a0;
     geta0_(&a0);
     return a0*4.0*M_PI;
   };
-  
+
   /// PDFs
   std::map<int, double> xDistributions(double x, double Q)
   {
@@ -148,20 +110,195 @@ namespace MELA {
     return xfout;
   };
 
+ 
+  void SetPerturbativeOrder(int iptin)
+  {
+    setperturbativeorder_(&iptin);
+  };
+
+  int GetPerturbativeOrder()
+  {
+    int pto;
+    getperturbativeorder_(&pto);
+    return pto;
+  }
+
+  void SetFlavourScheme(std::string const& fnsin)
+  {
+    std::vector<char> cstr(fnsin.c_str(), fnsin.c_str() + fnsin.size() + 1);
+    setflavourscheme_(cstr.data());
+  };
+
+  void SetFlavourSchemeInt(int fnsin)
+  {
+    setflavourschemeint_(&fnsin);
+  };
+
+  int GetFlavourSchemeInt()
+  {
+    int fscheme;
+    getflavourschemeint_(&fscheme);
+    return fscheme;
+  }
+
+  void SetFactorisationScheme(std::string const& fsin)
+  {
+    std::vector<char> cstr(fsin.c_str(), fsin.c_str() + fsin.size() + 1);
+    setfactorisationscheme_(cstr.data());
+  };
+
+  void SetFactorisationSchemeInt(int fnsinint)
+  {
+    setfactorisationschemeint_(&fnsinint);
+  };
+
+  int GetFactorisationSchemeInt()
+  {
+    int fscheme;
+    getfactorisationschemeint_(&fscheme);
+    return fscheme;
+  }
+
+  void SetNFmax(int NFmaxin)
+  {
+    setnfmax_(&NFmaxin);
+  };
+    
+  int GetNFmax()
+  {
+    int nfmax;
+    getnfmax_(&nfmax);
+    return nfmax;
+  }
+
+  void SetNFFN(int NFFNin)
+  {
+    setnffn_(&NFFNin);
+  };
+  
+  int GetNFFN()
+  {
+    int nffn;
+    getnffn_(&nffn);
+    return nffn;
+  }
+  
+  void SetEnableQuarks(int eq)
+  {
+    enablequarks_(&eq);
+  };
+
+  bool GetEnableQuarks()
+  {
+    int quarks;
+    getenablequarks_(&quarks);
+    return quarks;
+  }
+  
+  /// Set reference values for alpha
+  void SetAlpha(double ain, double Qin)
+  {
+    setalpha_(&ain, &Qin);
+  };
+
+  double GetAlphaRef()
+  {
+    double res;
+    getalpharef_(&res);
+    return res;
+  }
+
+  double GetAlphaQref()
+  {
+    double res;
+    getalphaqref_(&res);
+    return res;
+  }
+
+  void SetEnableQuarksalpha(int eq)
+  {
+    enablequarksalpha_(&eq);
+  };
+  
+  bool GetEnableQuarksalpha()
+  {
+    int quarks;
+    getenablequarksalpha_(&quarks);
+    return quarks;
+  }
+
+  void SetNFFNalpha(int NFFNalphain)
+  {
+    setnffnalpha_(&NFFNalphain);
+  };
+  int GetNFFNalpha()
+  {
+    int nffnalpha;
+    getnffnalpha_(&nffnalpha);
+    return nffnalpha;
+  }
+  
+  void SetNFmaxalpha(int NFmaxalphain)
+  {
+    setnfmaxalpha_(&NFmaxalphain);
+  };
+  int GetNFmaxalpha()
+  {
+    int nffnalpha;
+    getnfmaxalpha_(&nffnalpha);
+    return nffnalpha;
+  }
+  
+    
+  /// Set fermion thresholds
+  void SetThresholds(double me, double mu, double md, double ms, double mm,
+		     double mc, double mt, double mb, double mtp)
+  {
+    setthresholds_(&me, &mu, &md, &ms, &mm, &mc, &mt, &mb, &mtp);
+  };
+
+  void SetThresholds(std::vector<double> thrs)
+  {
+    double & me = thrs[0];
+    double & mu = thrs[1];
+    double & md = thrs[2];
+    double & ms = thrs[3];
+    double & mm = thrs[4];
+    double & mc = thrs[5];
+    double & mt = thrs[6];
+    double & mb = thrs[7];
+    double & mtp = thrs[8];
+    
+    setthresholds_(&me, &mu, &md, &ms, &mm, &mc, &mt, &mb, &mtp);
+  };
+  
+
   std::vector<double> GetThresholds()
   {
     double* q2thrsf = new double[9];
-    getthresholds_(q2thrsf);
+    getthresholds2_(q2thrsf);
+    std::vector<double> thrs;
+    for (int i = 0; i < 9; i++)
+      thrs.push_back(sqrt(q2thrsf[i]));
+    delete[] q2thrsf;
+    return thrs;
+  }  
+
+  std::vector<double> GetThresholds2()
+  {
+    double* q2thrsf = new double[9];
+    getthresholds2_(q2thrsf);
     std::vector<double> q2thrs;
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 9; i++)
       q2thrs.push_back(q2thrsf[i]);
     delete[] q2thrsf;
     return q2thrs;
-  }
+  }  
 
+  
   int GetRegionMU2(double mu2)
   {
-    std::vector<double> q2thrs = GetThresholds();
+    std::vector<double> q2thrs = GetThresholds2();
     int region;
     // Initialize region to nfmax-1
     getnfmax_(&region);
@@ -211,4 +348,77 @@ namespace MELA {
     delete[] b1f;
     return res;
   }
+
+  void SetNint(int res)
+  {
+    setnint_(&res);
+  }
+
+  int GetNint()
+  {
+    int res;
+    getnint_(&res);
+    return res;
+  }
+
+  void SetNexp(int res)
+  {
+    setnexp_(&res);
+  }
+
+  int GetNexp()
+  {
+    int res;
+    getnexp_(&res);
+    return res;
+  }
+
+  void SetNstep(int res)
+  {
+    setnstep_(&res);
+  }
+
+  int GetNstep()
+  {
+    int res;
+    getnstep_(&res);
+    return res;
+  }
+
+  void SetMinvmel(int res)
+  {
+    setminvmel_(&res);
+  }
+
+  int GetMinvmel()
+  {
+    int res;
+    getminvmel_(&res);
+    return res;
+  }
+
+  void SetRinvmel(int res)
+  {
+    setrinvmel_(&res);
+  }
+
+  int GetRinvmel()
+  {
+    int res;
+    getrinvmel_(&res);
+    return res;
+  }
+
+  void SetAlphaFix(int eq)
+  {
+    setalphafix_(&eq);
+  };
+
+  bool GetAlphaFix()
+  {
+    int res;
+    getalphafix_(&res);
+    return res;
+  }
+  
 }

@@ -45,5 +45,16 @@
 *
       return
       end
-
+************************************************************************
+      subroutine GetFlavourSchemeInt(nsintout)
+      implicit none
+      include "../commons/ns.h"
+      integer nsintout
+      if (ns.eq."FFNS") then
+         nsintout = 0
+      elseif (ns.eq."VFNS") then
+         nsintout = 1
+      endif
+      return
+      end
       

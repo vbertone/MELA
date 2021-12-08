@@ -120,35 +120,43 @@
 *      
 *     Alpha reference values
 *
-      write(6,*) "Alpha reference value:"
-      write(6,"(a,f14.9,a)") "   Qref = ",sqrt(Q2REF)," GeV"
-      write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF
-      if(NS.eq."FFNS")then
-         if(NFFNalpha.lt.0.or.NFFNalpha.gt.9)then
-            write(6,*)"In InitializeEvolution.f:"
-            write(6,*)"NFFNalpha out or range, NFFNalpha =",NFFNalpha
+      if(aemfix)then
+         write(6,*) "Alpha FIXED with reference value:"
+         write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF         
+      else
+         write(6,*) "Alpha reference value:"
+         write(6,"(a,f14.9,a)") "   Qref = ",sqrt(Q2REF)," GeV"
+         write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF
+         if(NS.eq."FFNS")then
+            if(NFFNalpha.lt.0.or.NFFNalpha.gt.9)then
+               write(6,*)"In InitializeEvolution.f:"
+               write(6,*)"NFFNalpha out or range, NFFNalpha =",
+     .              NFFNalpha
+               call exit(-10)
+            endif
+            write(6,"(a,i1)") " Alpha evolution: FFNS with NF = ",
+     .           NFFNalpha
+         elseif(NS.eq."VFNS")then
+            write(6,*) "Alpha evolution: VFNS"
+         else
+            write(6,*) "In InitializeEvolution.f:"
+            write(6,*) "Unknown mass scheme = ",NS
             call exit(-10)
          endif
-         write(6,"(a,i1)") " Alpha evolution: FFNS with NF = ",NFFNalpha
-      elseif(NS.eq."VFNS")then
-         write(6,*) "Alpha evolution: VFNS"
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Unknown mass scheme = ",NS
-         call exit(-10)
+         if(nfmaxalpha.ge.0.and.nfmaxalpha.le.9)then
+            write(6,"(a,i1)") " Max.num. active flav in alpha = ",
+     .           nfmaxalpha
+         else
+            write(6,*) "In InitializeEvolution.f:"
+            write(6,*) "Invalid value for nfmaxalpha =",nfmaxalpha
+            call exit(-10)
+         endif
+         if (quarksalpha) then
+            write(6,*) "Quarks are included in the evolution of alpha"
+         else
+            write(6,*) "Quarks NOT included in the evolution of alpha"
+         endif
       endif
-      if(nfmaxalpha.ge.0.and.nfmaxalpha.le.9)then
-        write(6,"(a,i1)") " Max.num. active flav in alpha = ",nfmaxalpha
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Invalid value for nfmaxalpha =",nfmaxalpha
-         call exit(-10)
-      endif
-      if (quarksalpha) then
-         write(6,*) "Quarks are included in the evolution of alpha"
-      else
-         write(6,*) "Quarks are NOT included in the evolution of alpha"
-      endif      
-*            
+*     
       return
       end
