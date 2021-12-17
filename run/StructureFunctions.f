@@ -62,23 +62,29 @@
       write(6,*) "MELA structure functions:"
       write(6,*)
      1     "   x   ","    Q2    ",
-     2     "  F2light   ",
-     3     "  F2charm   ",
-     4     "  FLlight   ",
-     5     "  FLcharm   ",
-     6     "  F3light   ",
-     7     "  F3charm   "
+     2     "   F2tot    ",
+     3     "  F2light   ",
+     4     "  F2charm   ",
+     5     "   FLtot    ",
+     6     "  FLlight   ",
+     7     "  FLcharm   ",
+     8     "   F3tot    ",
+     9     "  F3light   ",
+     1     "  F3charm   "
       do ilha=3,11
          call xStructureFunctions(xlha(ilha),nQ,Q,SFx)
 *
-         write(6,'(es7.1,2x,es8.2,6(es12.4))')
+         write(6,'(es7.1,2x,es8.2,9(es12.4))')
      1        xlha(ilha),abs(Q(nQ)**2d0),
-     2        dreal(SFx(1,1)+SFx(1,2)+SFx(1,3)),
-     3        dreal(SFx(1,4)),
-     4        dreal(SFx(2,1)+SFx(2,2)+SFx(2,3)),
-     5        dreal(SFx(2,4)),
-     6        dreal(SFx(3,1)+SFx(3,2)+SFx(3,3)),
-     7        dreal(SFx(3,4))
+     2        dreal(SFx(1,0)),
+     3        dreal(SFx(1,1)+SFx(1,2)+SFx(1,3)),
+     4        dreal(SFx(1,4)),
+     5        dreal(SFx(2,0)),
+     6        dreal(SFx(2,1)+SFx(2,2)+SFx(2,3)),
+     7        dreal(SFx(2,4)),
+     8        dreal(SFx(3,0)),
+     9        dreal(SFx(3,1)+SFx(3,2)+SFx(3,3)),
+     1        dreal(SFx(3,4))
       enddo
       write(*,*) "  "
 *

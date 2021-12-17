@@ -117,9 +117,9 @@
          enddo
       enddo
 *
-*     F2, FL
+*     F2, FL, xF3
 *
-      do isf=1,2
+      do isf=1,3
          SFx(isf,0) = (0d0,0d0)
          do ip=1,6
             SFx(isf,ip) = x * r * tmp(isf,ip) / m
@@ -127,16 +127,6 @@
             if(abs(SFx(isf,ip)).lt.1d-12) SFx(isf,ip) = (0d0,0d0)
             SFx(isf,0) = SFx(isf,0) + SFx(isf,ip)
          enddo
-      enddo
-*
-*     F3
-*
-      SFx(3,0) = (0d0,0d0)
-      do ip=1,6
-         SFx(3,ip) = x * r * tmp(3,ip) / m
-         if(x.ge.rho(ip)) SFx(3,ip) = (0d0,0d0)
-         if(abs(SFx(3,ip)).lt.1d-12) SFx(3,ip) = (0d0,0d0)
-         SFx(3,0) = SFx(3,0) + SFx(3,ip)
       enddo
 *
       return
