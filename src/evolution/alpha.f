@@ -20,6 +20,7 @@
       include "../commons/nfmax.h"
       include "../commons/ns.h"
       include "../commons/ipt.h"
+      include "../commons/renscheme.h"
 **
 *     Input Variables
 *
@@ -38,7 +39,7 @@
 *
       double precision aQED
 *
-      if(aemfix)then
+      if(renscheme.ne."MSBAR")then
          aQED = aref / 4d0 / pi
          return
       endif

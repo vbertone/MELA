@@ -10,7 +10,8 @@
       implicit none
 *
       include "../commons/alpha.h"
-      include "../commons/massthrs.h"      
+      include "../commons/massthrs.h"
+      include "../commons/renscheme.h"
 **
 *     Input Variables
 *
@@ -36,10 +37,12 @@
 *
 *     Call evolution kernels
 *
-         if(aemfix)then
-            call alpha_fixed(N,q2th(ifl),q2th(ifl+1),ifl,evf)
-         else         
+         if(renscheme.eq."MSBAR")then
             call path_ordering(N,ath(ifl),ath(ifl+1),ifl,evf)
+         elseif(renscheme.eq."FIXED")then
+            call alpha_fixed(N,q2th(ifl),q2th(ifl+1),ifl,evf)
+         elseif(renscheme.eq."ALPMZ")then
+            call alphaMZ_analytic(N,q2th(ifl),q2th(ifl+1),ifl,evf)
          endif
 *
 *     Convolute with vector of PDFs

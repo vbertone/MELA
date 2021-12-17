@@ -32,11 +32,8 @@
       double complex npdf(19)
 *
 *     Set the value of alpha(mu0)
-      if(aemfix)then
-         amu0 = aref / 4d0 / pi
-      else
-         amu0 = ath(1)
-      endif
+*
+      amu0 = ath(1)
 *      
       deN  = (0d0, 0d0)
       dgmN = (0d0, 0d0)

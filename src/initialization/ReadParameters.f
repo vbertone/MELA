@@ -17,6 +17,7 @@
       include "../commons/nfmax.h"
       include "../commons/activeflavours.h"
       include "../commons/facscheme.h"
+      include "../commons/renscheme.h"
 **
 *     Input Variables
 *
@@ -43,6 +44,7 @@
             if(str(1:lp).eq."IPT")       read(str(lu:50),*) IPT
             if(str(1:lp).eq."NS")        read(str(lu:50),*) NS
             if(str(1:lp).eq."FACSCHEME") read(str(lu:50),*) FACSCHEME
+            if(str(1:lp).eq."RENSCHEME") read(str(lu:50),*) RENSCHEME
             if(str(1:lp).eq."NFMAX")     read(str(lu:50),*) NFMAX
             if(str(1:lp).eq."NFFN")      read(str(lu:50),*) NFFN
             if(str(1:lp).eq."QREF")      read(str(lu:50),*) QR

@@ -36,20 +36,3 @@
       Qrefout = dsqrt(Q2ref)
       return
       end
-************************************************************************            
-      subroutine GetAlphaFix(aemfixout)
-      implicit none
-      include "../commons/alpha.h"
-      logical aemfixout
-      aemfixout = aemfix
-      return
-      end
-************************************************************************                  
-      subroutine SetAlphaFix(aemfixin)
-      implicit none
-      include "../commons/alpha.h"
-      logical aemfixin
-      aemfix = aemfixin
-      return
-      end
-      

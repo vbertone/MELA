@@ -25,6 +25,10 @@ namespace MELA {
     void setfactorisationschemeint_(int* fsinint);
     void getfactorisationschemeint_(int* fsintout);
 
+    void setrenormalisationscheme_(char* rsin);
+    void setrenormalisationschemeint_(int* rsinint);
+    void getrenormalisationschemeint_(int* fsintout);
+
     void setnfmax_(int* nfmaxin);
     void getnfmax_(int* nfmax);
 
@@ -64,9 +68,6 @@ namespace MELA {
     void getminvmel_(int*);
     void setrinvmel_(int*);
     void getrinvmel_(int*);
-
-    void setalphafix_(int*);
-    void getalphafix_(int*);    
   }
 
   void InitializeEvolution(void)
@@ -157,6 +158,24 @@ namespace MELA {
     int fscheme;
     getfactorisationschemeint_(&fscheme);
     return fscheme;
+  }
+
+  void SetRenormalisationScheme(std::string const& rdin)
+  {
+    std::vector<char> cstr(rdin.c_str(), rdin.c_str() + rdin.size() + 1);
+    setrenormalisationscheme_(cstr.data());
+  };
+
+  void SetRenormalisationSchemeInt(int rnsinint)
+  {
+    setrenormalisationschemeint_(&rnsinint);
+  };
+
+  int GetRenormalisationSchemeInt()
+  {
+    int rdcheme;
+    getrenormalisationschemeint_(&rdcheme);
+    return rdcheme;
   }
 
   void SetNFmax(int NFmaxin)
@@ -408,17 +427,4 @@ namespace MELA {
     getrinvmel_(&res);
     return res;
   }
-
-  void SetAlphaFix(int eq)
-  {
-    setalphafix_(&eq);
-  };
-
-  bool GetAlphaFix()
-  {
-    int res;
-    getalphafix_(&res);
-    return res;
-  }
-  
 }

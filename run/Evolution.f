@@ -29,10 +29,13 @@
 *
       call SetPerturbativeOrder(1)
       call SetFlavourScheme("VFNS")
+      call SetAlpha(0.007815265003645828d0, 91.1876d0)
       !call SetFactorisationScheme("DELTA")
+      !call SetRenormalisationScheme("FIXED")
+      !call SetAlpha(0.007755543505006d0, 91.1876d0)
+      !call SetRenormalisationScheme("ALPMZ")
       call SetNFmax(8)
       call SetNFFN(8)
-      call SetAlpha(0.007815265003645828d0, 91.1876d0)
       call EnableQuarks(.true.)
       call SetThresholds(0.000510998928d0,0.00216d0,0.00467d0,
      1     0.093d0,0.10566d0,1.27d0,1.77686d0,4.18d0,172.76d0)

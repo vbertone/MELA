@@ -17,6 +17,7 @@
       include "../commons/nfmax.h"
       include "../commons/activeflavours.h"
       include "../commons/facscheme.h"
+      include "../commons/renscheme.h"
 **
 *     Internal variables
 *
@@ -57,6 +58,20 @@
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Unknown factorisation scheme = ",FACSCHEME
+         call exit(-10)
+      endif
+*
+*     Renormalisation scheme
+*
+      if(RENSCHEME.eq."MSBAR")then
+         write(6,*) "Renormalisation scheme: MSbar"
+      elseif(RENSCHEME.eq."FIXED")then
+         write(6,*) "Renormalisation scheme: alpha fixed"
+      elseif(RENSCHEME.eq."ALPMZ")then
+         write(6,*) "Renormalisation scheme: alpha(MZ)"
+      else
+         write(6,*) "In InitializeEvolution.f:"
+         write(6,*) "Unknown renormalisation scheme = ",RENSCHEME
          call exit(-10)
       endif
 *
@@ -120,7 +135,7 @@
 *      
 *     Alpha reference values
 *
-      if(aemfix)then
+      if(RENSCHEME.ne."MSBAR")then
          write(6,*) "Alpha FIXED with reference value:"
          write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF         
       else

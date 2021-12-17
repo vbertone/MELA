@@ -77,7 +77,7 @@ C        BT1 = BETA1(NF)
 *     Solution at LO
 *
       DA = ( AFF - AII ) / DBLE(NINT)
-*      
+*
       IF(IPT.EQ.0)THEN
 *
 c$$$         AI = AII
@@ -203,7 +203,6 @@ c$$$  CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
             JSIINV(2,2) = JSIINV(2,2) / ( 1D0 + AI * JLL )
             JSFINV(1,2) = JSFINV(1,2) - AF * JGL / ( 1D0 + AF * JLL )
             JSFINV(2,2) = JSFINV(2,2) / ( 1D0 + AF * JLL )
-
 *
             CALL MMULT(JSI,4,4,SGITMP1,4,4,SGITMP2)
             CALL MMULT(SGITMP2,4,4,JSIINV,4,4,SGI)

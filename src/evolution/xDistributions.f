@@ -16,6 +16,7 @@
       include "../commons/nffn.h"
       include "../commons/nfmax.h"
       include "../commons/tecparam.h"
+      include "../commons/renscheme.h"
 **
 *     Input Variables
 *
@@ -59,10 +60,10 @@ c$$$      common/integvar/xval,nfival,nffval,ipval,mval
          if(nff.gt.nfmax) nff = nfmax
       endif
 *
-      if(aemfix)then
-         sq2thnfi = q2th(nfi)
-         sq2thnffp1 = q2th(nff+1)      
-         q2th(nfi)  = q2th(1)
+      if(renscheme.ne."MSBAR")then
+         sq2thnfi    = q2th(nfi)
+         sq2thnffp1  = q2th(nff+1)
+         q2th(nfi)   = q2th(1)
          q2th(nff+1) = Q**2d0
       else
          ath(nfi)   = ath(1)
@@ -110,8 +111,8 @@ c$$$*
       call evln2lha(xfev,xfph)
 *
 *     Restore thresholds or ath(nff+1) to proper values
-      if(aemfix)then
-         q2th(nfi) = sq2thnfi
+      if(renscheme.ne."MSBAR")then
+         q2th(nfi)   = sq2thnfi
          q2th(nff+1) = sq2thnffp1
       else
          call initCouplings

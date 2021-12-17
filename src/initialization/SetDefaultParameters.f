@@ -17,6 +17,7 @@
       include "../commons/nfmax.h"
       include "../commons/activeflavours.h"
       include "../commons/facscheme.h"
+      include "../commons/renscheme.h"
       include "../commons/tecparam.h"
 *
 *     Default values
@@ -24,6 +25,7 @@
       IPT         = 1
       NS          = "VFNS"
       FACSCHEME   = "MSBAR"
+      RENSCHEME   = "MSBAR"
       NFMAX       = 8
       NFFN        = 8
       QUARKS      = .TRUE.
@@ -49,7 +51,6 @@ C     NSTEP      = 20
       MINVMEL    = 51
 C     MINVMEL    = 101
       RINVMEL    = 20
-      AEMFIX     = .FALSE.
 *
       return
       end

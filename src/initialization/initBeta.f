@@ -73,9 +73,9 @@
       do i = 1,9
          if (quarksalpha) then
             beta0(i) = - 4d0 / 3d0 *
-     .           ( el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) ) )
+     1           ( el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) ) )
             beta1(i) = - 4d0 *
-     .           ( el4 * nl(i) + nc * ( eu4 * nu(i) + ed4 * nd(i) ) )
+     1           ( el4 * nl(i) + nc * ( eu4 * nu(i) + ed4 * nd(i) ) )
          else
             beta0(i) = - 4d0 * el2 * nl(i) / 3d0
             beta1(i) = - 4d0 * el4 * nl(i)    
