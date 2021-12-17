@@ -628,6 +628,38 @@ P_{d \gamma} & P_{d\ell}^{\rm PS} & P_{du}^{\rm PS} & {P}_{dd}
 \label{eq:VevolDelta}
 \end{equation}
 
+\section{Evolution using the $\alpha_{M_Z}$ scheme}
+
+The evolution equations when using the $\alpha_{M_Z}$ scheme takes the
+following form:
+\begin{equation}
+\frac{d \mathbf{f}}{d\ln\mu^2} =
+\left[\left(\frac{\alpha_{M_Z}}{4\pi}\right)\mathbf{P}^{(0)}+\left(\frac{\alpha_{M_Z}}{4\pi}\right)^2\widetilde{\mathbf{P}}^{(1)}(\mu)\right]\mathbf{f}\,,
+\label{eq:DGLAPalphaMZ}
+\end{equation}
+where $\alpha_{M_Z}$ is a constant, $\mathbf{P}^{(0)}$ is the usual ($\mu$-independent)
+one-loop splitting function, while $\widetilde{\mathbf{P}}^{(1)}(\mu)$ does depend
+on $\mu$ and its expression reads:
+\begin{equation}
+\widetilde{\mathbf{P}}^{(1)}(\mu) = \mathbf{P}^{(1)}+ \frac{20}{9}C^{(2)}\mathbf{P}^{(0)}+\beta_0 \mathbf{P}^{(0)}\ln\frac{\mu^2}{M_Z^2}\,,
+\end{equation}
+where $\mathbf{P}^{(1)}$ is now the usual two-loop splitting function
+and:
+\begin{equation}
+C^{(2)} = N_C n_u e_u^2+N_C n_d e_d^2+n_\ell e_\ell^2\,.
+\end{equation}
+Given the explicit dependence on $\mu$, Eq.~(\ref{eq:DGLAPalphaMZ})
+admits a simple closed-form solution that reads:
+\begin{equation}
+\mathbf{f}(\mu)=
+\mathbf{f}(\mu_0)\exp\left\{\left[\left(\frac{\alpha_{M_Z}}{4\pi}\right)\mathbf{P}^{(0)}+\left(\frac{\alpha_{M_Z}}{4\pi}\right)^2\left(\mathbf{P}^{(1)}+
+        \frac{20}{9}C^{(2)}\mathbf{P}^{(0)}+\beta_0
+\mathbf{P}^{(0)}\ln\frac{\mu_0\mu}{M_Z^2}\right)\right]\ln\frac{\mu^2}{\mu_0^2}\right\}\,.
+\end{equation}
+
+
+
+
 
 \end{document}
 
