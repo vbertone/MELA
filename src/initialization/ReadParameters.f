@@ -49,7 +49,6 @@
             if(str(1:lp).eq."NFFN")      read(str(lu:50),*) NFFN
             if(str(1:lp).eq."QREF")      read(str(lu:50),*) QR
             if(str(1:lp).eq."AREF")      read(str(lu:50),*) AREF
-            if(str(1:lp).eq."QUARKS")    read(str(lu:50),*) QUARKS
             if(str(1:lp).eq."ME")        read(str(lu:50),*) ME
             if(str(1:lp).eq."MU")        read(str(lu:50),*) MU
             if(str(1:lp).eq."MD")        read(str(lu:50),*) MD

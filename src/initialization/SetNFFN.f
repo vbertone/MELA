@@ -5,33 +5,26 @@
 *     Sets the numer of flavours to be used when running in the FFNS
 *
 ************************************************************************
-      subroutine SetNFFN(NFFNin)
-*
+*     this set also nffn for alpha
+      subroutine SetNFFN(nlmax,numax,ndmax)      
       implicit none
-*
       include "../commons/nffn.h"
-**
-*     Input Variables
+      integer nlmax,numax,ndmax
 *
-      integer NFFNin
+*     we always set nfmax to 8 i.e. we consider all thresholds
 *
-      NFFN = NFFNin
-      NFFNalpha = NFFNin
+      nffn = 8
+      nffnalpha = nffn
 *
       return
       end
 ************************************************************************      
-      subroutine SetNFFNalpha(NFFNalphain)
-*
+      subroutine SetNffnalpha(nlmax,numax,ndmax)
       implicit none
-*
       include "../commons/nffn.h"
-**
-*     Input Variables
+      integer nlmax,numax,ndmax      
 *
-      integer NFFNalphain
-*
-      NFFNalpha = NFFNalphain
+      nffnalpha = 8
 *
       return
       end
@@ -44,7 +37,7 @@
       return
       end
 ************************************************************************
-      subroutine GetNFFNalpha(nffnalphaout)
+      subroutine GetNffnalpha(nffnalphaout)
       implicit none
       include "../commons/nffn.h"      
       integer nffnalphaout

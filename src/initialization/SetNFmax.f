@@ -5,33 +5,26 @@
 *     Sets the maximum number of active flavours to be used in the VFNS
 *
 ************************************************************************
-      subroutine SetNFmax(NFmaxin)
-*
+*     this set also nfmax for alpha
+      subroutine SetNFmax(nlmax,numax,ndmax)
       implicit none
-*
       include "../commons/nfmax.h"
-**
-*     Input Variables
+      integer nlmax,numax,ndmax
+*      
+*     we always set nfmax to 8 i.e. we consider all thresholds
 *
-      integer NFmaxin
-*
-      NFmax = NFmaxin
-      NFmaxalpha = NFmaxin
-*
+      nfmax = 8
+      nfmaxalpha = nfmax
+*      
       return
       end
-************************************************************************      
-      subroutine SetNFmaxalpha(NFmaxalphain)
-*
+************************************************************************
+      subroutine SetNfmaxalpha(nlmaxaem,numaxaem,ndmaxaem)      
       implicit none
-*
       include "../commons/nfmax.h"
-**
-*     Input Variables
+      integer nlmaxaem,numaxaem,ndmaxaem
 *
-      integer NFmaxalphain
-*
-      NFmaxalpha = NFmaxalphain
+      nfmaxalpha = 8      
 *
       return
       end      
@@ -44,7 +37,7 @@
       return
       end
 ************************************************************************      
-      subroutine GetNFmaxalpha(nfmaxout)
+      subroutine GetNfmaxalpha(nfmaxout)
       implicit none
       include "../commons/nfmax.h"      
       integer nfmaxout

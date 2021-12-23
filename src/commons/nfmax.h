@@ -1,6 +1,6 @@
 *     -*-fortran-*-
 *
-*     Maximum number of active flavours for alphas and PDF evolution for bot LHA evolution and experimental FK tables
+*     Maximum number of active flavours for alphas and PDF evolution
 *
       integer nfmax,nfmaxalpha
 *

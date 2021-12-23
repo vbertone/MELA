@@ -125,14 +125,9 @@
          endif
       enddo
 *
-*     Quark are included in the evolution
+      write(6,"(a,i1,a,i1,a,i1)") " NLMAX = ",NLMAX,
+     .     ", NUMAX = ",NUMAX,", NDMAX = ",NDMAX
 *
-      if (quarks) then
-         write(6,*) "Quarks are included in the evolution"
-      else
-         write(6,*) "Quarks are NOT included in the evolution"
-      endif
-*      
 *     Alpha reference values
 *
       if(RENSCHEME.ne."MSBAR")then
@@ -166,11 +161,8 @@
             write(6,*) "Invalid value for nfmaxalpha =",nfmaxalpha
             call exit(-10)
          endif
-         if (quarksalpha) then
-            write(6,*) "Quarks are included in the evolution of alpha"
-         else
-            write(6,*) "Quarks NOT included in the evolution of alpha"
-         endif
+         write(6,"(a,i1,a,i1,a,i1)") " NLMAXAEM = ",NLMAXAEM,
+     .     ", NUMAXAEM = ",NUMAXAEM,", NDMAXAEM = ",NDMAXAEM
       endif
 *     
       return

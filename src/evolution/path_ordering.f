@@ -7,7 +7,7 @@
 *     using the path ordering method.
 *
 ***********************************************************************
-      SUBROUTINE PATH_ORDERING(ZN,AII,AFF,NF,EVF)
+      SUBROUTINE PATH_ORDERING(ZN,AII,AFF,NF,EVF,NINTS)
 *
       IMPLICIT NONE
 *
@@ -25,6 +25,7 @@
       INTEGER NF
       DOUBLE PRECISION AII,AFF
       DOUBLE COMPLEX ZN
+      INTEGER NINTS
 **
 *     Internal Variables
 *
@@ -76,7 +77,7 @@ C        BT1 = BETA1(NF)
 *
 *     Solution at LO
 *
-      DA = ( AFF - AII ) / DBLE(NINT)
+      DA = ( AFF - AII ) / DBLE(NINTS)
 *
       IF(IPT.EQ.0)THEN
 *
@@ -90,7 +91,7 @@ c$$$            ENDDO
 c$$$         ENDDO
 c$$$*
 c$$$         AK = AI
-c$$$         DO K=1,NINT-1
+c$$$         DO K=1,NINTS-1
 c$$$            AK = AK + DA
 c$$$            DO I=1,4
 c$$$               DO J=1,4
@@ -113,7 +114,7 @@ c$$$  CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
          ENDDO
 *     
          AI = AII
-         DO K=1,NINT
+         DO K=1,NINTS
             AF = AI + DA
             DO I=1,4
                DO J=1,4
@@ -142,7 +143,7 @@ c$$$  CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
          ENDDO
 *     
          AK = AI
-         DO K=1,NINT-1
+         DO K=1,NINTS-1
             AK = AK + DA
 *     
             DO I=1,2
@@ -176,7 +177,7 @@ c$$$  CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
          ENDIF
 *
          AI = AII
-         DO K=1,NINT
+         DO K=1,NINTS
             AF = AI + DA
             DO I=1,4
                DO J=1,4
@@ -246,7 +247,7 @@ c$$$  CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
          ENDDO
 *     
          AK = AI
-         DO K=1,NINT-1
+         DO K=1,NINTS-1
             AK = AK + DA
             DO I=1,2
                DO J=1,3

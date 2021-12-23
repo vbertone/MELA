@@ -17,48 +17,15 @@
 *     Internal Variables
 *
       integer i
+      integer nlaem(0:9), nuaem(0:9), ndaem(0:9)
+      integer C2aem(1:9), C4aem(1:9)
+      integer C2(1:9), C4(1:9)      
 *
-*     Initialise numver of active lepton, up-type, and down-type
-*     flavours.
-*
-      nl(0) = 0
-      nl(1) = 1
-      nl(2) = 1
-      nl(3) = 1
-      nl(4) = 1
-      nl(5) = 2
-      nl(6) = 2
-      nl(7) = 3
-      nl(8) = 3
-      nl(9) = 3
-*
-      nu(0) = 0
-      nu(1) = 0
-      nu(2) = 1
-      nu(3) = 1
-      nu(4) = 1
-      nu(5) = 1
-      nu(6) = 2
-      nu(7) = 2
-      nu(8) = 2
-      nu(9) = 3
-*
-      nd(0) = 0
-      nd(1) = 0
-      nd(2) = 0
-      nd(3) = 1
-      nd(4) = 2
-      nd(5) = 2
-      nd(6) = 2
-      nd(7) = 2
-      nd(8) = 3
-      nd(9) = 3
-*
-*     Number of colours
+*     fill number of colours
 *
       nc = 3
 *
-*     electric charges
+*     fill electric charges
 *
       el2 = 1d0
       eu2 = 4d0 / 9d0
@@ -67,33 +34,128 @@
       el4 = el2**2
       eu4 = eu2**2
       ed4 = ed2**2
+*     
+*     fill b0 and b1 according to nlmaxaem, numaxaem, ndmaxaem
 *
-*     Beta function coefficients
+      call setnlnund(nlmaxaem,numaxaem,ndmaxaem,nlaem,nuaem,ndaem)
+      call fillC2(nlaem,nuaem,ndaem,C2aem)
+      call fillC4(nlaem,nuaem,ndaem,C4aem)            
+      do i = 1,9         
+         beta0(i) = - 4d0 / 3d0 * C2aem(i)
+         beta1(i) = - 4d0 * C4aem(i)
+      enddo
 *     
+*     fill nl,nu,nd,nfsum2,nfsum4 according to nlmax, numax, ndmax
+*
+      call setnlnund(nlmax,numax,ndmax,nl,nu,nd)
+      call fillC2(nl,nu,nd,C2)
+      call fillC4(nl,nu,nd,C4)            
+      do i = 1,9     
+         nfsum2(i) = C2(i)
+         nfsum4(i) = C4(i)
+      enddo
+*
+      return
+      end
+************************************************************************
+*     Calculate C2, sum of charges squared
+      subroutine fillC2(nl,nu,nd,C2)
+      implicit none
+      include "../commons/charges.h"
+*     Input
+      integer nl(0:9), nu(0:9), nd(0:9)      
+*     Output
+      integer C2(1:9)
+*     Internal
+      integer i
+*      
       do i = 1,9
-         if (quarksalpha) then
-            beta0(i) = - 4d0 / 3d0 *
-     1           ( el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) ) )
-            beta1(i) = - 4d0 *
-     1           ( el4 * nl(i) + nc * ( eu4 * nu(i) + ed4 * nd(i) ) )
-         else
-            beta0(i) = - 4d0 * el2 * nl(i) / 3d0
-            beta1(i) = - 4d0 * el4 * nl(i)    
-         endif
+         C2(i) = el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) )  
       enddo
-*     
-*     Turn off quark charges if option quark on
-      if (.not.quarks) then
-         eu2 = 0d0
-         ed2 = 0d0
-         eu4 = 0d0
-         ed4 = 0d0
+*
+      return
+      end
+************************************************************************
+*     Calculate C4, sum of charges to the fourth power
+      subroutine fillC4(nl,nu,nd,C4)
+      implicit none
+      include "../commons/charges.h"
+*     Input
+      integer nl(0:9), nu(0:9), nd(0:9)      
+*     Output
+      integer C4(1:9)
+*     Internal
+      integer i
+*      
+      do i = 1,9
+         C4(i) = el4 * nl(i) + nc * ( eu4 * nu(i) + ed4 * nd(i) )
+      enddo
+*
+      return
+      end      
+************************************************************************      
+*     Utility subroutine to fill the nl,nu,nd vectors according to
+*     the maximum number of allowed leptons, down- and up-quarks.
+      subroutine setnlnund(nlmax,numax,ndmax,nl,nu,nd)
+      implicit none
+*     Input
+      integer nlmax, numax, ndmax
+*     Output
+      integer nl(0:9), nu(0:9), nd(0:9)      
+*     Internal
+      integer i
+*           
+      do i=0,9
+         nl(i) = 0
+      enddo      
+      if (nlmax.ge.1) then
+         do i=1,9
+            nl(i) = 1
+         enddo
       endif
-*     
-      do i = 1,9      
-         nfsum2(i) = el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) )
-         nfsum4(i) = el4 * nl(i) + nc * ( eu4 * nu(i) + ed4 * nd(i) )
-      enddo
+      if (nlmax.ge.2) then
+         do i=5,9
+            nl(i) = 2
+         enddo
+      endif
+      if (nlmax.ge.3) then
+         do i=7,9
+            nl(i) = 3
+         enddo
+      endif
+*
+      do i=0,9
+         nu(i) = 0
+      enddo      
+      if (numax.ge.1) then
+         do i=2,9
+            nu(i) = 1
+         enddo
+      endif
+      if (numax.ge.2) then
+         do i=6,9
+            nu(i) = 2
+         enddo
+      endif
+*      
+      do i=0,9
+         nd(i) = 0
+      enddo      
+      if (ndmax.ge.1) then
+         do i=3,9
+            nd(i) = 1
+         enddo
+      endif
+      if (ndmax.ge.2) then
+         do i=4,9
+            nd(i) = 2
+         enddo
+      endif
+      if (ndmax.ge.3) then
+         do i=9,9
+            nd(i) = 3
+         enddo
+      endif
 *
       return
       end

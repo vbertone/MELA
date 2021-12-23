@@ -32,7 +32,6 @@
       call SetNFmax(8)
       call SetNFFN(8)
       call SetAlpha(0.0078152650036d0, 91.187600000000d0)
-      call EnableQuarks(.true.)
       call SetThresholds(0.000510998928d0,0.00216d0,0.00467d0,
      1     0.093d0,0.10566d0,1.27d0,1.77686d0,4.18d0,172.76d0)
 *
@@ -77,7 +76,6 @@
       call SetNFmax(8)
       call SetNFFN(8)
       call SetAlpha(0.0078152650036d0, 91.187600000000d0)
-      call EnableQuarks(.true.)
       call SetThresholds(0.000510998928d0,0.00216d0,0.00467d0,
      1     0.093d0,0.10566d0,1.27d0,1.77686d0,4.18d0,172.76d0)
 *
@@ -125,7 +123,6 @@
       call SetNFmax(8)
       call SetNFFN(8)
       call SetAlpha(0.0078152650036d0, 91.187600000000d0)
-      call EnableQuarks(.true.)
       call SetThresholds(0.000510998928d0,0.00216d0,0.00467d0,
      1     0.093d0,0.10566d0,1.27d0,1.77686d0,4.18d0,172.76d0)
 *

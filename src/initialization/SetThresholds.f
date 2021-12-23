@@ -35,3 +35,11 @@
       q2thrs=q2th
       return
       end
+************************************************************************
+      subroutine GetMZ2(mz2out)      
+      implicit none
+      include "../commons/massthrs.h"      
+      double precision mz2out
+      mz2out=mz2
+      return
+      end

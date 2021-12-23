@@ -13,6 +13,7 @@ namespace MELA {
     double aqed_(double* q2);
     void geta0_(double* a0);    
     void xdistributions_(double* x, double* q, double* xfph);
+    void xdistributionsev_(double* x, double* q, double* xfev);    
 
     void setperturbativeorder_(int* iptin);
     void getperturbativeorder_(int* iptout);
@@ -31,33 +32,41 @@ namespace MELA {
 
     void setnfmax_(int* nfmaxin);
     void getnfmax_(int* nfmax);
-
     void setnffn_(int* nffnin);
     void getnffn_(int* nffn);
     
-    void enablequarks_(int*);
-    void getenablequarks_(int*);
+    //void enablequarks_(int*);
+    //void getenablequarks_(int*);
     
     void setalpha_(double* ain, double* qin);
     void getalpharef_(double*);
     void getalphaqref_(double*);
+
+    void setactiveflav_(int* nlmax, int* numax, int* ndmax);
+    void getactiveflav_(int* nlmax, int* numax, int* ndmax);
+    void setactiveflavaem_(int* nlmax, int* numax, int* ndmax);
+    void getactiveflavaem_(int* nlmax, int* numax, int* ndmax);
     
-    void enablequarksalpha_(int*);
-    void getenablequarksalpha_(int*);
+    //void enablequarksalpha_(int*);
+    //void getenablequarksalpha_(int*);
+    
     void setnffnalpha_(int*);
     void getnffnalpha_(int*);
     void setnfmaxalpha_(int*);
     void getnfmaxalpha_(int*);
-    
+
     void setthresholds_(double* me, double* mu, double* md, double* ms, double* mm,
 			double* mc, double* mt, double* mb, double* mtp);
     void getthresholds2_(double* q2thrs);
+    void getmz2_(double*);    
 
     void getc2_(double* C2);
     void getc4_(double* C4);
     void getb0_(double* b0);
     void getb1_(double* b1);
 
+    void getdk_(int* region, double* dk);
+    
     void setnint_(int*);
     void getnint_(int*);
     void setnexp_(int*);
@@ -99,7 +108,7 @@ namespace MELA {
     return a0*4.0*M_PI;
   };
 
-  /// PDFs
+  /// PDFs (from -9 to 9)
   std::map<int, double> xDistributions(double x, double Q)
   {
     double* xfph = new double[19];
@@ -111,6 +120,18 @@ namespace MELA {
     return xfout;
   };
 
+  /// PDFs (from 1 to 19)
+  std::map<int, double> xDistributionsEv(double x, double Q)
+  {
+    double* xfev = new double[19];
+    xdistributionsev_(&x, &Q, xfev);
+    std::map<int, double> xfout;
+    for (int i = 1; i < 20; i++)
+      xfout.insert({i, xfev[i-1]});
+    delete[] xfev;
+    return xfout;
+  };
+  
  
   void SetPerturbativeOrder(int iptin)
   {
@@ -202,17 +223,18 @@ namespace MELA {
     return nffn;
   }
   
-  void SetEnableQuarks(int eq)
-  {
-    enablequarks_(&eq);
-  };
+  // void SetEnableQuarks(int eq)
+  // {
+  //   enablequarks_(&eq);
+  // };
 
-  bool GetEnableQuarks()
-  {
-    int quarks;
-    getenablequarks_(&quarks);
-    return quarks;
-  }
+  // bool GetEnableQuarks()
+  // {
+  //   int quarks;
+  //   getenablequarks_(&quarks);
+  //   return quarks;
+  // }
+
   
   /// Set reference values for alpha
   void SetAlpha(double ain, double Qin)
@@ -234,17 +256,17 @@ namespace MELA {
     return res;
   }
 
-  void SetEnableQuarksalpha(int eq)
-  {
-    enablequarksalpha_(&eq);
-  };
+  // void SetEnableQuarksalpha(int eq)
+  // {
+  //   enablequarksalpha_(&eq);
+  // };
   
-  bool GetEnableQuarksalpha()
-  {
-    int quarks;
-    getenablequarksalpha_(&quarks);
-    return quarks;
-  }
+  // bool GetEnableQuarksalpha()
+  // {
+  //   int quarks;
+  //   getenablequarksalpha_(&quarks);
+  //   return quarks;
+  // }
 
   void SetNFFNalpha(int NFFNalphain)
   {
@@ -368,6 +390,15 @@ namespace MELA {
     return res;
   }
 
+  double GetDk(int region)
+  {
+    // C++ and Fortran indices are shifted by one
+    region += 1;
+    double dk;
+    getdk_(&region, &dk);
+    return dk;
+  }
+  
   void SetNint(int res)
   {
     setnint_(&res);
@@ -427,4 +458,22 @@ namespace MELA {
     getrinvmel_(&res);
     return res;
   }
+
+  void SetActiveFlavours(int nlmax, int numax, int ndmax)
+  {
+    setactiveflav_(&nlmax, &numax, &ndmax);    
+  }
+
+  void SetActiveFlavoursAlpha(int nlmaxaem, int numaxaem, int ndmaxaem)
+  {
+    setactiveflavaem_(&nlmaxaem, &numaxaem, &ndmaxaem);    
+  }
+
+  double GetMZ2()
+  {
+    double mz2;
+    getmz2_(&mz2);
+    return mz2;
+  }
+  
 }

@@ -24,7 +24,10 @@ namespace MELA {
   double aQEDinit();
   /// PDFs multiplied by x
   std::map<int, double> xDistributions(double x, double Q);
+  /// PDFs multiplied by x (evolution basis)
+  std::map<int, double> xDistributionsEv(double x, double Q);
 
+  
   /*
    * SETTERS AND GETTERS
    */ 
@@ -36,6 +39,10 @@ namespace MELA {
   void SetFlavourScheme(std::string const& fnsin);
   void SetFlavourSchemeInt(int fnsin);
   int GetFlavourSchemeInt();
+
+  void SetRenormalisationScheme(std::string const& rdin);
+  void SetRenormalisationSchemeInt(int rnsinint);
+  int GetRenormalisationSchemeInt();
 
   /// Factorisation scheme
   void SetFactorisationScheme(std::string const& fsin);
@@ -50,18 +57,22 @@ namespace MELA {
   void SetNFFN(int);
   int GetNFFN();
 
-  /// Enable quarks in the evolution
-  void SetEnableQuarks(int);
-  bool GetEnableQuarks();
+  /* /// Enable quarks in the evolution */
+  /* void SetEnableQuarks(int); */
+  /* bool GetEnableQuarks(); */
 
+  /* void SetEvBasis(int); */
+  /* bool GetEvBasis(); */
+  
   /// Reference values for alpha
   void SetAlpha(double ain, double Qin);
   double GetAlphaRef();
   double GetAlphaQref();
   
-  /// Analogous quantities but only for alpha evolution
-  void SetEnableQuarksalpha(int);
-  bool GetEnableQuarksalpha();
+  /* /// Analogous quantities but only for alpha evolution */
+  /* void SetEnableQuarksalpha(int); */
+  /* bool GetEnableQuarksalpha(); */
+  
   void SetNFFNalpha(int);
   int GetNFFNalpha();
   void SetNFmaxalpha(int);
@@ -74,12 +85,16 @@ namespace MELA {
   std::vector<double> GetThresholds();
   std::vector<double> GetThresholds2();  
 
+  double GetMZ2();
+  
   /// Used in the analytic expressions
   int GetRegionMU2(double mu2);  
   double GetC2(int region);  
   double GetC4(int region);
   double Getb0(int region);
   double Getb1(int region);
+
+  double GetDk(int region);
 
   /// Technical parameters
   void SetNint(int);
@@ -93,7 +108,6 @@ namespace MELA {
   void SetRinvmel(int);
   int GetRinvmel();
 
-  // Fixed Alpha
-  void SetAlphaFix(int);
-  bool GetAlphaFix();    
+  void SetActiveFlavours(int nlmax, int numax, int ndmax);
+  void SetActiveFlavoursAlpha(int nlmaxaem, int numaxaem, int ndmaxaem);  
 }

@@ -8,6 +8,32 @@
       subroutine xDistributions(x,Q,xfph)
 *
       implicit none
+**
+*     Input Variables
+*
+      double precision x
+      double precision Q
+**
+*     Internal Variables
+*
+      double precision xfev(19)
+**
+*     Output Variables
+*      
+      double precision xfph(-9:9)
+*
+      call xDistributionsEv(x,Q,xfev)
+*
+*     Rotate to the physical basis
+*      
+      call evln2lha(xfev,xfph)
+*
+      return
+      end
+************************************************************************      
+      subroutine xDistributionsEv(x,Q,xfev)
+*
+      implicit none
 *
       include "../commons/consts.h"
       include "../commons/alpha.h"
@@ -28,7 +54,6 @@
       integer nfi,nff
       integer ip
       double precision aQED
-      double precision xfev(19)
       double precision integrand
       external integrand
       integer j
@@ -40,7 +65,7 @@
 **
 *     Output Variables
 *
-      double precision xfph(-9:9)
+      double precision xfev(19)
 *
 c$$$      double precision dgauss,dtrap      
 c$$$      double precision xval
@@ -64,6 +89,9 @@ c$$$      common/integvar/xval,nfival,nffval,ipval,mval
          sq2thnfi    = q2th(nfi)
          sq2thnffp1  = q2th(nff+1)
          q2th(nfi)   = q2th(1)
+*     TODO When using the alphaMZ scheme this is a problem
+*     because the values of the thresholds above Q2 are used
+*     in the solution
          q2th(nff+1) = Q**2d0
       else
          ath(nfi)   = ath(1)
@@ -105,11 +133,6 @@ c$$$c        xfev(ip) = x * dtrap(integrand,-pi,pi,mval)/(2d0*pi)
 c$$$         xfev(ip) = x * dgauss(integrand,0d0,pi,1d-7)/pi
 c$$$      enddo
 c$$$*            
-*
-*     Rotate back to the physical basis
-*
-      call evln2lha(xfev,xfph)
-*
 *     Restore thresholds or ath(nff+1) to proper values
       if(renscheme.ne."MSBAR")then
          q2th(nfi)   = sq2thnfi

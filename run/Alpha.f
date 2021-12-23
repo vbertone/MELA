@@ -38,7 +38,6 @@
       call SetNFmax(8)
       call SetNFFN(8)
       call SetAlpha(a0*12.566370614359173d0, Qref)
-      call EnableQuarks(.true.)
       call SetThresholds(thrs(1), thrs(2), thrs(3), thrs(4), thrs(5),
      1     thrs(6), thrs(7), thrs(8), thrs(9))
 *
