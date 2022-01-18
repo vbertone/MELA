@@ -67,7 +67,8 @@ c         write(6,*) "ifl",ifl,"nintstep",nintstep
             call alpha_fixed(N,q2th(ifl),q2th(ifl+1),ifl,evf)
          elseif(renscheme.eq."ALPMZ")then
             call alphaMZ_pathordering(N,q2th(ifl),q2th(ifl+1),
-     .           ifl,evf,nintstep) 
+     .           ifl,evf,nintstep)
+c            call alphaMZ_magnus(N,q2th(ifl),q2th(ifl+1),ifl,evf)
 c            call alphaMZ_analytic(N,q2th(ifl),q2th(ifl+1),ifl,evf)
          endif
 *
