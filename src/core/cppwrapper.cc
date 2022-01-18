@@ -468,12 +468,50 @@ namespace MELA {
   {
     setactiveflavaem_(&nlmaxaem, &numaxaem, &ndmaxaem);    
   }
-
+  
+  void SetActiveFlavours(std::vector<int> active)
+  {
+    int & nlmax = active[0];
+    int & numax = active[1];
+    int & ndmax = active[2];    
+    setactiveflav_(&nlmax, &numax, &ndmax);
+  }
+  
+  void SetActiveFlavoursAlpha(std::vector<int> active)
+  {
+    int & nlmaxaem = active[0];
+    int & numaxaem = active[1];
+    int & ndmaxaem = active[2];    
+    setactiveflavaem_(&nlmaxaem, &numaxaem, &ndmaxaem);
+  }
+  
   double GetMZ2()
   {
     double mz2;
     getmz2_(&mz2);
     return mz2;
   }
+
+  std::vector<int> GetActiveFlavours()
+  {
+    int nlmax, numax, ndmax;
+    getactiveflav_(&nlmax, &numax, &ndmax);
+    std::vector<int> res;
+    res.push_back(nlmax);
+    res.push_back(numax);
+    res.push_back(ndmax);
+    return res;
+  }
+
+  std::vector<int> GetActiveFlavoursAlpha()
+  {
+    int nlmax, numax, ndmax;
+    getactiveflavaem_(&nlmax, &numax, &ndmax);
+    std::vector<int> res;
+    res.push_back(nlmax);
+    res.push_back(numax);
+    res.push_back(ndmax);
+    return res;
+  }    
   
 }

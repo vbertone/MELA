@@ -109,5 +109,11 @@ namespace MELA {
   int GetRinvmel();
 
   void SetActiveFlavours(int nlmax, int numax, int ndmax);
-  void SetActiveFlavoursAlpha(int nlmaxaem, int numaxaem, int ndmaxaem);  
+  void SetActiveFlavoursAlpha(int nlmaxaem, int numaxaem, int ndmaxaem);
+
+  void SetActiveFlavours(std::vector<int> active);
+  void SetActiveFlavoursAlpha(std::vector<int> active);
+
+  std::vector<int> GetActiveFlavours();
+  std::vector<int> GetActiveFlavoursAlpha();  
 }
