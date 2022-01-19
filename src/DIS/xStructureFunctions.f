@@ -45,7 +45,7 @@
       if(ns.eq."FFNS")then
          iptbkp = ipt
          ipt    = max(0,ipt-1)
-         asDIS = aQCD((kfacQ*krf*Q(nQ))**2d0)
+         asDIS = aQCD((krenQ*krf*Q(nQ))**2d0)
          asEvolIni(1) = aQCD(krf**2 * Q(1)**2d0)
          asEvolFin(1) = aQCD(kfacQ**2 * krf**2 * Q(2)**2d0)
          do iQ=2,nQ-1
@@ -59,7 +59,7 @@
             if(W2.ge.kappa*abs(q2th(ip))) maxfl = maxfl + 1 
          enddo
       elseif(ns.eq."VFNS")then
-         asDIS = aQCD((kfacQ*krf*Q(nQ))**2d0)
+         asDIS = aQCD((krenQ*krf*Q(nQ))**2d0)
          asEvolIni(1) = aQCD(krf**2 * Q(1)**2d0)
          asEvolFin(1) = aQCD(kfacQ**2 * krf**2 * Q(2)**2d0)
          do iQ=2,nQ-1

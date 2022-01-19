@@ -109,64 +109,6 @@
             Cnsm(isf,k) = Cnsm(isf,k) + c0nsp(isf,k)
          enddo
       enddo
-*
-*     NLO
-*
-      if(ipt.ge.1)then
-         if(ns.eq."VFNS")then
-            call c21p(N,c1nsp(1,1),c1g(1,1))
-            call cl1p(N,c1nsp(2,1),c1g(2,1))
-            call c31p(N,c1nsp(3,1),c1g(3,1))
-            do isf=1,3
-               do k=2,6
-                  c1nsp(isf,k) = c1nsp(isf,1)
-                  c1g(isf,k)   = c1g(isf,1)
-               enddo
-            enddo
-         elseif(ns.eq."FFNS")then
-            call c21p(N,c1nsp(1,1),c1g(1,1))
-            call cl1p(N,c1nsp(2,1),c1g(2,1))
-            call c31p(N,c1nsp(3,1),c1g(3,1))
-            do isf=1,3
-               do k=2,3
-                  c1nsp(isf,k) = c1nsp(isf,1)
-                  c1g(isf,k)   = c1g(isf,1)
-               enddo
-            enddo
-            do k=4,6
-               c1nsp(1,k) = (0d0,0d0)
-               c1nsp(2,k) = (0d0,0d0)
-               c1nsp(3,k) = c1nsp(3,1)
-               c1g(1,k)   = c2gh_ffns_nc(1,N,Q2,q2th(k),0)
-               c1g(2,k)   = clgh_ffns_nc(1,N,Q2,q2th(k),0)
-               c1g(3,k)   = c1g(3,1)
-            enddo
-         endif
-*     
-*     Rescale coefficient functions appropriately in the presence of
-*     scale variations.
-*     
-         if(kfacQ.ne.1d0)then
-            call andim_lo(N,nf,P0ns,P0sg)
-*
-            tF = 2d0 * dlog(kfacQ)
-            do isf=1,3
-               do k=1,6
-                  c1nsp(isf,k) = c1nsp(isf,k) - tF * P0ns * c0nsp(isf,k)
-                  c1g(isf,k)   = c1g(isf,k)
-     1                         - tF * P0sg(1,2) * c0nsp(isf,k) / nf
-               enddo
-            enddo
-         endif
-*     
-         do isf=1,3
-            do k=1,6
-               Cg(isf,k)   = Cg(isf,k)   + a(1) * c1g(isf,k)
-               Cnsp(isf,k) = Cnsp(isf,k) + a(1) * c1nsp(isf,k)
-               Cnsm(isf,k) = Cnsm(isf,k) + a(1) * c1nsp(isf,k)
-            enddo
-         enddo
-      endif
 *     
 *     NNLO
 *     
@@ -296,6 +238,64 @@
                Cps(isf,k)  = Cps(isf,k)  + a(2) * c2ps(isf,k)
                Cnsp(isf,k) = Cnsp(isf,k) + a(2) * c2nsp(isf,k)
                Cnsm(isf,k) = Cnsm(isf,k) + a(2) * c2nsm(isf,k)
+            enddo
+         enddo
+      endif
+*
+*     NLO
+*
+      if(ipt.ge.1)then
+         if(ns.eq."VFNS")then
+            call c21p(N,c1nsp(1,1),c1g(1,1))
+            call cl1p(N,c1nsp(2,1),c1g(2,1))
+            call c31p(N,c1nsp(3,1),c1g(3,1))
+            do isf=1,3
+               do k=2,6
+                  c1nsp(isf,k) = c1nsp(isf,1)
+                  c1g(isf,k)   = c1g(isf,1)
+               enddo
+            enddo
+         elseif(ns.eq."FFNS")then
+            call c21p(N,c1nsp(1,1),c1g(1,1))
+            call cl1p(N,c1nsp(2,1),c1g(2,1))
+            call c31p(N,c1nsp(3,1),c1g(3,1))
+            do isf=1,3
+               do k=2,3
+                  c1nsp(isf,k) = c1nsp(isf,1)
+                  c1g(isf,k)   = c1g(isf,1)
+               enddo
+            enddo
+            do k=4,6
+               c1nsp(1,k) = (0d0,0d0)
+               c1nsp(2,k) = (0d0,0d0)
+               c1nsp(3,k) = c1nsp(3,1)
+               c1g(1,k)   = c2gh_ffns_nc(1,N,Q2,q2th(k),0)
+               c1g(2,k)   = clgh_ffns_nc(1,N,Q2,q2th(k),0)
+               c1g(3,k)   = c1g(3,1)
+            enddo
+         endif
+*
+*     Rescale coefficient functions appropriately in the presence of
+*     scale variations.
+*
+         if(kfacQ.ne.1d0)then
+            call andim_lo(N,nf,P0ns,P0sg)
+*
+            tF = 2d0 * dlog(kfacQ)
+            do isf=1,3
+               do k=1,6
+                  c1nsp(isf,k) = c1nsp(isf,k) - tF * P0ns * c0nsp(isf,k)
+                  c1g(isf,k)   = c1g(isf,k)
+     1                         - tF * P0sg(1,2) * c0nsp(isf,k) / nf
+               enddo
+            enddo
+         endif
+*
+         do isf=1,3
+            do k=1,6
+               Cg(isf,k)   = Cg(isf,k)   + a(1) * c1g(isf,k)
+               Cnsp(isf,k) = Cnsp(isf,k) + a(1) * c1nsp(isf,k)
+               Cnsm(isf,k) = Cnsm(isf,k) + a(1) * c1nsp(isf,k)
             enddo
          enddo
       endif

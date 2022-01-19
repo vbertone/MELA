@@ -120,7 +120,7 @@ c      open(unit=10,status="old",file="../run/"//card)
 *
 *     If KRENQ or KFACQ are different from 1, force KRF to be KRENQ/KFACQ
 *
-      if(KRENQ.ne.1d0.or.KFACQ.ne.1d0) KRF = KRENQ / KFACQ
+c      if(KRENQ.ne.1d0.or.KFACQ.ne.1d0) KRF = KRENQ / KFACQ
 *
       return
       end
