@@ -29,6 +29,7 @@
       INTEGER I,J,K,L
       DOUBLE PRECISION AS_CHECK,PREC
       DOUBLE PRECISION BT0,BT1,BT2
+      DOUBLE COMPLEX FBETAMELA
       DOUBLE COMPLEX AF,AI,DA,AK
       DOUBLE COMPLEX LOGR
       DOUBLE COMPLEX G0(2,2),G1(2,2),G2(2,2)
@@ -159,7 +160,9 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
          AF = ASF
          DO I=1,2
             DO J=1,2
-               PSG(I,J) = G0(I,J) * ( 1D0 / AF + 1D0 / AI ) / BT0
+c               PSG(I,J) = G0(I,J) * ( 1D0 / AF + 1D0 / AI ) / BT0
+               PSG(I,J) = - G0(I,J) * ( AF / FBETAMELA(AF, NF, IPT)
+     1              + AI / FBETAMELA(AI, NF, IPT) )
 *
                SPSG(I,J) = - DA * PSG(I,J) / 2D0
             ENDDO
@@ -170,7 +173,8 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
             AK = AK + DA
             DO I=1,2
                DO J=1,2
-                  PSG(I,J)  = G0(I,J) / BT0 / AK
+C                  PSG(I,J)  = G0(I,J) / BT0 / AK
+                  PSG(I,J)  = - AK * G0(I,J) / FBETAMELA(AK, NF, IPT)
                   SPSG(I,J) = SPSG(I,J) - DA * PSG(I,J)
                ENDDO
             ENDDO
@@ -212,12 +216,17 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
             AF = AI + DA
             DO I=1,2
                DO J=1,2
-                  PSG(I,J) = ( G0(I,J) + AI*G1(I,J) + AI**2D0*G2(I,J) ) 
-     1                     / ( BT0 + AI * BT1 + AI**2D0 * BT2 ) / AI
+C                  PSG(I,J) = ( G0(I,J) + AI*G1(I,J) + AI**2D0*G2(I,J) )
+C     1                     / ( BT0 + AI * BT1 + AI**2D0 * BT2 ) / AI
+                  PSG(I,J) = - AI * ( G0(I,J) + AI * G1(I,J)
+     1                 + AI**2D0 * G2(I,J) ) / FBETAMELA(AI, NF, IPT)
 *
+C                  PSG(I,J) = PSG(I,J)
+C     1                     + ( G0(I,J) + AF*G1(I,J) + AF**2D0*G2(I,J) )
+C     2                     / ( BT0 + AF * BT1 + AF**2D0 * BT2 ) / AF
                   PSG(I,J) = PSG(I,J)
-     1                     + ( G0(I,J) + AF*G1(I,J) + AF**2D0*G2(I,J) )
-     2                     / ( BT0 + AF * BT1 + AF**2D0 * BT2 ) / AF
+     1                     - AF * ( G0(I,J) + AF*G1(I,J)
+     1                 + AF**2D0 * G2(I,J) ) / FBETAMELA(AF, NF, IPT)
 *
                   SPSG(I,J) = - DA * PSG(I,J) / 2D0
                ENDDO
@@ -266,12 +275,17 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
       AI = ASI
       AF = ASF
       DO I=1,3
-         PNS(I) = ( G0NS + AI * G1NS(I) + AI**2D0 * G2NS(I) )
-     1          / ( BT0 + AI * BT1 + AI**2D0 * BT2 ) / AI
+C         PNS(I) = ( G0NS + AI * G1NS(I) + AI**2D0 * G2NS(I) )
+C     1          / ( BT0 + AI * BT1 + AI**2D0 * BT2 ) / AI
+         PNS(I) = - AI * ( G0NS + AI * G1NS(I) + AI**2D0 * G2NS(I) )
+     1          / FBETAMELA(AI, NF, IPT)
 *
+C         PNS(I) = PNS(I)
+C     1          + ( G0NS + AF * G1NS(I) + AF**2D0 * G2NS(I) )
+C     2          / ( BT0 + AF * BT1 + AF**2D0 * BT2 ) / AF
          PNS(I) = PNS(I)
-     1          + ( G0NS + AF * G1NS(I) + AF**2D0 * G2NS(I) )
-     2          / ( BT0 + AF * BT1 + AF**2D0 * BT2 ) / AF
+     1          - AF * ( G0NS + AF * G1NS(I) + AF**2D0 * G2NS(I) )
+     2          / FBETAMELA(AF, NF, IPT)
 *
          SPNS(I) = - DA * PNS(I) / 2D0
       ENDDO
@@ -281,8 +295,10 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
          AK = AK + DA
 *
          DO I=1,3
-            PNS(I) = ( G0NS + AK * G1NS(I) + AK**2D0 * G2NS(I) )
-     2             / ( BT0 + AK * BT1 + AK**2D0 * BT2 ) / AK
+c            PNS(I) = ( G0NS + AK * G1NS(I) + AK**2D0 * G2NS(I) )
+c     2             / ( BT0 + AK * BT1 + AK**2D0 * BT2 ) / AK
+            PNS(I) = - AK * ( G0NS + AK * G1NS(I) + AK**2D0 * G2NS(I) )
+     2             / FBETAMELA(AK, NF, IPT)
 *
             SPNS(I) = SPNS(I) - DA * PNS(I)
          ENDDO

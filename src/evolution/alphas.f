@@ -47,10 +47,11 @@
       asr0 = asref / 4d0 / pi
 *
       mur20 = q2ref
-      mur2  = krf**2d0 * q2
+c      mur2  = krf**2d0 * q2
+      mur2  = q2
       do i=4,6
-         mur2th(i) = krf**2d0 * q2th(i)
-c         mur2th(i) = q2th(i)
+c         mur2th(i) = krf**2d0 * q2th(i)
+         mur2th(i) = q2th(i)
       enddo
 *
       if(ns.eq."FFNS")then
@@ -84,8 +85,8 @@ c         mur2th(i) = q2th(i)
 *     (4*pi) and (4*pi)^2 respectively to match the notations. Note that in terms 
 *     of the MSbar mass this coefficients change.
 *
-      kappa = krf**2d0     ! mu_R / mu_F
-c      kappa = 1d0      ! mu_R / mu_F
+c      kappa = krf**2d0     ! mu_R / mu_F
+      kappa = 1d0      ! mu_R / mu_F
       ln = dlog(kappa)
 *     Pole Mass
       if(hqmass.eq.0)then
@@ -164,6 +165,7 @@ c      kappa = 1d0      ! mu_R / mu_F
       implicit none
 *
       include "../commons/beta.h"
+      include "../commons/renfacscales.h"
 **
 *     Input Variables
 *
@@ -175,6 +177,7 @@ c      kappa = 1d0      ! mu_R / mu_F
 *
       double complex asi
       double complex alo,t,aQCD,den
+      double precision lk
 **
 *     Output Variables
 *
@@ -201,6 +204,14 @@ c      kappa = 1d0      ! mu_R / mu_F
          aQCD = alo * ( 1d0 
      1      + ( alo * ( alo - asi ) * ( b2(nf) - b1(nf)**2d0 )
      2      + aQCD * b1(nf) * zlog(aQCD/asi) ) )
+      endif
+*
+      if(krf.ne.1d0)then
+         lk = dlog(1d0/krf**2)
+         if(ipt.ge.1) aQCD = aQCD + alo**2 * beta0(nf) * lk
+         if(ipt.ge.2) aQCD = aQCD + asi**3 *
+     1        ( - beta0(nf) * b1(nf) * ( 2d0 * log(den) - 1d0 ) * lk
+     2        + ( beta0(nf) * lk )**2 ) / den**3
       endif
 *
       as_expanded_MELA = aQCD
@@ -240,32 +251,20 @@ c      kappa = 1d0      ! mu_R / mu_F
 *
 *     ..The beta functions FBETAMELAn at N^nLO for n = 1, 2, and 3
 *
-      AQCD    = AS0
+      AQCD  = AS0
       LRRAT = ZLOG (MU2/MU20)
       DLR   = LRRAT / NSTEP
 *     
 *     ..Solution of the evolution equation depending on  NAORD
-*   (fourth-order Runge-Kutta beyond the leading order)
+*     (fourth-order Runge-Kutta beyond the leading order)
 *     
-      IF(IPT.EQ.0)THEN
-         AQCD = AS0 / ( 1D0 + BETA0(NF) * AS0 * LRRAT )
-      ELSEIF(IPT.EQ.1)THEN
-         DO 2 K1=1,NSTEP
-            XK0 = DLR * FBETAMELA(AQCD,NF,IPT)
-            XK1 = DLR * FBETAMELA(AQCD + 0.5d0 * XK0,NF,IPT)
-            XK2 = DLR * FBETAMELA(AQCD + 0.5d0 * XK1,NF,IPT)
-            XK3 = DLR * FBETAMELA(AQCD + XK2,NF,IPT)
-            AQCD = AQCD + SXTH * ( XK0 + 2D0 * XK1 + 2d0 * XK2 + XK3 )
- 2        CONTINUE
-      ELSEIF(IPT.EQ.2)THEN
-         DO 3 K1 = 1, NSTEP
-            XK0 = DLR * FBETAMELA(AQCD,NF,IPT)
-            XK1 = DLR * FBETAMELA(AQCD + 0.5d0 * XK0,NF,IPT)
-            XK2 = DLR * FBETAMELA(AQCD + 0.5d0 * XK1,NF,IPT)
-            XK3 = DLR * FBETAMELA(AQCD + XK2,NF,IPT)
-            AQCD = AQCD + SXTH * ( XK0 + 2D0 * XK1 + 2D0 * XK2 + XK3 )
- 3       CONTINUE
-      ENDIF
+      DO 2 K1=1,NSTEP
+         XK0 = DLR * FBETAMELA(AQCD,NF,IPT)
+         XK1 = DLR * FBETAMELA(AQCD + 0.5d0 * XK0,NF,IPT)
+         XK2 = DLR * FBETAMELA(AQCD + 0.5d0 * XK1,NF,IPT)
+         XK3 = DLR * FBETAMELA(AQCD + XK2,NF,IPT)
+         AQCD = AQCD + SXTH * ( XK0 + 2D0 * XK1 + 2d0 * XK2 + XK3 )
+ 2    CONTINUE
 *
       AS_EXACT_MELA = AQCD
 *
@@ -273,20 +272,82 @@ c      kappa = 1d0      ! mu_R / mu_F
       END
 *
 ****************************************************************************
+c$$$      function fbetaMELA(a,nf,ipt)
+c$$$*
+c$$$      implicit none
+c$$$*
+c$$$      include "../commons/beta.h"
+c$$$*
+c$$$      double complex fbetaMELA,a
+c$$$      integer nf,ipt
+c$$$*
+c$$$      if(ipt.eq.0)then
+c$$$         fbetaMELA = - A**2d0 * BETA0(NF)
+c$$$      elseif(ipt.eq.1)then
+c$$$         fbetaMELA = - A**2d0 * ( BETA0(NF) + A * BETA1(NF) )
+c$$$      elseif(ipt.eq.2)then
+c$$$         fbetaMELA = - A**2d0 * ( BETA0(NF) + A * ( BETA1(NF)
+c$$$     1             + A * BETA2(NF) ) )
+c$$$      endif
+c$$$*
+c$$$      return
+c$$$      end
       function fbetaMELA(a,nf,ipt)
 *
       implicit none
 *
       include "../commons/beta.h"
+      include "../commons/renfacscales.h"
+**
+*     Input Variables
 *
-      double complex fbetaMELA,a
       integer nf,ipt
+      double complex a
+**
+*     Internal Variables
 *
-      if(ipt.eq.1)then
-         fbetaMELA = - A**2d0 * ( BETA0(NF) + A * BETA1(NF) )
+      double precision lk,lk2,lk3,a2,a3,a4,bt0,bt1,bt2,bb0,bb1,bb2
+      double precision beta0p,beta1p,beta2p,beta3p
+**
+*     Output Variables
+*
+      double complex fbetaMELA
+*
+      if(ipt.eq.0)then
+         fbetaMELA = - a**2 * beta0(nf)
+      elseif(ipt.eq.1)then
+         fbetaMELA = - a**2 * ( beta0(nf) + a * beta1(nf) )
       elseif(ipt.eq.2)then
-         fbetaMELA = - A**2d0 * ( BETA0(NF) + A * ( BETA1(NF)
-     1             + A * BETA2(NF) ) )
+         fbetaMELA = - a**2 * ( beta0(nf)
+     1           + a * ( beta1(nf) + a * beta2(nf) ) )
+      endif
+
+      if(krf.ne.1d0)then
+         lk  = dlog(1d0/krf**2) / 2d0
+         lk2 = lk * lk
+         lk3 = lk * lk2
+         a2  = a * a
+         a3  = a * a2
+         a4  = a * a3
+         bt0 = beta0(nf)
+         bt1 = beta1(nf)
+         bt2 = beta2(nf)
+         bb0 = - bt0
+         bb1 = 0d0
+         if(ipt.ge.1) bb1 = - bt1! - 2d0 * bb0**2 * lk
+         bb2 = 0d0
+         if(ipt.ge.2) bb2 = - bt2! - 5d0 * bt1 * bt0 * lk
+!     1                     - 3d0 * bt0**3 * lk2
+         beta0p = a2 * bb0 + a3 * bb1 + a4 * bb2
+         beta1p = 2d0 * a * bb0 + 3d0 * a2 * bb1 + 4d0 * a3 * bb2
+         beta2p = 2d0 * bb0 + 6d0 * a * bb1 + 12d0 * a2 * bb2
+         beta3p = 6d0 * bb1 + 24d0 * a * bb2
+         fbetaMELA = beta0p
+     1        + beta0p * beta1p * lk
+     2        + ( beta0p * beta1p**2 + beta0p**2 * beta2p ) * lk2 / 2d0
+     3        + ( beta0p * beta1p**3 + 4d0 * beta0p**2 * beta1p * beta2p
+     4        + beta0p**3 * beta3p ) * lk3 / 6d0
+
       endif
 *
       return

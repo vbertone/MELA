@@ -98,7 +98,7 @@
 *     g-functions solution
 *
       IF(MODEV.EQ."GFN")THEN
-         CALL GFUNCS(ZN,AQCD(Q2I/KRF**2),ZSQRT(Q2I),ZSQRT(Q2F),
+         CALL GFUNCS(ZN,AQCD(Q2I),ZSQRT(Q2I),ZSQRT(Q2F),
      1        NF,EFNNS,EFNSG)
          RETURN
       ENDIF

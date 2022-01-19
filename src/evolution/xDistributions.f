@@ -11,6 +11,7 @@
 *
       include "../commons/consts.h"
       include "../commons/alphas.h"
+      include "../commons/renfacscales.h"
 **
 *     Input Variables
 *
@@ -35,11 +36,11 @@
 *
 *     Precompute alphas
 *
-      asEvolIni(1) = aQCD(Q(1)**2d0)
-      asEvolFin(1) = aQCD(Q(2)**2d0)
+      asEvolIni(1) = aQCD(krf**2 * Q(1)**2d0)
+      asEvolFin(1) = aQCD(krf**2 * Q(2)**2d0)
       do iQ=2,nQ-1
          asEvolIni(iQ) = asEvolFin(iQ-1)
-         asEvolFin(iQ) = aQCD(Q(iQ+1)**2d0)
+         asEvolFin(iQ) = aQCD(krf**2 * Q(iQ+1)**2d0)
       enddo
 *
       t = - dlog(x)

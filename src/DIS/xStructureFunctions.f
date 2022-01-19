@@ -45,12 +45,12 @@
       if(ns.eq."FFNS")then
          iptbkp = ipt
          ipt    = max(0,ipt-1)
-         asDIS  = aQCD((kfacQ*Q(nQ))**2d0)
-         asEvolIni(1) = aQCD(Q(1)**2d0)
-         asEvolFin(1) = aQCD((kfacQ*Q(2))**2d0)
+         asDIS = aQCD((kfacQ*krf*Q(nQ))**2d0)
+         asEvolIni(1) = aQCD(krf**2 * Q(1)**2d0)
+         asEvolFin(1) = aQCD(kfacQ**2 * krf**2 * Q(2)**2d0)
          do iQ=2,nQ-1
             asEvolIni(iQ) = asEvolFin(iQ-1)
-            asEvolFin(iQ) = aQCD((kfacQ*Q(iQ+1))**2d0)
+            asEvolFin(iQ) = aQCD(kfacQ**2 * krf**2 * Q(iQ+1)**2d0)
          enddo
          ipt    = iptbkp
          W2     = abs(Q(nq)**2d0) * ( 1d0 - x ) / x
@@ -59,12 +59,12 @@
             if(W2.ge.kappa*abs(q2th(ip))) maxfl = maxfl + 1 
          enddo
       elseif(ns.eq."VFNS")then
-         asDIS  = aQCD((kfacQ*Q(nQ))**2d0)
-         asEvolIni(1) = aQCD(Q(1)**2d0)
-         asEvolFin(1) = aQCD((kfacQ*Q(2))**2d0)
+         asDIS = aQCD((kfacQ*krf*Q(nQ))**2d0)
+         asEvolIni(1) = aQCD(krf**2 * Q(1)**2d0)
+         asEvolFin(1) = aQCD(kfacQ**2 * krf**2 * Q(2)**2d0)
          do iQ=2,nQ-1
             asEvolIni(iQ) = asEvolFin(iQ-1)
-            asEvolFin(iQ) = aQCD((kfacQ*Q(iQ+1))**2d0)
+            asEvolFin(iQ) = aQCD(kfacQ**2 * krf**2 * Q(iQ+1)**2d0)
          enddo
          do ip=4,6
             if(abs(Q(nq)**2d0).ge.abs(q2th(ip))) maxfl = maxfl + 1 
