@@ -6,17 +6,10 @@
 *
 ************************************************************************
       subroutine SetPerturbativeOrder(iptin)
-*
       implicit none
-*
       include "../commons/ipt.h"
-**
-*     Input Variables
-*
       integer iptin
-*
       ipt = iptin
-*
       return
       end
 ************************************************************************      
@@ -27,3 +20,21 @@
       iptout = ipt
       return
       end
+************************************************************************            
+      subroutine SetPerturbativeOrderAlpha(iptalphain)
+      implicit none
+      include "../commons/ipt.h"
+      integer iptalphain
+      iptalpha = iptalphain
+      return
+      end
+************************************************************************      
+      subroutine GetPerturbativeOrderAlpha(iptalphaout)
+      implicit none
+      include "../commons/ipt.h"
+      integer iptalphaout
+      iptalphaout = iptalpha
+      return
+      end
+
+      

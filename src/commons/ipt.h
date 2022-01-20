@@ -2,6 +2,6 @@
 *
 *     Flags for the perturbative order
 *
-      integer ipt
+      integer ipt,iptalpha
 *
-      common / PerturbativeOrderMELA / ipt
+      common / PerturbativeOrderMELA / ipt,iptalpha

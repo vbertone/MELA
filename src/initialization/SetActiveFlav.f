@@ -57,3 +57,19 @@
 *
       return
       end
+************************************************************************      
+      subroutine SetWaem(waemin)
+      implicit none
+      include "../commons/activeflavours.h"
+      integer waemin
+      waem = waemin
+      return
+      end
+************************************************************************
+      subroutine GetWaem(waemout)
+      implicit none
+      include "../commons/activeflavours.h"
+      integer waemout
+      waemout = waem
+      return
+      end

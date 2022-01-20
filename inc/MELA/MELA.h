@@ -35,6 +35,9 @@ namespace MELA {
   void SetPerturbativeOrder(int iptin);
   int GetPerturbativeOrder();
 
+  void SetPerturbativeOrderAlpha(int);
+  int GetPerturbativeOrderAlpha();
+  
   /// Flavour scheme
   void SetFlavourScheme(std::string const& fnsin);
   void SetFlavourSchemeInt(int fnsin);
@@ -115,5 +118,8 @@ namespace MELA {
   void SetActiveFlavoursAlpha(std::vector<int> active);
 
   std::vector<int> GetActiveFlavours();
-  std::vector<int> GetActiveFlavoursAlpha();  
+  std::vector<int> GetActiveFlavoursAlpha();
+
+  void SetWalpha(int);
+  int GetWalpha();  
 }

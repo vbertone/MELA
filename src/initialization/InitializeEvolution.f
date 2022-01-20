@@ -49,6 +49,16 @@
          call exit(-10)
       endif
 *
+      if(iptalpha.eq.0)then
+         write(6,*) "Perturbative order alpha: LO"
+      elseif(iptalpha.eq.1)then
+         write(6,*) "Perturbative order alpha: NLO"
+      else
+         write(6,*) "In InitializeEvolution.f:"
+         write(6,*) "Invalid perturbative order, iptalpha = ",iptalpha
+         call exit(-10)
+      endif
+*      
 *     Factorisation scheme
 *
       if(FACSCHEME.eq."MSBAR")then
@@ -164,6 +174,16 @@
          write(6,"(a,i1,a,i1,a,i1)") " NLMAXAEM = ",NLMAXAEM,
      .     ", NUMAXAEM = ",NUMAXAEM,", NDMAXAEM = ",NDMAXAEM
       endif
+*       
+      if(waem.eq.0)then
+         write(6,*) "W not included in alpha evolution"
+      elseif(waem.eq.1)then
+         write(6,*) "W included in alpha evolution at one-loop"
+      else
+         write(6,*) "In InitializeEvolution.f:"
+         write(6,*) "Unknown Waem value, Waem = ",waem
+         call exit(-10)
+      endif      
 *     
       return
       end

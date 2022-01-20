@@ -18,8 +18,8 @@
 *
       integer i
       integer nlaem(0:9), nuaem(0:9), ndaem(0:9)
-      integer C2aem(1:9), C4aem(1:9)
-      integer C2(1:9), C4(1:9)      
+      double precision C2aem(1:9), C4aem(1:9)
+      double precision C2(1:9), C4(1:9)      
 *
 *     fill number of colours
 *
@@ -65,10 +65,10 @@
 *     Input
       integer nl(0:9), nu(0:9), nd(0:9)      
 *     Output
-      integer C2(1:9)
+      double precision C2(1:9)
 *     Internal
       integer i
-*      
+*
       do i = 1,9
          C2(i) = el2 * nl(i) + nc * ( eu2 * nu(i) + ed2 * nd(i) )  
       enddo
@@ -83,7 +83,7 @@
 *     Input
       integer nl(0:9), nu(0:9), nd(0:9)      
 *     Output
-      integer C4(1:9)
+      double precision C4(1:9)
 *     Internal
       integer i
 *      
@@ -137,6 +137,11 @@
             nu(i) = 2
          enddo
       endif
+      if (numax.ge.3) then
+         do i=9,9
+            nu(i) = 3
+         enddo
+      endif
 *      
       do i=0,9
          nd(i) = 0
@@ -152,7 +157,7 @@
          enddo
       endif
       if (ndmax.ge.3) then
-         do i=9,9
+         do i=8,9
             nd(i) = 3
          enddo
       endif

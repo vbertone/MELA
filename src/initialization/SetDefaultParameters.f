@@ -23,6 +23,7 @@
 *     Default values
 *
       IPT         = 1
+      IPTALPHA    = 1
       NS          = "VFNS"
       FACSCHEME   = "MSBAR"
       RENSCHEME   = "MSBAR"
@@ -37,7 +38,8 @@
       NFFNALPHA   = 8
       NLMAXAEM    = 3
       NUMAXAEM    = 2
-      NDMAXAEM    = 3            
+      NDMAXAEM    = 3
+      WAEM        = 0
       Q2TH(1)     = 0.000510998928d0**2
       Q2TH(2)     = 0.00216d0**2
       Q2TH(3)     = 0.00467D0**2

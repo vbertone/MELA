@@ -64,7 +64,7 @@
       endif
 *
  10   if(nff.eq.nfi) then
-         aQED = a_exact_MELA(nfi,mur20,ar0,q2,ipt)
+         aQED = a_exact_MELA(nfi,mur20,ar0,q2,iptalpha)
          return
       else
          if(nff.gt.nfi)then
@@ -75,7 +75,7 @@
             snf = 0
          endif
 *
-         ai = a_exact_MELA(nfi,mur20,ar0,q2th(nfi+snf),ipt)
+         ai = a_exact_MELA(nfi,mur20,ar0,q2th(nfi+snf),iptalpha)
 *
          ar0   = ai
          mur20 = q2th(nfi+snf)
@@ -95,17 +95,18 @@
 *                 PEGASUS and Les Houches tables)
 *
 ****************************************************************************
-      FUNCTION A_EXACT_MELA(NF,MU20,A0,MU2,IPT)
+      FUNCTION A_EXACT_MELA(NF,MU20,A0,MU2,IPTALPHA)
 *
       IMPLICIT NONE
 *
       include "../commons/beta.h" 
       include "../commons/consts.h"
       include "../commons/tecparam.h"
+      include "../commons/activeflavours.h"
 **
 *     Input Variables
 *
-      INTEGER NF,IPT
+      INTEGER NF,IPTALPHA
       DOUBLE PRECISION MU2
       DOUBLE PRECISION A0,MU20
 **
@@ -116,52 +117,98 @@
       DOUBLE PRECISION SXTH
       DOUBLE PRECISION FBETAMELA
       DOUBLE PRECISION XK0,XK1,XK2,XK3
-      DOUBLE PRECISION DLR,LRRAT      
+      DOUBLE PRECISION DLR,LRRAT
+      DOUBLE PRECISION MW2
+      DOUBLE PRECISION SAVEBETA0
       PARAMETER(SXTH=0.166666666666666D0)
+      PARAMETER(MW2=6460.783641D0)
 **
 *     Output Variables
 *
       DOUBLE PRECISION A_EXACT_MELA
 *
-*     ..The beta functions FBETAMELAn at N^nLO for n = 1, 2, and 3
+*     VERY DIRTY SOLUTION TO INCLUDE W CONTRIBUTIONS
+      SAVEBETA0 = BETA0(NF)
+*     JUST SHIFT BETA0 IF BOTH SCALES ARE BELOW OR ABOVE THE W MASS...
+      IF( ((MU20.GT.MW2).AND.(MU2.GT.MW2)) .OR.
+     .     ((MU20.LT.MW2).AND.(MU2.LT.MW2)) ) THEN
+
+         IF ((MU20.GT.MW2).AND.(MU2.GT.MW2)) THEN
+            BETA0(NF) = -4d0/3d0*(-3d0/4d0*BETA0(NF)-21d0/4d0*WAEM)
+         ENDIF
+         
+         AQED  = A0
+         LRRAT = DLOG (MU2/MU20)
+         DLR   = LRRAT / NSTEP
+*     
+         IF(IPTALPHA.EQ.0)THEN
+            AQED = A0 / ( 1D0 + BETA0(NF) * A0 * LRRAT )
+         ELSEIF(IPTALPHA.GE.1)THEN
+            DO 2 K1=1,NSTEP
+               XK0 = DLR * FBETAMELA(AQED,NF,IPTALPHA)
+               XK1 = DLR * FBETAMELA(AQED + 0.5d0 * XK0,NF,IPTALPHA)
+               XK2 = DLR * FBETAMELA(AQED + 0.5d0 * XK1,NF,IPTALPHA)
+               XK3 = DLR * FBETAMELA(AQED + XK2,NF,IPTALPHA)
+               AQED = AQED + SXTH * (XK0+2D0*XK1+2d0*XK2+XK3)
+ 2          CONTINUE
+         ENDIF
+
+      ELSE
+*     ... OR SPLIT EVOLUTION BETWEEN (MU2,MW2) AND (MW2,MU20)
+         AQED  = A0
+         LRRAT = DLOG (MU2/MW2)
+         DLR   = LRRAT / NSTEP
+*     
+         IF(IPTALPHA.EQ.0)THEN
+            AQED = A0 / ( 1D0 + BETA0(NF) * A0 * LRRAT )
+         ELSEIF(IPTALPHA.GE.1)THEN
+            DO 3 K1=1,NSTEP
+               XK0 = DLR * FBETAMELA(AQED,NF,IPTALPHA)
+               XK1 = DLR * FBETAMELA(AQED + 0.5d0 * XK0,NF,IPTALPHA)
+               XK2 = DLR * FBETAMELA(AQED + 0.5d0 * XK1,NF,IPTALPHA)
+               XK3 = DLR * FBETAMELA(AQED + XK2,NF,IPTALPHA)
+               AQED = AQED + SXTH * (XK0+2D0*XK1+2d0*XK2+XK3)
+ 3          CONTINUE
+         ENDIF
 *
-      AQED  = A0
-      LRRAT = DLOG (MU2/MU20)
-      DLR   = LRRAT / NSTEP
+         A0 = AQED
+         BETA0(NF) = -4d0/3d0 * (-3d0/4d0*BETA0(NF) - 21d0/4d0 * WAEM)  
+         LRRAT = DLOG (MW2/MU20)
+         DLR   = LRRAT / NSTEP
 *     
-*     ..Solution of the evolution equation depending on  NAORD
-*   (fourth-order Runge-Kutta beyond the leading order)
+         IF(IPTALPHA.EQ.0)THEN
+            AQED = A0 / ( 1D0 + BETA0(NF) * A0 * LRRAT )
+         ELSEIF(IPTALPHA.GE.1)THEN
+            DO 4 K1=1,NSTEP
+               XK0 = DLR * FBETAMELA(AQED,NF,IPTALPHA)
+               XK1 = DLR * FBETAMELA(AQED + 0.5d0 * XK0,NF,IPTALPHA)
+               XK2 = DLR * FBETAMELA(AQED + 0.5d0 * XK1,NF,IPTALPHA)
+               XK3 = DLR * FBETAMELA(AQED + XK2,NF,IPTALPHA)
+               AQED = AQED + SXTH * (XK0+2D0*XK1+2d0*XK2+XK3)
+ 4          CONTINUE
+         ENDIF
 *     
-      IF(IPT.EQ.0)THEN
-         AQED = A0 / ( 1D0 + BETA0(NF) * A0 * LRRAT )
-      ELSEIF(IPT.GE.1)THEN
-         DO 2 K1=1,NSTEP
-            XK0 = DLR * FBETAMELA(AQED,NF,IPT)
-            XK1 = DLR * FBETAMELA(AQED + 0.5d0 * XK0,NF,IPT)
-            XK2 = DLR * FBETAMELA(AQED + 0.5d0 * XK1,NF,IPT)
-            XK3 = DLR * FBETAMELA(AQED + XK2,NF,IPT)
-            AQED = AQED + SXTH * ( XK0 + 2D0 * XK1 + 2d0 * XK2 + XK3 )
- 2        CONTINUE
       ENDIF
 *
+      BETA0(NF) = SAVEBETA0
       A_EXACT_MELA = AQED
 *
       RETURN
       END
 *
 ****************************************************************************
-      function fbetaMELA(a,nf,ipt)
+      function fbetaMELA(a,nf,iptalpha)
 *
       implicit none
 *
       include "../commons/beta.h"
 *
       double precision fbetaMELA,a
-      integer nf,ipt
+      integer nf,iptalpha
 *
-      if(ipt.eq.0)then
+      if(iptalpha.eq.0)then
          fbetaMELA = - A**2 * BETA0(NF)
-      elseif(ipt.eq.1)then
+      elseif(iptalpha.eq.1)then
          fbetaMELA = - A**2 * ( BETA0(NF) + A * BETA1(NF) )
       endif
 *

@@ -18,6 +18,9 @@ namespace MELA {
     void setperturbativeorder_(int* iptin);
     void getperturbativeorder_(int* iptout);
 
+    void setperturbativeorderalpha_(int* iptalphain);
+    void getperturbativeorderalpha_(int* iptalphaout);
+    
     void setflavourscheme_(char* fnsin);
     void setflavourschemeint_(int* fnsin);
     void getflavourschemeint_(int* fscheme);
@@ -55,6 +58,9 @@ namespace MELA {
     void setnfmaxalpha_(int*);
     void getnfmaxalpha_(int*);
 
+    void setwaem_(int*);
+    void getwaem_(int*);
+    
     void setthresholds_(double* me, double* mu, double* md, double* ms, double* mm,
 			double* mc, double* mt, double* mb, double* mtp);
     void getthresholds2_(double* q2thrs);
@@ -145,6 +151,19 @@ namespace MELA {
     return pto;
   }
 
+  void SetPerturbativeOrderAlpha(int iptalphain)
+  {
+    setperturbativeorderalpha_(&iptalphain);
+  };
+
+  int GetPerturbativeOrderAlpha()
+  {
+    int iptalpha;
+    getperturbativeorderalpha_(&iptalpha);
+    return iptalpha;
+  }
+
+  
   void SetFlavourScheme(std::string const& fnsin)
   {
     std::vector<char> cstr(fnsin.c_str(), fnsin.c_str() + fnsin.size() + 1);
@@ -513,5 +532,17 @@ namespace MELA {
     res.push_back(ndmax);
     return res;
   }    
+
+  void SetWalpha(int walpha)
+  {
+    setwaem_(&walpha);
+  }
+  
+  int GetWalpha()
+  {
+    int walpha;
+    getwaem_(&walpha);
+    return walpha;
+  }
   
 }
