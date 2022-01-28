@@ -98,7 +98,13 @@ c      DOUBLE COMPLEX SGFTMP1(4,4),SGFTMP2(4,4),SGF(4,4)
                SPNS(I,J) = AONE2PI * G0NS(J) / 2D0 * LN2
             ENDDO
          ENDDO
-*     
+*
+         DO I=1,2
+            DO J=1,3
+               EFNS(I,J) = ZEXP( SPNS(I,J) )
+            ENDDO
+         ENDDO
+*         
 *     Solution at NLO
 *
       ELSE
@@ -235,18 +241,17 @@ c                  SPSG(I,J) = DTT * ( SGI(I,J) + SGF(I,J) ) / 2D0
                ENDDO
             ENDDO
          ENDDO
-      ENDIF
 *
 *     Write the analytic solution for the non-singlet ev.op. 
-      DO I=1,2
-         DO J=1,3
-            SPNSAN(I,J) = ( ( AONE2PI * G0NS(J)/2D0
-     1           + AONE2PI**2 *
-     2           ( G1NS(I,J)/4D0 + DK*G0NS(J)/2D0 ) ) * DLOG(Q2F/Q2I)
-     3           + AONE2PI**2 * PI*B0*G0NS(J)/2D0 *
-     4           (DLOG(Q2F/MF2)**2 - DLOG(Q2I/MF2)**2) )            
+         DO I=1,2
+            DO J=1,3
+               SPNSAN(I,J) = ( ( AONE2PI * G0NS(J)/2D0
+     1              + AONE2PI**2 *
+     2              ( G1NS(I,J)/4D0 + DK*G0NS(J)/2D0 ) ) * DLOG(Q2F/Q2I)
+     3              + AONE2PI**2 * PI*B0*G0NS(J)/2D0 *
+     4              (DLOG(Q2F/MF2)**2 - DLOG(Q2I/MF2)**2) )            
+            ENDDO
          ENDDO
-      ENDDO
 **
 *     Same as above, just for check
 *      DO I=1,2
@@ -265,17 +270,19 @@ c                  SPSG(I,J) = DTT * ( SGI(I,J) + SGF(I,J) ) / 2D0
 *      WRITE(6,*)(SPNSAN2-SPNSAN)/SPNSAN
 *
 *     Try to use the analytic solution
-      DO I=1,2
-         DO J=1,3
-            SPNS(I,J) = SPNSAN(I,J)
+         DO I=1,2
+            DO J=1,3
+               SPNS(I,J) = SPNSAN(I,J)
+            ENDDO
          ENDDO
-      ENDDO
 *     
-      DO I=1,2
-         DO J=1,3
-            EFNS(I,J) = ZEXP( SPNS(I,J) )
+         DO I=1,2
+            DO J=1,3
+               EFNS(I,J) = ZEXP( SPNS(I,J) )
+            ENDDO
          ENDDO
-      ENDDO
+*         
+      ENDIF      
 *
 *     Contruct evolution matrix according to nf
 *
