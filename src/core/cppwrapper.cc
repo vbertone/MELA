@@ -8,10 +8,9 @@ namespace MELA {
   extern"C"
   {
     void initializeevolution_(void);
-    void readparameters_(char* fcard);
     void setdefaultparameters_(void);
+    
     double aqed_(double* q2);
-    void geta0_(double* a0);    
     void xdistributions_(double* x, double* q, double* xfph);
     void xdistributionsev_(double* x, double* q, double* xfev);    
 
@@ -33,52 +32,41 @@ namespace MELA {
     void setrenormalisationschemeint_(int* rsinint);
     void getrenormalisationschemeint_(int* fsintout);
 
-    void setnfmax_(int* nfmaxin);
-    void getnfmax_(int* nfmax);
-    void setnffn_(int* nffnin);
-    void getnffn_(int* nffn);
-    
-    //void enablequarks_(int*);
-    //void getenablequarks_(int*);
-    
     void setalpha_(double* ain, double* qin);
     void getalpharef_(double*);
     void getalphaqref_(double*);
 
+    void setalpmzsolint_(int*);
+    
     void setactiveflav_(int* nlmax, int* numax, int* ndmax);
     void getactiveflav_(int* nlmax, int* numax, int* ndmax);
     void setactiveflavaem_(int* nlmax, int* numax, int* ndmax);
     void getactiveflavaem_(int* nlmax, int* numax, int* ndmax);
     
-    //void enablequarksalpha_(int*);
-    //void getenablequarksalpha_(int*);
-    
-    void setnffnalpha_(int*);
-    void getnffnalpha_(int*);
-    void setnfmaxalpha_(int*);
-    void getnfmaxalpha_(int*);
-
     void setwaem_(int*);
     void getwaem_(int*);
     
     void setthresholds_(double* me, double* mu, double* md, double* ms, double* mm,
-			double* mc, double* mt, double* mb, double* mtp);
+			double* mc, double* mt, double* mb,
+			double* MW, double* MZ, double* mtp);
     void getthresholds2_(double* q2thrs);
-    void getmz2_(double*);    
 
     void getc2_(double* C2);
     void getc4_(double* C4);
     void getb0_(double* b0);
     void getb1_(double* b1);
-
     void getdk_(int* region, double* dk);
+
+    void getmz2_(double*);
+    void getmw2_(double*);        
+    void geta0_(double* a0);
     
     void setnint_(int*);
     void getnint_(int*);
     void setnexp_(int*);
     void getnexp_(int*);
-    void setnstep_(int*);
-    void getnstep_(int*);
+    void setnstepaem_(int*);
+    void getnstepaem_(int*);
     void setminvmel_(int*);
     void getminvmel_(int*);
     void setrinvmel_(int*);
@@ -88,12 +76,6 @@ namespace MELA {
   void InitializeEvolution(void)
   {
     initializeevolution_();
-  };
-
-  void ReadParameters(std::string const& fcard)
-  {
-    std::vector<char> cstr(fcard.c_str(), fcard.c_str() + fcard.size() + 1);
-    readparameters_(cstr.data());
   };
 
   void SetDefaultParameters(void) { setdefaultparameters_(); };
@@ -107,13 +89,6 @@ namespace MELA {
     return aqed_(&q2)*4.0*M_PI;
   };
   
-  double aQEDinit()
-  {
-    double a0;
-    geta0_(&a0);
-    return a0*4.0*M_PI;
-  };
-
   /// PDFs (from -9 to 9)
   std::map<int, double> xDistributions(double x, double Q)
   {
@@ -137,8 +112,7 @@ namespace MELA {
     delete[] xfev;
     return xfout;
   };
-  
- 
+   
   void SetPerturbativeOrder(int iptin)
   {
     setperturbativeorder_(&iptin);
@@ -218,43 +192,6 @@ namespace MELA {
     return rdcheme;
   }
 
-  void SetNFmax(int NFmaxin)
-  {
-    setnfmax_(&NFmaxin);
-  };
-    
-  int GetNFmax()
-  {
-    int nfmax;
-    getnfmax_(&nfmax);
-    return nfmax;
-  }
-
-  void SetNFFN(int NFFNin)
-  {
-    setnffn_(&NFFNin);
-  };
-  
-  int GetNFFN()
-  {
-    int nffn;
-    getnffn_(&nffn);
-    return nffn;
-  }
-  
-  // void SetEnableQuarks(int eq)
-  // {
-  //   enablequarks_(&eq);
-  // };
-
-  // bool GetEnableQuarks()
-  // {
-  //   int quarks;
-  //   getenablequarks_(&quarks);
-  //   return quarks;
-  // }
-
-  
   /// Set reference values for alpha
   void SetAlpha(double ain, double Qin)
   {
@@ -274,47 +211,13 @@ namespace MELA {
     getalphaqref_(&res);
     return res;
   }
-
-  // void SetEnableQuarksalpha(int eq)
-  // {
-  //   enablequarksalpha_(&eq);
-  // };
-  
-  // bool GetEnableQuarksalpha()
-  // {
-  //   int quarks;
-  //   getenablequarksalpha_(&quarks);
-  //   return quarks;
-  // }
-
-  void SetNFFNalpha(int NFFNalphain)
-  {
-    setnffnalpha_(&NFFNalphain);
-  };
-  int GetNFFNalpha()
-  {
-    int nffnalpha;
-    getnffnalpha_(&nffnalpha);
-    return nffnalpha;
-  }
-  
-  void SetNFmaxalpha(int NFmaxalphain)
-  {
-    setnfmaxalpha_(&NFmaxalphain);
-  };
-  int GetNFmaxalpha()
-  {
-    int nffnalpha;
-    getnfmaxalpha_(&nffnalpha);
-    return nffnalpha;
-  }
-  
     
   /// Set fermion thresholds
   void SetThresholds(double me, double mu, double md, double ms, double mm,
-		     double mc, double mt, double mb, double mtp)
+		     double mc, double mt, double mb,
+		     double MW, double MZ, double mtp)
   {
-    setthresholds_(&me, &mu, &md, &ms, &mm, &mc, &mt, &mb, &mtp);
+    setthresholds_(&me, &mu, &md, &ms, &mm, &mc, &mt, &mb, &MW, &MZ, &mtp);
   };
 
   void SetThresholds(std::vector<double> thrs)
@@ -327,18 +230,20 @@ namespace MELA {
     double & mc = thrs[5];
     double & mt = thrs[6];
     double & mb = thrs[7];
-    double & mtp = thrs[8];
+    double & MW = thrs[8];
+    double & MZ = thrs[9];
+    double & mtp = thrs[10];
     
-    setthresholds_(&me, &mu, &md, &ms, &mm, &mc, &mt, &mb, &mtp);
+    setthresholds_(&me, &mu, &md, &ms, &mm, &mc, &mt, &mb, &MW, &MZ, &mtp);
   };
   
 
   std::vector<double> GetThresholds()
   {
-    double* q2thrsf = new double[9];
+    double* q2thrsf = new double[11];
     getthresholds2_(q2thrsf);
     std::vector<double> thrs;
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 11; i++)
       thrs.push_back(sqrt(q2thrsf[i]));
     delete[] q2thrsf;
     return thrs;
@@ -346,10 +251,10 @@ namespace MELA {
 
   std::vector<double> GetThresholds2()
   {
-    double* q2thrsf = new double[9];
+    double* q2thrsf = new double[11];
     getthresholds2_(q2thrsf);
     std::vector<double> q2thrs;
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 11; i++)
       q2thrs.push_back(q2thrsf[i]);
     delete[] q2thrsf;
     return q2thrs;
@@ -359,15 +264,13 @@ namespace MELA {
   int GetRegionMU2(double mu2)
   {
     std::vector<double> q2thrs = GetThresholds2();
-    int region;
-    // Initialize region to nfmax-1
-    getnfmax_(&region);
+    int region = 10;
     region = region - 1;
     while (region >= 0) {
       if (mu2 > q2thrs[region]) {
-	break;
+    	break;
       } else {
-	region = region - 1;
+    	region = region - 1;
       }
     }
     return region;
@@ -375,7 +278,7 @@ namespace MELA {
   
   double GetC2(int region)
   {
-    double* C2f = new double[8];
+    double* C2f = new double[10];
     getc2_(C2f);
     double res =  C2f[region];
     delete[] C2f;
@@ -384,7 +287,7 @@ namespace MELA {
 
   double GetC4(int region)
   {
-    double* C4f = new double[8];
+    double* C4f = new double[10];
     getc4_(C4f);
     double res = C4f[region];
     delete[] C4f;
@@ -393,7 +296,7 @@ namespace MELA {
 
   double Getb0(int region)
   {
-    double* b0f = new double[8];
+    double* b0f = new double[10];
     getb0_(b0f);
     double res = b0f[region];
     delete[] b0f;
@@ -402,7 +305,7 @@ namespace MELA {
 
   double Getb1(int region)
   {
-    double* b1f = new double[8];
+    double* b1f = new double[10];
     getb1_(b1f);
     double res = b1f[region];
     delete[] b1f;
@@ -442,15 +345,15 @@ namespace MELA {
     return res;
   }
 
-  void SetNstep(int res)
+  void SetNstepAem(int res)
   {
-    setnstep_(&res);
+    setnstepaem_(&res);
   }
 
-  int GetNstep()
+  int GetNstepAem()
   {
     int res;
-    getnstep_(&res);
+    getnstepaem_(&res);
     return res;
   }
 
@@ -504,13 +407,6 @@ namespace MELA {
     setactiveflavaem_(&nlmaxaem, &numaxaem, &ndmaxaem);
   }
   
-  double GetMZ2()
-  {
-    double mz2;
-    getmz2_(&mz2);
-    return mz2;
-  }
-
   std::vector<int> GetActiveFlavours()
   {
     int nlmax, numax, ndmax;
@@ -544,5 +440,31 @@ namespace MELA {
     getwaem_(&walpha);
     return walpha;
   }
-  
+
+  double aQEDinit()
+  {
+    double a0;
+    geta0_(&a0);
+    return a0*4.0*M_PI;
+  }
+
+  double GetMZ2()
+  {
+    double mz2;
+    getmz2_(&mz2);
+    return mz2;
+  }
+
+  double GetMW2()
+  {
+    double mw2;
+    getmw2_(&mw2);
+    return mw2;
+  }
+
+  void SetAlphaMZSolInt(int intin)
+  {
+    setalpmzsolint_(&intin);
+  };
+
 }

@@ -10,8 +10,6 @@
       include "../commons/activeflavours.h"
       include "../commons/facscheme.h"
       include "../commons/ns.h"
-      include "../commons/nffn.h"
-      include "../commons/nfmax.h"
       include "../commons/tecparam.h"
       include "../commons/consts.h"
       include "../commons/alpha.h"
@@ -32,6 +30,7 @@
       DOUBLE PRECISION B0, MF2
       DOUBLE PRECISION DK, DCAL
       DOUBLE PRECISION BT0
+      DOUBLE PRECISION MZ2
       DOUBLE COMPLEX G0(4,4),G1(4,4)
       DOUBLE COMPLEX G0NS(3),G1NS(2,3)
       DOUBLE COMPLEX JLL,JGL,FDEN,FDGMN
@@ -46,13 +45,8 @@
 *
       DOUBLE COMPLEX EVF(19,19)
 *
-*      IF (NS.EQ."FFNS") THEN
-*         BT0 = BETA0(NFFNALPHA)
-*      ELSEIF (NS.EQ."VFNS") THEN
       BT0 = BETA0(NF)
-*      ENDIF
       B0 = - BT0 / 4d0 / PI
-*     WRITE(6,*) "B0 ", B0
 *      
 *     LO splitting functions
 *
@@ -127,13 +121,14 @@
 *     
          LN2 = DLOG(Q2F/Q2I)
 *
+         MZ2 = Q2TH(10)         
          CALL GETDK(NF,DK)
-         IF (NF.EQ.8) THEN
+         IF (NF.GE.10) THEN
             MF2 = MZ2
-         ELSEIF (NF.LT.8) THEN
-            MF2 = Q2F
+         ELSEIF (NF.LT.10) THEN
+            MF2 = Q2TH(NF+1)
          ENDIF         
-         DCAL = DK - 2D0*PI*B0 * DLOG(MF2/Q2I)
+         DCAL = DK + 2D0*PI*B0 * DLOG(Q2I/MF2)
 *
          DO I=1,4
             DO J=1,4
@@ -163,11 +158,11 @@
 c         WRITE(6,*) "------------"
 c         CALL MAGNUS(LN2,SGA,SGB,4,1,EFSG)
 c         WRITE(6,*) EFSG
-c         CALL MAGNUS(LN2,SGA,SGB,4,2,EFSG)
+C          CALL MAGNUS(LN2,SGA,SGB,4,2,EFSG)
 c         WRITE(6,*) EFSG
 c         CALL MAGNUS(LN2,SGA,SGB,4,3,EFSG)
 c         WRITE(6,*) EFSG
-         CALL MAGNUS(LN2,SGA,SGB,4,4,EFSG)
+          CALL MAGNUS(LN2,SGA,SGB,4,4,EFSG)
 c         WRITE(6,*) EFSG
 *     
 *     Non Singlet (equal for Delta and MSbar factorization scheme)

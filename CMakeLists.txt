@@ -42,7 +42,7 @@ file(GLOB_RECURSE  source_files src/*f src/*cc)
 enable_testing()
 add_subdirectory(run)
 
-configure_file(${PROJECT_SOURCE_DIR}/run/Reference.ini ${CMAKE_CURRENT_BINARY_DIR}/run/Reference.ini COPYONLY)
+# configure_file(${PROJECT_SOURCE_DIR}/run/Reference.ini ${CMAKE_CURRENT_BINARY_DIR}/run/Reference.ini COPYONLY)
 
 # define target library
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

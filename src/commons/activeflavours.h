@@ -4,7 +4,7 @@
 *
       integer nlmax, numax, ndmax
       integer nlmaxaem, numaxaem, ndmaxaem
-      integer nl(0:9), nu(0:9), nd(0:9)
+      integer nl(1:11), nu(1:11), nd(1:11)
       integer waem
 *
       common / activeFlavoursMELA / nl,nu,nd

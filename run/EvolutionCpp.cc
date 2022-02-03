@@ -16,10 +16,7 @@ int main()
   MELA::SetPerturbativeOrder(1);
   MELA::SetFlavourScheme("VFNS");
   //MELA::SetFactorisationScheme("DELTA")
-  MELA::SetNFmax(8);
-  MELA::SetNFFN(8);
   MELA::SetAlpha(0.007815265003645828, 91.1876);
-  MELA::SetThresholds(0.000510998928,0.00216,0.00467,0.093,0.10566,1.27,1.77686,4.18,172.76);
 
   // Initialization of evolution parameters
   MELA::InitializeEvolution();

@@ -2,6 +2,6 @@
 *
 *     Sum of charges
 *
-      double precision nfsum2(9),nfsum4(9)
+      double precision nfsum2(1:11),nfsum4(1:11)
 *
       common / nfsumMELA / nfsum2,nfsum4

@@ -5,7 +5,65 @@
 *     Routine that returns the evolved N-space distributions.
 *
 ************************************************************************
-      subroutine NDistributions(N,nfi,nff,fn)
+      subroutine NDistributions(N,Q,fnph)
+*
+      implicit none
+**
+*     Input Variables
+*
+      double complex N
+      double precision Q
+**
+*     Internal Variables
+*
+      double complex fnev(19)
+**
+*     Output Variables
+*      
+      double complex fnph(-9:9)
+*
+      call NDistributionsEv(N,Q,fnev)
+*
+*     Rotate to the physical basis
+*      
+      call evln2lhac(fnev,fnph)
+*
+      return
+      end
+************************************************************************
+      subroutine NDistributionsEv(N,Q,fn)
+      implicit none
+*      
+      include "../commons/massthrs.h"      
+**
+*     Input Variables
+*
+      double complex N
+      double precision Q
+**      
+*     Internal Variables
+*
+      integer nfi,nff
+      double precision q2
+*      
+*     Output Variables
+*
+      double complex fn(19)
+*      
+*     The initial scale is always the electron mass
+      nfi = 1
+*
+      q2 = Q**2d0      
+      do nff = 11, 1, -1
+         if (q2.ge.q2th(nff)) exit
+      enddo
+*
+      call NDistributionsNF(N,nfi,nff,q2,fn)
+*
+      return
+      end
+************************************************************************      
+      subroutine NDistributionsNF(N,nfi,nff,q2,fn)
 *
       implicit none
 *
@@ -13,69 +71,126 @@
       include "../commons/massthrs.h"
       include "../commons/renscheme.h"
       include "../commons/tecparam.h"
+      include "../commons/ns.h"      
 **
 *     Input Variables
 *
       integer nfi,nff
       double complex N
+      double precision q2
 **
 *     Internal Variables
 *
       integer ifl
-      double complex evf(19,19)
-      double precision range,perc
-      integer nintstep
-      integer nminstep
+      double precision mu2,mu20
+      double precision aQED
+      double precision aq2,amu20,amu2
 **
 *     Output Variables
 *
       double complex fn(19)
 *
+      integer nminstep      
+      double precision rangeA,rangeQ
+      common/nstepMELA/rangeA,rangeQ,nminstep
+*      
 *     Call N-space distributions
-*
+*     
       call electronPDFsn(N, fn) ! Electron PDFs
 *
 *     Run over sub-intervals
 *
-      do ifl = nfi, nff
+      aq2 = aQED(q2)
 *
 *     Adjust the number of iterations in the path ordering
 *     (if there are thresholds, we need more points where
 *     the range of variation is larger).
 *     No less than NMINSTEP points for step.
-         nminstep = 50
+      nminstep = 50
+      rangeA = aq2-ath(nfi)
+      rangeQ = q2-q2th(nfi)
 *
-         if(renscheme.eq."MSBAR")then
-            range = ath(nff+1)-ath(nfi)
-            perc  = dble(nint) * (ath(ifl+1)-ath(ifl))/range
-         else
-            range = q2th(nff+1)-q2th(nfi)
-            perc  = dble(nint) * (q2th(ifl+1)-q2th(ifl))/range
-         endif
-         if (perc.lt.nminstep) then
-            nintstep = nminstep
-         else
-            nintstep = int(perc)
-         endif
-c         write(6,*) "ifl",ifl,"nintstep",nintstep
-*         
-*     Call evolution kernels
-*
-         if(renscheme.eq."MSBAR")then
-            call path_ordering(N,ath(ifl),ath(ifl+1),ifl,evf,nintstep)
-         elseif(renscheme.eq."FIXED")then
-            call alpha_fixed(N,q2th(ifl),q2th(ifl+1),ifl,evf)
-         elseif(renscheme.eq."ALPMZ")then
-            call alphaMZ_pathordering(N,q2th(ifl),q2th(ifl+1),
-     .           ifl,evf,nintstep)
-c            call alphaMZ_magnus(N,q2th(ifl),q2th(ifl+1),ifl,evf)
-c            call alphaMZ_analytic(N,q2th(ifl),q2th(ifl+1),ifl,evf)
-         endif
-*
-*     Convolute with vector of PDFs
-*
-         call mvmult(evf,19,19,fn,19)
+*      write(*,*)"*************************************************"
+*      write(*,*)"q2th",q2th
+*      write(*,*) "nff",nff
+*      write(*,*) "rangeQ",rangeQ
+*      write(*,*) "rangeA",rangeA
+*     Evolve from q2th(nfi) to q2th(nff)
+      do ifl = nfi, nff-1         
+         amu20 = ath(ifl)
+         amu2  = ath(ifl+1)                  
+         mu20  = q2th(ifl)
+         mu2   = q2th(ifl+1)
+         call nevolve(N,mu20,amu20,mu2,amu2,ifl,fn)
+*        write(*,*) "Evolving from mu0=",sqrt(mu20),"to mu=",sqrt(mu2)
       enddo
+*      
+*     Add evolution between q2th(nff) and q2
+      amu20 = ath(nff)
+      amu2  = aq2
+      mu20  = q2th(nff)
+      mu2   = q2
+      call nevolve(N,mu20,amu20,mu2,amu2,nff,fn)
+*      write(*,*) "Evolving from mu0=",sqrt(mu20),"to mu=",sqrt(mu2)
+*      write(*,*)"*************************************************"      
+*
+      return
+      end
+************************************************************************
+      subroutine nevolve(N,mu20,amu20,mu2,amu2,nf,fn)
+      implicit none
+*      
+      include "../commons/renscheme.h"
+      include "../commons/tecparam.h"      
+**
+*     Input Variables
+*
+      double complex N
+      double precision mu20,amu20
+      double precision mu2,amu2
+      integer nf
+**
+*     Internal Variables
+*
+      double precision perc
+      integer npstep      
+      double complex evf(19,19)      
+**
+*     Input/Output Variables
+*      
+      double complex fn(19)      
+*
+      integer nminstep      
+      double precision rangeA,rangeQ
+      common/nstepMELA/rangeA,rangeQ,nminstep
+*      
+      if(renscheme.eq."MSBAR")then
+         perc  = dble(nint) * (amu2-amu20)/rangeA
+      else
+         perc  = dble(nint) * (mu2-mu20)/rangeQ
+      endif
+      if (perc.lt.nminstep) then
+         npstep = nminstep
+      else
+         npstep = int(perc)
+      endif
+*      write(*,*) "perc at nf",nf,"is",perc
+*      write(*,*) "npstep at nf",nf,"is",npstep      
+*         
+      if(renscheme.eq."MSBAR")then
+         call path_ordering(N,amu20,amu2,nf,evf,npstep)
+      elseif(renscheme.eq."FIXED")then
+         call alpha_fixed(N,mu20,mu2,nf,evf)
+c         write(*,*) "q0=",sqrt(mu20),"q=",sqrt(mu2),evf
+      elseif(renscheme.eq."ALPMZ")then
+         if(alpmzsol.eq."PATHOR")then
+            call alphaMZ_pathordering(N,mu20,mu2,nf,evf,npstep)
+         elseif(alpmzsol.eq."MAGNUS")then
+            call alphaMZ_magnus(N,mu20,mu2,nf,evf)
+         endif
+      endif
+*      
+      call mvmult(evf,19,19,fn,19)
 *
       return
       end

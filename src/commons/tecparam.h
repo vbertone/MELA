@@ -2,6 +2,8 @@
 *
 *     Technical parameters
 *
-      integer nint,nexp,nstep,minvmel,rinvmel
+      integer nint,nexp,nstepaem,minvmel,rinvmel
+      character*6 alpMZsol
 *
-      common/tecparamMELA/nint,nexp,nstep,minvmel,rinvmel
+      common/tecparamMELA/nint,nexp,nstepaem,minvmel,rinvmel
+      common/alpMZsolMELA/alpMZsol

@@ -11,13 +11,11 @@
 *
       include "../commons/ipt.h"
       include "../commons/ns.h"
-      include "../commons/alpha.h"
-      include "../commons/massthrs.h"
-      include "../commons/nffn.h"
-      include "../commons/nfmax.h"
-      include "../commons/activeflavours.h"
       include "../commons/facscheme.h"
       include "../commons/renscheme.h"
+      include "../commons/activeflavours.h"
+      include "../commons/alpha.h"      
+      include "../commons/massthrs.h"
       include "../commons/tecparam.h"
 *
 *     Default values
@@ -27,19 +25,15 @@
       NS          = "VFNS"
       FACSCHEME   = "MSBAR"
       RENSCHEME   = "MSBAR"
-      NFMAX       = 8
-      NFFN        = 8
       NLMAX       = 3
       NUMAX       = 2
-      NDMAX       = 3      
-      Q2REF       = 0.000510998928d0**2
-      AREF        = 0.0072973525693d0
-      NFMAXALPHA  = 8
-      NFFNALPHA   = 8
+      NDMAX       = 3
       NLMAXAEM    = 3
       NUMAXAEM    = 2
       NDMAXAEM    = 3
       WAEM        = 0
+      Q2REF       = 0.000510998928d0**2
+      AREF        = 0.0072973525693d0     
       Q2TH(1)     = 0.000510998928d0**2
       Q2TH(2)     = 0.00216d0**2
       Q2TH(3)     = 0.00467D0**2
@@ -48,15 +42,16 @@
       Q2TH(6)     = 1.27D0**2
       Q2TH(7)     = 1.77686d0**2
       Q2TH(8)     = 4.18d0**2
-      Q2TH(9)     = 172.76d0**2
+      Q2TH(9)     = 80.379d0**2
+      Q2TH(10)    = 91.1876d0**2
+      Q2TH(11)    = 172.76d0**2
       NINT        = 300
-C     NEXP        = 10
-      NEXP        = 20
-      NSTEP       = 10
-C     NSTEP       = 20
+      NEXP        = 30
+      NSTEPAEM    = 10
       MINVMEL     = 51
-C     MINVMEL     = 101
       RINVMEL     = 20
+      ALPMZSOL    = "PATHOR"
+C     ALPMZSOL    = "MAGNUS"      
 *
       return
       end

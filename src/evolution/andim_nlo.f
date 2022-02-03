@@ -198,17 +198,17 @@
       P1SG(1,3) = 4D0 * ( EU4 * PGFA + EU2T * NFS2 * PGFC )
       P1SG(1,4) = 4D0 * ( ED4 * PGFA + ED2T * NFS2 * PGFC )
 
-      P1SG(2,1) = 4D0 * 2D0 * NL(NF) * EL4 * PFGB
+      P1SG(2,1) = 4D0 * NL(NF) * EL4 * PFGB
       P1SG(2,2) = 4D0 * NL(NF) * EL2T * EL2T * PPSA + P1NS(1,1)
       P1SG(2,3) = 4D0 * NL(NF) * EL2T * EU2T * PPSA
       P1SG(2,4) = 4D0 * NL(NF) * EL2T * ED2T * PPSA
 
-      P1SG(3,1) = 4D0 * 2D0 * NC * NU(NF) * EU4 * PFGB
+      P1SG(3,1) = 4D0 * NC * NU(NF) * EU4 * PFGB
       P1SG(3,2) = 4D0 * NC * NU(NF) * EU2T * EL2T * PPSA
       P1SG(3,3) = 4D0 * NC * NU(NF) * EU2T * EU2T * PPSA + P1NS(1,2)
       P1SG(3,4) = 4D0 * NC * NU(NF) * EU2T * ED2T * PPSA
 
-      P1SG(4,1) = 4D0 * 2D0 * NC * ND(NF) * ED4 * PFGB
+      P1SG(4,1) = 4D0 * NC * ND(NF) * ED4 * PFGB
       P1SG(4,2) = 4D0 * NC * ND(NF) * ED2T * EL2T * PPSA
       P1SG(4,3) = 4D0 * NC * ND(NF) * ED2T * EU2T * PPSA
       P1SG(4,4) = 4D0 * NC * ND(NF) * ED2T * ED2T * PPSA + P1NS(1,3)

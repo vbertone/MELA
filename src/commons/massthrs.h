@@ -1,9 +1,7 @@
 *     -*-fortran-*-
 *
-*     Values of the heavy lepton mass threholds
+*     Values of mass threholds
 *
-      double precision q2th(9)
-      double precision MZ2
+      double precision q2th(1:11)
 *
       common / MassThresholdsMELA / q2th
-      PARAMETER(MZ2 = 91.1876D0**2)

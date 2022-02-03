@@ -16,8 +16,6 @@
       include "../commons/activeflavours.h"
       include "../commons/facscheme.h"
       include "../commons/ns.h"
-      include "../commons/nffn.h"
-      include "../commons/nfmax.h"
       include "../commons/tecparam.h"
 **
 *     Input Variables
@@ -49,12 +47,7 @@
 *
       DOUBLE COMPLEX EVF(19,19)
 *
-c     BT0 = BETA0(NF)
-      IF (NS.EQ."FFNS") THEN
-         BT0 = BETA0(NFFNALPHA)
-      ELSEIF (NS.EQ."VFNS") THEN
-         BT0 = BETA0(NF)
-      ENDIF      
+      BT0 = BETA0(NF)
       BT1 = 0D0
 *
 *     LO splitting functions
@@ -65,12 +58,12 @@ c     BT0 = BETA0(NF)
 *
       IF(IPT.GE.1)THEN
          CALL ANDIM_NLO(ZN,NF,G1NS,G1)
-C        BT1 = BETA1(NF)
-         IF (NS.EQ."FFNS") THEN
-            BT1 = BETA1(NFFNALPHA)
-         ELSEIF (NS.EQ."VFNS") THEN
-            BT1 = BETA1(NF)
-         ENDIF       
+         BT1 = BETA1(NF)
+c$$$*     The B1 coefficient is different from zero,
+c$$$*     only when alpha is running at two-loops
+c$$$         IF(IPTALPHA.GT.0)THEN
+c$$$            BT1 = BETA1(NF)
+c$$$         ENDIF
       ENDIF
 *
 *     Singlet
@@ -80,31 +73,6 @@ C        BT1 = BETA1(NF)
       DA = ( AFF - AII ) / DBLE(NINTS)
 *
       IF(IPT.EQ.0)THEN
-*
-c$$$         AI = AII
-c$$$         AF = AFF
-c$$$         DO I=1,4
-c$$$            DO J=1,4
-c$$$               SPSG(I,J) = - DA * G0(I,J) * ( 1D0 / AF + 1D0 / AI )
-c$$$     1              / BT0 / 2D0
-c$$$            ENDDO
-c$$$         ENDDO
-c$$$*
-c$$$         AK = AI
-c$$$         DO K=1,NINTS-1
-c$$$            AK = AK + DA
-c$$$            DO I=1,4
-c$$$               DO J=1,4
-c$$$                  SPSG(I,J) = SPSG(I,J) - DA * G0(I,J) / BT0 / AK
-c$$$               ENDDO
-c$$$            ENDDO
-c$$$         ENDDO
-c$$$*
-c$$$*     Now we need to exponentiate SPSG that is a 4x4 matrix. In this
-c$$$*     case, analytical formulas are too involved, therefore we adopt an
-c$$$*     expanded approach truncating the series to the first NEXP+1 terms.
-c$$$*
-c$$$  CALL MATRIXEXP(NEXP,4,SPSG,EFSG)
 *
          DO I=1,4
             DO J=1,4

@@ -11,13 +11,12 @@
 *
       include "../commons/ipt.h"
       include "../commons/ns.h"
-      include "../commons/alpha.h"
-      include "../commons/massthrs.h"
-      include "../commons/nffn.h"
-      include "../commons/nfmax.h"
-      include "../commons/activeflavours.h"
       include "../commons/facscheme.h"
       include "../commons/renscheme.h"
+      include "../commons/activeflavours.h"
+      include "../commons/alpha.h"      
+      include "../commons/massthrs.h"
+      include "../commons/tecparam.h"
 **
 *     Internal variables
 *
@@ -79,6 +78,15 @@
          write(6,*) "Renormalisation scheme: alpha fixed"
       elseif(RENSCHEME.eq."ALPMZ")then
          write(6,*) "Renormalisation scheme: alpha(MZ)"
+         if(ALPMZSOL.eq."PATHOR")then
+            write(6,*) "  method: path_ordering"
+         elseif(ALPMZSOL.eq."MAGNUS")then
+            write(6,*) "  method: magnus"
+         else
+            write(6,*) "In InitializeEvolution.f:"
+            write(6,*) "Unknown alpha(MZ) method = ",ALPMZSOL
+            call exit(-10)
+         endif
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Unknown renormalisation scheme = ",RENSCHEME
@@ -87,57 +95,51 @@
 *
 *     Evolution scheme
 *
-      if(NS.eq."FFNS")then
-         if(NFFN.lt.0.or.NFFN.gt.9)then
-            write(6,*)"In InitializeEvolution.f:"
-            write(6,*)"NFFN out or range, NFFN =",NFFN
-            call exit(-10)
-         endif
-         write(6,"(a,i1)") " Evolution scheme: FFNS with NF = ",NFFN
-      elseif(NS.eq."VFNS")then
+      if((NLMAX.lt.0).or.(NUMAX.lt.0).or.(NDMAX.lt.0))then
+         write(6,*) "In InitializeEvolution.f:"
+         write(6,*) "Wrong (NLMAX,NUMAX,NDMAX) = ",
+     .        NLMAX,NUMAX,NDMAX
+      endif
+*      
+      if(NS.eq."VFNS")then
          write(6,*) "Evolution scheme: VFNS"
+         write(6,"(a,i1,a,i1,a,i1)") " NLMAX = ",NLMAX,
+     .        ", NUMAX = ",NUMAX,", NDMAX = ",NDMAX
+      elseif(NS.eq."FFNS")then
+         write(6,*) "Evolution scheme: FFNS"
+         write(6,"(a,i1,a,i1,a,i1)") " NL = ",NLMAX,
+     .        ", NU = ",NUMAX,", ND = ",NDMAX         
       else
          write(6,*) "In InitializeEvolution.f:"
          write(6,*) "Unknown mass scheme = ",NS
          call exit(-10)
       endif
-*
-*     Maximum number of active flavours
-*
-      if(nfmax.ge.0.and.nfmax.le.9)then
-         write(6,"(a,i1)") " Maximum number of active flavours = ",nfmax
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Invalid value for nfmax =",nfmax
-         call exit(-10)
-      endif
 **            
 *     Thresholds
 *
-      write(6,*) "Fermion thresholds:"
-      write(6,"(a,f14.9,a)") "   me  =",dsqrt(q2th(1))," GeV"
-      write(6,"(a,f14.9,a)") "   mu  =",dsqrt(q2th(2))," GeV"
-      write(6,"(a,f14.9,a)") "   md  =",dsqrt(q2th(3))," GeV"
-      write(6,"(a,f14.9,a)") "   ms  =",dsqrt(q2th(4))," GeV"
-      write(6,"(a,f14.9,a)") "   mm  =",dsqrt(q2th(5))," GeV"
-      write(6,"(a,f14.9,a)") "   mc  =",dsqrt(q2th(6))," GeV"
-      write(6,"(a,f14.9,a)") "   mt  =",dsqrt(q2th(7))," GeV"
-      write(6,"(a,f14.9,a)") "   mb  =",dsqrt(q2th(8))," GeV"
-      write(6,"(a,f14.9,a)") "   mtp =",dsqrt(q2th(9))," GeV"
-*
+      write(6,*) "Mass thresholds:"
+      write(6,"(a,f14.9,a)") "   me  =",dsqrt(q2th(1 ))," GeV"
+      write(6,"(a,f14.9,a)") "   mu  =",dsqrt(q2th(2 ))," GeV"
+      write(6,"(a,f14.9,a)") "   md  =",dsqrt(q2th(3 ))," GeV"
+      write(6,"(a,f14.9,a)") "   ms  =",dsqrt(q2th(4 ))," GeV"
+      write(6,"(a,f14.9,a)") "   mm  =",dsqrt(q2th(5 ))," GeV"
+      write(6,"(a,f14.9,a)") "   mc  =",dsqrt(q2th(6 ))," GeV"
+      write(6,"(a,f14.9,a)") "   mt  =",dsqrt(q2th(7 ))," GeV"
+      write(6,"(a,f14.9,a)") "   mb  =",dsqrt(q2th(8 ))," GeV"
+      write(6,"(a,f14.9,a)") "   MW  =",dsqrt(q2th(9 ))," GeV"
+      write(6,"(a,f14.9,a)") "   MZ  =",dsqrt(q2th(10))," GeV"
+      write(6,"(a,f14.9,a)") "   mtp =",dsqrt(q2th(11))," GeV"      
+*      
 *     Check that thresholds are ordered
 *
-      do nf = 2, 9
+      do nf = 2, 11
          if (dsqrt(q2th(nf - 1)).gt.dsqrt(q2th(nf))) then
             write(6,*) "In InitializeEvolution.f:"
             write(6,*) "Fermion masses are not ordered"
             call exit(-10)
          endif
       enddo
-*
-      write(6,"(a,i1,a,i1,a,i1)") " NLMAX = ",NLMAX,
-     .     ", NUMAX = ",NUMAX,", NDMAX = ",NDMAX
-*
+**
 *     Alpha reference values
 *
       if(RENSCHEME.ne."MSBAR")then
@@ -147,43 +149,34 @@
          write(6,*) "Alpha reference value:"
          write(6,"(a,f14.9,a)") "   Qref = ",sqrt(Q2REF)," GeV"
          write(6,"(a,f14.9)")   "   Alpha(Qref) = ",AREF
-         if(NS.eq."FFNS")then
-            if(NFFNalpha.lt.0.or.NFFNalpha.gt.9)then
-               write(6,*)"In InitializeEvolution.f:"
-               write(6,*)"NFFNalpha out or range, NFFNalpha =",
-     .              NFFNalpha
-               call exit(-10)
-            endif
-            write(6,"(a,i1)") " Alpha evolution: FFNS with NF = ",
-     .           NFFNalpha
-         elseif(NS.eq."VFNS")then
-            write(6,*) "Alpha evolution: VFNS"
+         if((NLMAXAEM.lt.0).or.(NUMAXAEM.lt.0).or.(NDMAXAEM.lt.0))then
+            write(6,*) "In InitializeEvolution.f:"
+            write(6,*) "Wrong (NLMAXAEM,NUMAXAEM,NDMAXAEM) = ",
+     .           NLMAXAEM,NUMAXAEM,NDMAXAEM
+         endif         
+         if(NS.eq."VFNS")then
+            write(6,*) "Alpha evolution scheme: VFNS"
+            write(6,"(a,i1,a,i1,a,i1)") " NLMAXAEM = ",NLMAXAEM,
+     .           ", NUMAXAEM = ",NUMAXAEM,", NDMAXAEM = ",NDMAXAEM
+         elseif(NS.eq."FFNS")then
+            write(6,*) "Alpha evolution scheme: FFNS"
+            write(6,"(a,i1,a,i1,a,i1)") " NLAEM = ",NLMAXAEM,
+     .           ", NUAEM = ",NUMAXAEM,", NDAEM = ",NDMAXAEM         
          else
             write(6,*) "In InitializeEvolution.f:"
             write(6,*) "Unknown mass scheme = ",NS
             call exit(-10)
          endif
-         if(nfmaxalpha.ge.0.and.nfmaxalpha.le.9)then
-            write(6,"(a,i1)") " Max.num. active flav in alpha = ",
-     .           nfmaxalpha
+         if(waem.eq.0)then
+            write(6,*) "W not included in alpha evolution"
+         elseif(waem.eq.1)then
+            write(6,*) "W included in alpha evolution at one-loop"
          else
             write(6,*) "In InitializeEvolution.f:"
-            write(6,*) "Invalid value for nfmaxalpha =",nfmaxalpha
+            write(6,*) "Unknown Waem value, Waem = ",waem
             call exit(-10)
          endif
-         write(6,"(a,i1,a,i1,a,i1)") " NLMAXAEM = ",NLMAXAEM,
-     .     ", NUMAXAEM = ",NUMAXAEM,", NDMAXAEM = ",NDMAXAEM
       endif
-*       
-      if(waem.eq.0)then
-         write(6,*) "W not included in alpha evolution"
-      elseif(waem.eq.1)then
-         write(6,*) "W included in alpha evolution at one-loop"
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Unknown Waem value, Waem = ",waem
-         call exit(-10)
-      endif      
-*     
+*
       return
       end
