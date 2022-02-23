@@ -19,7 +19,6 @@
 *
       integer i
       integer nlaem(1:11), nuaem(1:11), ndaem(1:11)
-      integer llim
 *     
 *     fill b0 and b1 according to nlmaxaem,numaxaem,ndmaxaem,waem
 *
@@ -31,14 +30,8 @@
      .        + nc * ( eu4 * nuaem(i) + ed4 * ndaem(i) ) )
       enddo
 *
-*     In the FFNS, if waem=1, we include W-boson effects everywhere;
-*     otherwise, only above the W mass thresholds      
-      if(ns.eq."FFNS")then
-         llim = 1
-      elseif(ns.eq."VFNS")then
-         llim = 9
-      endif
-      do i = llim,11
+*     Both in FFNS/VFNS W boson effects only above the W mass
+      do i = 9,11
          beta0(i) = -4d0/3d0 * (-3d0/4d0*beta0(i) - 21d0/4d0*WAEM )
       enddo
 *     
