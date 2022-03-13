@@ -53,6 +53,8 @@
          rsintout = 1
       elseif (renscheme.eq."ALPMZ") then
          rsintout = 2
+      elseif (renscheme.eq."ALGMU") then
+         rsintout = 3
       endif
       return
       end

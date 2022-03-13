@@ -48,16 +48,6 @@
          call exit(-10)
       endif
 *
-      if(iptalpha.eq.0)then
-         write(6,*) "Perturbative order alpha: LO"
-      elseif(iptalpha.eq.1)then
-         write(6,*) "Perturbative order alpha: NLO"
-      else
-         write(6,*) "In InitializeEvolution.f:"
-         write(6,*) "Invalid perturbative order, iptalpha = ",iptalpha
-         call exit(-10)
-      endif
-*      
 *     Factorisation scheme
 *
       if(FACSCHEME.eq."MSBAR")then
@@ -69,22 +59,36 @@
          write(6,*) "Unknown factorisation scheme = ",FACSCHEME
          call exit(-10)
       endif
-*
+*      
 *     Renormalisation scheme
 *
       if(RENSCHEME.eq."MSBAR")then
          write(6,*) "Renormalisation scheme: MSbar"
+         if(iptalpha.eq.0)then
+            write(6,*) " Perturbative order alpha: LO"
+         elseif(iptalpha.eq.1)then
+            write(6,*) " Perturbative order alpha: NLO"
+         else
+            write(6,*) "In InitializeEvolution.f:"
+            write(6,*) "Invalid perturbative order, iptalpha=",iptalpha
+            call exit(-10)
+         endif
       elseif(RENSCHEME.eq."FIXED")then
          write(6,*) "Renormalisation scheme: alpha fixed"
-      elseif(RENSCHEME.eq."ALPMZ")then
-         write(6,*) "Renormalisation scheme: alpha(MZ)"
-         if(ALPMZSOL.eq."PATHOR")then
+      elseif((RENSCHEME.eq."ALPMZ").or.(RENSCHEME.eq."ALGMU"))then
+         if(RENSCHEME.eq."ALPMZ")then
+            write(6,*) "Renormalisation scheme: alpha(MZ)"
+         endif
+         if(RENSCHEME.eq."ALGMU")then
+            write(6,*) "Renormalisation scheme: alphaGmu"
+         endif
+         if(ALPXXSOL.eq."PATHOR")then
             write(6,*) "  method: path_ordering"
-         elseif(ALPMZSOL.eq."MAGNUS")then
+         elseif(ALPXXSOL.eq."MAGNUS")then
             write(6,*) "  method: magnus"
          else
             write(6,*) "In InitializeEvolution.f:"
-            write(6,*) "Unknown alpha(MZ) method = ",ALPMZSOL
+            write(6,*) "Unknown alpha(MZ)/alphaGmu method = ",ALPXXSOL
             call exit(-10)
          endif
       else
@@ -167,15 +171,16 @@
             write(6,*) "Unknown mass scheme = ",NS
             call exit(-10)
          endif
-         if(waem.eq.0)then
-            write(6,*) "W not included in alpha evolution"
-         elseif(waem.eq.1)then
-            write(6,*) "W included in alpha evolution at one-loop"
-         else
-            write(6,*) "In InitializeEvolution.f:"
-            write(6,*) "Unknown Waem value, Waem = ",waem
-            call exit(-10)
-         endif
+      endif
+*
+      if(waem.eq.0)then
+         write(6,*) "W effects NOT included in evolution"
+      elseif(waem.eq.1)then
+         write(6,*) "W effects included in evolution"
+      else
+         write(6,*) "In InitializeEvolution.f:"
+         write(6,*) "Unknown Waem value, Waem = ",waem
+         call exit(-10)
       endif
 *
       return

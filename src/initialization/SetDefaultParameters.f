@@ -50,8 +50,8 @@
       NSTEPAEM    = 10
       MINVMEL     = 51
       RINVMEL     = 20
-      ALPMZSOL    = "PATHOR"
-C     ALPMZSOL    = "MAGNUS"      
+C     ALPXXSOL    = "PATHOR"
+      ALPXXSOL    = "MAGNUS"      
 *
       return
       end

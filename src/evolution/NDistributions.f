@@ -182,11 +182,11 @@
       elseif(renscheme.eq."FIXED")then
          call alpha_fixed(N,mu20,mu2,nf,evf)
 c         write(*,*) "q0=",sqrt(mu20),"q=",sqrt(mu2),evf
-      elseif(renscheme.eq."ALPMZ")then
-         if(alpmzsol.eq."PATHOR")then
-            call alphaMZ_pathordering(N,mu20,mu2,nf,evf,npstep)
-         elseif(alpmzsol.eq."MAGNUS")then
-            call alphaMZ_magnus(N,mu20,mu2,nf,evf)
+      elseif((renscheme.eq."ALPMZ").or.(renscheme.eq."ALGMU"))then
+         if(alpxxsol.eq."PATHOR")then
+            call alphaXX_pathordering(N,mu20,mu2,nf,evf,npstep)
+         elseif(alpxxsol.eq."MAGNUS")then
+            call alphaXX_magnus(N,mu20,mu2,nf,evf)
          endif
       endif
 *      

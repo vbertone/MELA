@@ -85,6 +85,8 @@
          renscheme = "FIXED"
       elseif (rsinint.eq.2) then
          renscheme = "ALPMZ"
+      elseif (rsinint.eq.3) then
+         renscheme = "ALGMU"
       else
          write(6,*) "In SetRenormalisationScheme.f:"
          write(6,*) "Invalid value"
@@ -188,14 +190,14 @@
       return
       end
 ************************************************************************      
-      subroutine setalpmzsolint(intin)
+      subroutine setalpxxsolint(intin)
       implicit none
       include "../commons/tecparam.h"
       integer intin
       if (intin.eq.0) then
-         alpmzsol = "PATHOR"
+         alpxxsol = "PATHOR"
       elseif (intin.eq.1) then
-         alpmzsol = "MAGNUS"
+         alpxxsol = "MAGNUS"
       else
          write(6,*) "In setters.f:"
          write(6,*) "Invalid value"

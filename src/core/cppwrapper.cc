@@ -36,7 +36,7 @@ namespace MELA {
     void getalpharef_(double*);
     void getalphaqref_(double*);
 
-    void setalpmzsolint_(int*);
+    void setalpxxsolint_(int*);
     
     void setactiveflav_(int* nlmax, int* numax, int* ndmax);
     void getactiveflav_(int* nlmax, int* numax, int* ndmax);
@@ -462,9 +462,9 @@ namespace MELA {
     return mw2;
   }
 
-  void SetAlphaMZSolInt(int intin)
+  void SetAlphaXXSolInt(int intin)
   {
-    setalpmzsolint_(&intin);
+    setalpxxsolint_(&intin);
   };
 
 }

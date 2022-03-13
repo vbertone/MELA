@@ -1,7 +1,7 @@
 ***********************************************************************
 *
 ***********************************************************************
-      SUBROUTINE ALPHAMZ_PATHORDERING(ZN,Q2I,Q2F,NF,EVF,NINTS)
+      SUBROUTINE ALPHAXX_PATHORDERING(ZN,Q2I,Q2F,NF,EVF,NINTS)
 *
       IMPLICIT NONE
 *
@@ -339,6 +339,7 @@ c$$$         TTF = AONE2PI * DLOG(Q2F/MZ2)
       include "../commons/beta.h"
       include "../commons/nfsum.h"
       include "../commons/activeflavours.h"
+      include "../commons/renscheme.h"      
 *     input
       integer k
 *     output
@@ -347,11 +348,30 @@ c$$$         TTF = AONE2PI * DLOG(Q2F/MZ2)
       integer i
       double precision b0
       double precision mz2,mw2
+      double precision deltaGMU
 *
       mz2 = q2th(10)
       mw2 = q2th(9)
-*           
-      dk = 10d0/9d0 * nfsum2(10) 
+*
+*     FORMAL REPLACEMENT TO HAVE GMU FROM ALPHA(MZ):
+*        5/(9*Pi)*C2M -> DELTA(MSb->GMU) 
+*     or
+*        10/9*C2M -> 2*Pi*DELTA(MSb->GMU)
+*      
+*     with value for alpha in the Gmu scheme
+*        1/132.18289853516
+*     we have
+*        DELTA(MSb->GMU) = 4.09293586102687773
+*
+      deltaGMU = 4.09293586102687773d0
+*      
+      if(RENSCHEME.eq."ALPMZ")then
+         dk = 10d0/9d0 * nfsum2(10)
+      endif
+      if(RENSCHEME.eq."ALGMU")then
+         dk = 2d0*pi * deltaGMU
+      endif
+*      
 *     W-boson contribution at one-loop
       dk = dk - 2d0*(1d0/6d0 + 7d0/4d0*dlog(mz2/mw2))*waem
 *     

@@ -40,7 +40,6 @@
       include "../commons/massthrs.h"
       include "../commons/ns.h"
       include "../commons/tecparam.h"
-      include "../commons/renscheme.h"
 **
 *     Input Variables
 *

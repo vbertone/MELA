@@ -53,7 +53,7 @@ namespace MELA {
   void SetNstepAem(int);
   void SetMinvmel(int);
   void SetRinvmel(int);
-  void SetAlphaMZSolInt(int);
+  void SetAlphaXXSolInt(int);
 
   //////////////////////////////////////////////////////////////////////
   /// Getters

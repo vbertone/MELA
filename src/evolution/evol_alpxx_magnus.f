@@ -1,7 +1,7 @@
 ***********************************************************************
 *
 ***********************************************************************
-      SUBROUTINE ALPHAMZ_MAGNUS(ZN,Q2I,Q2F,NF,EVF)
+      SUBROUTINE ALPHAXX_MAGNUS(ZN,Q2I,Q2F,NF,EVF)
 *
       IMPLICIT NONE
 *
@@ -122,12 +122,13 @@
          LN2 = DLOG(Q2F/Q2I)
 *
          MZ2 = Q2TH(10)         
-         CALL GETDK(NF,DK)
          IF (NF.GE.10) THEN
             MF2 = MZ2
          ELSEIF (NF.LT.10) THEN
             MF2 = Q2TH(NF+1)
-         ENDIF         
+         ENDIF
+*         
+         CALL GETDK(NF,DK)         
          DCAL = DK + 2D0*PI*B0 * DLOG(Q2I/MF2)
 *
          DO I=1,4
