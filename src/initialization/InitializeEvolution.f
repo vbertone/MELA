@@ -75,13 +75,17 @@
          endif
       elseif(RENSCHEME.eq."FIXED")then
          write(6,*) "Renormalisation scheme: alpha fixed"
-      elseif((RENSCHEME.eq."ALPMZ").or.(RENSCHEME.eq."ALGMU"))then
+      elseif((RENSCHEME.eq."ALPMZ").or.(RENSCHEME.eq."ALGMU")
+     .        .or.(RENSCHEME.eq."AFAKE"))then
          if(RENSCHEME.eq."ALPMZ")then
             write(6,*) "Renormalisation scheme: alpha(MZ)"
          endif
          if(RENSCHEME.eq."ALGMU")then
             write(6,*) "Renormalisation scheme: alphaGmu"
          endif
+         if(RENSCHEME.eq."AFAKE")then
+            write(6,*) "Renormalisation scheme: alphaGmu FAKE"
+         endif         
          if(ALPXXSOL.eq."PATHOR")then
             write(6,*) "  method: path_ordering"
          elseif(ALPXXSOL.eq."MAGNUS")then
@@ -175,6 +179,9 @@
 *
       if(waem.eq.0)then
          write(6,*) "W effects NOT included in evolution"
+         if(RENSCHEME.eq."ALGMU")then
+            write(6,*) "WARNING: GMU SCHEME WITH WOFF MAY BE UNPHYSICAL"
+         endif
       elseif(waem.eq.1)then
          write(6,*) "W effects included in evolution"
       else

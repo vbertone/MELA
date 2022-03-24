@@ -349,36 +349,42 @@ c$$$         TTF = AONE2PI * DLOG(Q2F/MZ2)
       double precision b0
       double precision mz2,mw2
       double precision deltaGMU
+      double precision wbos
 *
       mz2 = q2th(10)
       mw2 = q2th(9)
 *
 *     FORMAL REPLACEMENT TO HAVE GMU FROM ALPHA(MZ):
-*        5/(9*Pi)*C2M -> DELTA(MSb->GMU) 
+*        5/(9*Pi)*C2M + WBOSON -> DELTA(MSb->GMU) 
 *     or
 *        10/9*C2M -> 2*Pi*DELTA(MSb->GMU)
-*      
-*     with value for alpha in the Gmu scheme
-*        1/132.18289853516
-*     we have
-*        DELTA(MSb->GMU) = 4.09293586102687773
 *
-      deltaGMU = 4.09293586102687773d0
-*      
       if(RENSCHEME.eq."ALPMZ")then
-         dk = 10d0/9d0 * nfsum2(10)
+         wbos = 1d0/pi*(7d0/4d0*dlog(mw2/mz2)-1d0/6d0)*waem
+         dk = 2d0*pi * (5d0/9d0/pi * nfsum2(10) + wbos)
       endif
+c      
       if(RENSCHEME.eq."ALGMU")then
+cccccccccccccccccccccccccccccccccccccccccccccccccc         
+c     WARNING: ASSOCIATED TO VALUE OF ALPHA = 1/132.18289853516
+         deltaGMU = 4.09293586102687773d0
+cccccccccccccccccccccccccccccccccccccccccccccccccc         
+      endif
+      if(RENSCHEME.eq."AFAKE")then
+cccccccccccccccccccccccccccccccccccccccccccccccccc         
+c     WARNING: ASSOCIATED TO VALUE OF ALPHA = 1/130.50453291347856
+         deltaGMU = 2.5d0
+cccccccccccccccccccccccccccccccccccccccccccccccccc         
+      endif      
+      if((RENSCHEME.eq."ALGMU").or.(RENSCHEME.eq."AFAKE"))then
          dk = 2d0*pi * deltaGMU
       endif
 *      
-*     W-boson contribution at one-loop
-      dk = dk - 2d0*(1d0/6d0 + 7d0/4d0*dlog(mz2/mw2))*waem
-*     
       if (k.ge.9) then
          return
       endif
 *
+*     ADDING PERTURBATIVE EFFECTS
       do i=k+1,9
          b0 = -beta0(i)/(4d0*pi)
          dk = dk + 2d0*pi*b0*dlog(q2th(i)/q2th(i+1))

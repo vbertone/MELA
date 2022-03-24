@@ -55,6 +55,8 @@
          rsintout = 2
       elseif (renscheme.eq."ALGMU") then
          rsintout = 3
+      elseif (renscheme.eq."AFAKE") then
+         rsintout = 4         
       endif
       return
       end

@@ -87,6 +87,8 @@
          renscheme = "ALPMZ"
       elseif (rsinint.eq.3) then
          renscheme = "ALGMU"
+      elseif (rsinint.eq.4) then
+         renscheme = "AFAKE"
       else
          write(6,*) "In SetRenormalisationScheme.f:"
          write(6,*) "Invalid value"
