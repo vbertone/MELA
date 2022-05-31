@@ -159,6 +159,14 @@
       nint = varin
       return
       end
+************************************************************************     
+      subroutine setnminstep(varin)
+      implicit none
+      include "../commons/tecparam.h"
+      integer varin
+      nminstep = varin
+      return
+      end
 ************************************************************************
       subroutine setnexp(varin)
       implicit none

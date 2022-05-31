@@ -90,9 +90,8 @@
 *
       double complex fn(19)
 *
-      integer nminstep      
       double precision rangeA,rangeQ
-      common/nstepMELA/rangeA,rangeQ,nminstep
+      common/nstepMELA/rangeA,rangeQ
 *      
 *     Call N-space distributions
 *     
@@ -106,9 +105,8 @@
 *     (if there are thresholds, we need more points where
 *     the range of variation is larger).
 *     No less than NMINSTEP points for step.
-      nminstep = 50
       rangeA = aq2-ath(nfi)
-      rangeQ = q2-q2th(nfi)
+      rangeQ = dlog(q2)-dlog(q2th(nfi))
 *
 *      write(*,*)"*************************************************"
 *      write(*,*)"q2th",q2th
@@ -160,14 +158,13 @@
 *      
       double complex fn(19)      
 *
-      integer nminstep      
       double precision rangeA,rangeQ
-      common/nstepMELA/rangeA,rangeQ,nminstep
+      common/nstepMELA/rangeA,rangeQ
 *      
       if(renscheme.eq."MSBAR")then
          perc  = dble(nint) * (amu2-amu20)/rangeA
       else
-         perc  = dble(nint) * (mu2-mu20)/rangeQ
+         perc  = dble(nint) * (dlog(mu2)-dlog(mu20))/rangeQ
       endif
       if (perc.lt.nminstep) then
          npstep = nminstep

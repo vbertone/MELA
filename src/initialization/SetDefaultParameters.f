@@ -46,6 +46,7 @@
       Q2TH(10)    = 91.1876d0**2
       Q2TH(11)    = 172.76d0**2
       NINT        = 300
+      NMINSTEP    = 50
       NEXP        = 30
       NSTEPAEM    = 10
       MINVMEL     = 51

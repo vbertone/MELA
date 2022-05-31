@@ -65,6 +65,8 @@ namespace MELA {
     void getnint_(int*);
     void setnexp_(int*);
     void getnexp_(int*);
+    void setnminstep_(int*);
+    void getnminstep_(int*);    
     void setnstepaem_(int*);
     void getnstepaem_(int*);
     void setminvmel_(int*);
@@ -330,6 +332,18 @@ namespace MELA {
   {
     int res;
     getnint_(&res);
+    return res;
+  }
+
+  void SetNminstep(int res)
+  {
+    setnminstep_(&res);
+  }
+
+  int GetNminstep()
+  {
+    int res;
+    getnminstep_(&res);
     return res;
   }
 

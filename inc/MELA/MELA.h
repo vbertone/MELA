@@ -49,6 +49,7 @@ namespace MELA {
 		     double MW, double MZ, double mtp);
   void SetThresholds(std::vector<double> thresholds);
   void SetNint(int);
+  void SetNminstep(int);  
   void SetNexp(int);
   void SetNstepAem(int);
   void SetMinvmel(int);
@@ -71,6 +72,7 @@ namespace MELA {
   std::vector<double> GetThresholds();
   std::vector<double> GetThresholds2();    
   int GetNint();
+  int GetNminstep();
   int GetNexp();
   int GetNstepAem();  
   int GetMinvmel();

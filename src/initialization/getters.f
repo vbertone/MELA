@@ -121,6 +121,14 @@
       return
       end
 ************************************************************************
+      subroutine getnminstep(varout)
+      implicit none
+      include "../commons/tecparam.h"
+      integer varout
+      varout = nminstep
+      return
+      end      
+************************************************************************
       subroutine getnexp(varout)
       implicit none
       include "../commons/tecparam.h"
