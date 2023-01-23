@@ -128,9 +128,9 @@
          write(6,*) "Evolution scheme: VFNS"
          if(ipt.eq.2.and.evol(1:4).eq."TIME")then
             write(6,*) "In InitializeEvolution.f:"
+            write(6,*) "WARNING:"
             write(6,*) "Time-like evolution at NNLO in the VFNS",
-     1                 " not available"
-            call exit(-10)
+     1                 " with NLO matching conditions"
          endif
       else
          write(6,*) "In InitializeEvolution.f:"

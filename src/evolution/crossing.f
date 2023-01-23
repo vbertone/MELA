@@ -327,7 +327,7 @@
       ASTH(6) = AST
 *
       CALL EVOLFACTN(ZN,Q2I,Q2TH(5),NFI,EFNNS1,EFNSG1)
-      IF(IPT.EQ.2)THEN
+      IF(IPT.EQ.2.AND.EVOL.EQ."SPACE")THEN
          CALL MATCHCOEF2SG(ZN,A2SG)
          CALL MATCHCOEF2NS(ZN,A2NS)
 *
@@ -340,7 +340,8 @@
 *
          VBNS(1) = (1D0,0D0)+ASTH(NFI+1)**2D0*(A2NS - 4D0 * A2SG(1,1))
          VBNS(2) = - 4D0 * ASTH(NFI+1)**2D0 * A2SG(1,2)
-      ELSEIF(IPT.EQ.1.AND.EVOL.EQ."TIME")THEN
+*     Allowing for NNLO timelike evolution with NLO matching
+      ELSEIF(IPT.GE.1.AND.EVOL.EQ."TIME")THEN
          CALL MATCHCOEF1SGT(ZN,A1SG)
 *
          MBSG(1,1) = (1D0,0D0)
