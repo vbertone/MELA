@@ -17,7 +17,6 @@
 *                         singlet anomalous dimensions in 
 *                         N space
 *
-*
 *************************************************************
        SUBROUTINE ANDIM_LO_POL(N,NF,P0NS,P0SG)
 *
@@ -59,11 +58,11 @@
 *     These are the LO polarized splitting functions taken
 *     from Vogt's code PEGASUS
 *
-       PQQA = (3d0,0d0) - 4d0* S1 + 2d0/(N * N1)
-       PQGA = 4d0* NM / (N * N1)
-       PGQA = 2d0* N2 / (N * N1)
-       PGGA = 11d0/3d0 - 4d0* S1 + 8d0/ (N * N1)
-       PGGB = - 4d0/3d0
+       PQQA = (3d0,0d0) - 4d0 * S1 + 2d0/(N * N1)
+       PQGA = 4d0 * NM / (N * N1)
+       PGQA = 2d0 * N2 / (N * N1)
+       PGGA = 11D0/3D0 - 4D0 * S1 + 8D0/(N * N1)
+       PGGB = - 4D0/3D0
 *          
 *     Output to the array
 *     
@@ -72,7 +71,7 @@
        P0SG(1,1) = CF * PQQA
        P0SG(1,2) = TR * dble(NF) * PQGA
        P0SG(2,1) = CF * PGQA
-       P0SG(2,2) = CA * PGGA + TR *dble(NF) * PGGB
+       P0SG(2,2) = CA * PGGA + TR * dble(NF) * PGGB
 *
        RETURN
        END

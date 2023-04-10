@@ -25,7 +25,7 @@
 *     Internal Variables
 *
       integer m, j, k
-      integer isf,ip,iQ
+      integer ip,iQ
       double precision rmax
       double precision rx, thetax, sigmax(32), tx
       double precision rz, thetaz, sigmaz(32), tz

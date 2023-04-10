@@ -50,6 +50,8 @@
      1                 "with XFitter)"
          elseif(distf(1:9).eq."ZeroScale")then
             write(6,*) "Initial conditions: Zero scale PDFs"
+         elseif(distf(1:9).eq."deltag")then
+            write(6,*) "Initial conditions: Delta gluon FF"
          endif
       elseif(evol(1:4).eq."TIME")then
          write(6,*) "Time-like evolution (FFs)"
