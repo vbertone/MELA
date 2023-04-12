@@ -72,7 +72,7 @@
       do k=1,m-1
          tmp2 = (0d0,0d0)
          do j=1,m-1
-            call SIDISNStructureFunctions(sx(j), sz(k), Q0, Q, SFN)
+            call SIDISNStructureFunctionsPol(sx(j), sz(k), Q0, Q, SFN)
             tmp2 = tmp2
      1           + exp( tx * sx(j) ) * dcmplx(1d0,sigmax(j))
      2           * SFN
@@ -85,6 +85,40 @@
       SFx = z * rz * dreal(tmp1) / dble(m)
 *
       if(abs(SFx).lt.1d-12) SFx = 0d0
+*
+      return
+      end
+*
+************************************************************************
+      double precision function g1LO(x, z, Q0, Q)
+*
+      implicit none
+*
+      include "../commons/evol.h"
+      include "../commons/pol.h"
+*
+      integer k
+      double precision x, z
+      double complex Q0, Q, Qv(2)
+      double complex xf(-6:6), xd(-6:6)
+      double complex bq(6), dq(6), ch
+*
+      Qv(1) = Q0
+      Qv(2) = Q
+      pol  = "ON"
+      evol = "SPACE"
+      call xDistributions(x, 2, Qv ,xf)
+      pol  = "OFF"
+      evol = "TIME"
+      call xDistributions(z, 2, Qv ,xd)
+      call ComputeChargesDIS_MELA(Q**2, bq, dq)
+      g1LO = (0d0, 0d0)
+      do k = 1, 6
+         ch = bq(k)
+         if (k.eq.1) ch = bq(2)
+         if (k.eq.2) ch = bq(1)
+         g1LO = g1LO + ch * ( xd(-k) * xf(-k) + xd(k) * xf(k) )
+      enddo
 *
       return
       end

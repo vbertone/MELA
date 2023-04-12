@@ -270,8 +270,8 @@
       S1N = EMC + PSI(N1)
       S1M = EMC + PSI(M1)
 *
-      G11QG_SIDIS = 2 * TR * NM  * ( 1D0 / MM - 1D0 / M - S1M - S1N )
-     1     / N / N1
+      G11QG_SIDIS = 2 * TR * NM  * ( 1D0 / MM - 1D0 / M - S1M - S1N
+     1     + 1D0 / N ) / N / N1
 *
       RETURN
       END
