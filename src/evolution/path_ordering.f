@@ -144,7 +144,7 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,G2NS,G2)
             DO I=1,3
                G2NS(I) = G2NS(I) - 2D0 * BETA0(NF) * LOGR * G1NS(I)
      1                 - ( BETA1(NF) * LOGR
-     2                 +   BETA0(NF)**2D0 * LOGR**2D0 ) * G0NS             !Third line ofeq. (2.8) hep-ph/0408244
+     2                 +   BETA0(NF)**2D0 * LOGR**2D0 ) * G0NS             !Third line of eq. (2.8) hep-ph/0408244
             ENDDO
          ENDIF
       ENDIF
