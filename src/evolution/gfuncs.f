@@ -30,6 +30,8 @@
       DOUBLE PRECISION BT0
       DOUBLE COMPLEX LAMBDAB,LN1ML,AQCD
       DOUBLE COMPLEX GAMMA0(2,2),GAMMA1(2,2),GAMMA2(2,2)
+      DOUBLE COMPLEX GAMMA0S(2,2),GAMMA1S(2,2),GAMMA01(2,2)
+      DOUBLE COMPLEX TMP1(2,2),TMP2(2,2)
       DOUBLE COMPLEX GAMMA0NS,GAMMA1NS(3),GAMMA2NS(3)
       DOUBLE COMPLEX G0(2,2),G1(2,2),G2(2,2),G3(2,2)
       DOUBLE COMPLEX G0NS(3),G1NS(3),G2NS(3),G3NS(3)
@@ -156,10 +158,32 @@ C               CALL ANDIM_NNLO_TL_POL(ZN,NF,GAMMA2NS,GAMMA2)
 *
 *     Singlet
 *
+         CALL MMULT(GAMMA0,2,2,GAMMA0,2,2,GAMMA0S)
+         CALL MMULT(GAMMA1,2,2,GAMMA1,2,2,GAMMA1S)
+         CALL MMULT(GAMMA1,2,2,GAMMA0,2,2,TMP1)
+         CALL MMULT(GAMMA0,2,2,GAMMA1,2,2,TMP2)
          DO I=1,2
             DO J=1,2
-C               G0(I,J) = G0(I,J)
-C     1              + ASI**2 * ( 0D0 ) / 2D0 / BT0**2 / ( 1 - LAMBDAB )**2
+               GAMMA01(I,J) = ( TMP1(I,J) + TMP2(I,J) ) / 2D0
+            ENDDO
+         ENDDO
+         DO I=1,2
+            DO J=1,2
+               G0(I,J) = G0(I,J)
+     1   + ASI**2 * ( B1(NF) * (
+     2   ( 2D0 * GAMMA1(I,J) * BT0 * ( ( LAMBDAB - 2D0 )
+     3   * LAMBDAB - 2D0 * LN1ML )
+     4   - 2D0 * LAMBDAB**2 * 4D0 * GAMMA01(I,J) )
+     5   + 2D0 * BT0**2 * 2D0 * GAMMA0(I,J) * DLOG(KRF) )
+     6   + B1(NF)**2 * ( LAMBDAB**2 * 4D0 * GAMMA0S(I,J)
+     7   - 2D0 * GAMMA0(I,J) * BT0 * ( ( LAMBDAB - 2D0 ) * LAMBDAB
+     8              - 2D0 * LN1ML ) )
+     9   + B2(NF)*BT0 * (LAMBDAB - 2D0) * LAMBDAB * 2D0 * GAMMA0(I,J)
+     1   + ( LAMBDAB**2 * 4D0 * GAMMA1S(I,J)
+     2   - 2D0 * BT0**2 * DLOG(KRF) * 2D0 * GAMMA1(I,J) )
+     3              - BT0 * ( LAMBDAB - 2D0 )
+     4   * LAMBDAB * 2D0 * GAMMA2(I,J) )
+     5   / 2D0 / BT0**2 / ( 1 - LAMBDAB )**2
                G3(I,J) = 2D0 * GAMMA0(I,J) / BT0 * ( B2(NF) * LAMBDAB
      1              - B1(NF)**2 * ( LAMBDAB + LN1ML - LN1ML**2 / 2D0 )
      2              + BT0 * B1(NF) * ( LN1ML - 1D0 ) * DLOG(KRF)
