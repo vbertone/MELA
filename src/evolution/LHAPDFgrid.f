@@ -57,11 +57,11 @@
       do ix=1,nxLHA
          if(ix.le.nxmLHA)then
             xbLHA(ix) = xminLHA * ( xmLHA / xminLHA )
-     1                **( 2d0 * dble( ix-1 ) / dble( nxLHA - 1 ) )
+     1                **( dble(ix-1) / dble(nxmLHA-1) )
          else
             xbLHA(ix) = xmLHA + ( xmaxLHA - xmLHA )
-     1                * ( dble( ix - nxmLHA - 1 )
-     2                / dble( nxLHA - nxmLHA - 1 ) )
+     1                * ( dble(ix - nxmLHA)
+     2                / dble(nxLHA - nxmLHA) )
          endif
       enddo
 *
