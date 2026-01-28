@@ -26,6 +26,8 @@
 *
       integer iQ
       integer i,j
+* KL mod
+      double complex aQCD
       double complex zfuncns(3),zfuncsg(2,2)
       double complex zfuncns15(2),zfuncns24(2),zfuncns35(2)
       double complex zfuncnsv15,zfuncnsv24,zfuncnsv35
@@ -57,8 +59,73 @@
          elseif(evol(1:4).eq."TIME")then
             call HKNSFFsn(N,xfph0N) ! HKNS for pi+ at NLO
          endif
-      elseif(distf.eq."deltag")then
-         call GluonDelta(xfph0N)
+*      elseif(distf.eq."g3S11v4")then
+*         call g3S11v4(N,Q(1),xfph0N)
+*          write(6,*) "v4; alphas(Q)=",12.56637d0*asEvolIni(1)         
+      elseif(distf.eq."deltagNLO")then
+         call GluonDeltaNLO(N,Q(1),xfph0N)
+*         write(6,*) "NLO function! Q=", Q(1)
+          write(6,*) "NLO; alphas(Q)=",12.56637d0*asEvolIni(1)
+      elseif(distf(1:6).eq."deltag")then
+         call GluonDelta(N,Q,xfph0N)
+*         write(6,*) "LO function! alphas(Q)=",12.56637d0*asEvolIni(1)
+*        write(6,*) "LO function! alphas(Q)=",12.56637d0*asEvolFi(1)
+      elseif(distf.eq."constant")then
+         call Constant(N,Q(1),xfph0N)
+*         write(6,*) "Constant function! Q=", Q(1)
+      elseif(distf.eq."pwave0")then
+         call P0wave(N,Q(1),xfph0N)
+*         write(6,*) "J=0! Q=", Q(1)
+      elseif(distf.eq."pwave1")then
+         call P1wave(N,Q(1),xfph0N)
+*         write(6,*) "J=1! Q=", Q(1)
+      elseif(distf.eq."pwave2")then
+         call P2wave(N,Q(1),xfph0N)
+*         write(6,*) "J=2! Q=", Q(1)
+      elseif(distf.eq."g3s18")then
+         call g3s18NLO(N,Q(1),xfph0N)
+         write(6,*) "alphas(Q)=",12.56637d0*asEvolIni(1)
+         write(6,*) "Ma function! Q=", Q(1)
+*         write(6,*) "LO function! alphas(Q)=",12.56637d0*asEvolIni(1)
+      elseif(distf.eq."g3s18MA")then
+         call Ma3S18(N,Q(1),xfph0N)
+         write(6,*) "Ma function! Q=", Q(1)
+         write(6,*) "alphas(Q)=",12.56637d0*asEvolIni(1)
+
+*GLUON FF      
+      elseif(distf.eq."d0g3S11")then
+         call d0g3S11(N,Q(1),xfph0N) 
+      elseif(distf.eq."d2g3S11")then
+         call d2g3S11(N,Q(1),xfph0N) 
+      elseif(distf.eq."d4g3S11")then
+         call d4g3S11(N,Q(1),xfph0N) 
+      elseif(distf.eq."g3S11c0")then
+         call g3S11c0(N,Q(1),xfph0N)  
+      elseif(distf.eq."g3S11c1")then
+         call g3S11c1(N,Q(1),xfph0N)    
+      elseif(distf.eq."FENGg3S11")then
+         call FENGg3S11(N,Q(1),xfph0N)             
+*CHARM FF      
+      elseif(distf.eq."c3S11LO")then
+         call c3S11LO(N,Q(1),xfph0N)       
+      elseif(distf.eq."c3S11REL")then
+         call c3S11REL(N,Q(1),xfph0N) 
+      elseif(distf.eq."c3S11PQQ")then
+         call c3S11PQQ(N,Q(1),xfph0N)       
+      elseif(distf.eq."c3S11NLO")then
+         call c3S11NLO(N,Q(1),xfph0N) 
+*ALL together
+      elseif(distf.eq."FF3S11")then
+         call FF3S11(N,Q(1),xfph0N)  
+      elseif(distf.eq."FF3S11v4")then
+         call FF3S11v4(N,Q(1),xfph0N)   
+*MISC      
+      elseif(distf.eq."TEST")then
+         call TEST(N,Q(1),xfph0N) 
+      elseif(distf.eq."TESTF")then
+         call TESTF(N,Q(1),xfph0N) 
+      elseif(distf.eq."TESTS")then
+         call TESTS(N,Q(1),xfph0N) 
       elseif(distf.eq."XFitter")then
          call XFitterParametrization(N-1d0,xfph0N) ! XFitter PDFs
       elseif(distf(1:9).eq."ZeroScale")then
@@ -68,6 +135,7 @@
       else
          write(6,*) "Unknown input distributions, distf = ",distf
       endif
+*      write(6,*) "alphas(Q=", Q(1), "= ", 12.56637d0*asEvolIni(1)
 *
 *     Rotate distribution into the evolution basis
 *
@@ -84,8 +152,14 @@
 *
 *     Values of alphas at the initial and final scales
 *
+* from XDist KL      
+         asEvolIni(1) = aQCD(Q(1)**2d0)
+         asEvolFin(1) = aQCD(Q(2)**2d0)
+  
          as0 = asEvolIni(iQ)
          asq = asEvolFin(iQ)
+*         write(6,*) as0*12.56637d0
+*         write(6,*) asq*12.56637d0
 *
 *     Call evolution kernels
 *
@@ -163,10 +237,10 @@
 *
          if(iQ.lt.nQ-1)then
             do i=1,13
-               xfev0N(i) = xfevN(i)
+               xfev0N(i) = xfevN(i)   
             enddo
          endif
       enddo
-*
+
       return
       end

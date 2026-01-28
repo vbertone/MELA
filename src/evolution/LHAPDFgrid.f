@@ -15,11 +15,20 @@
       include "../commons/ns.h"
       include "../commons/nfmax.h"
       include "../commons/nffn.h"
+* KL      
+      include "../commons/distf.h"
+**
+*     KL parameters
+*
+      double complex QKL(2)
+      integer iKL,jKL
+      double complex xfevNfinalKL(-6:6),xfevNKL(13)
+      double complex NKL
 **
 *     Input Variables
 *
-      double precision Qin
-      character*50 fname
+      double precision Qin,QKLi
+      character*(*) fname
 **
 *     Intenal Variables
 *
@@ -53,17 +62,18 @@
      1     " points in [",q2minLHA,":",q2maxLHA,"] GeV^2"
 *
 *     Compute x-space grid
-*
+*   
+   
       do ix=1,nxLHA
-         if(ix.le.nxmLHA)then
-            xbLHA(ix) = xminLHA * ( xmLHA / xminLHA )
-     1                **( dble(ix-1) / dble(nxmLHA-1) )
-         else
-            xbLHA(ix) = xmLHA + ( xmaxLHA - xmLHA )
-     1                * ( dble(ix - nxmLHA)
-     2                / dble(nxLHA - nxmLHA) )
-         endif
-      enddo
+        if (ix.le.nxmLHA) then
+            xbLHA(ix) = xminLHA * ( xmLHA / xminLHA ) 
+     &            ** ( dble(ix-1) / dble(nxmLHA-1) )
+        else
+            xbLHA(ix) = xmLHA + ( xmaxLHA - xmLHA ) 
+     &            * ( dble(ix - nxmLHA) 
+     &              / dble(nxLHA - nxmLHA) )
+        endif
+      enddo      
 *
 *     Compute Q2 grid.
 *     Use a distribution of the Q2 nodes uniform in ln(ln(Q2/Lambda2))
@@ -143,7 +153,7 @@
      3              * dlog( lnQmax / lnQmin ) ) )
             enddo
             lnQmin = dlog( ( q2LHA(iq2c) ) / Lambda2 )
-            if(isg.eq.nffi-1)then
+            if(isg.eq.nffi)then
                lnQmax = dlog( q2maxLHA / Lambda2 )
             else
                lnQmax = dlog( ( dble(q2th(isg+2)) ) / Lambda2 )
@@ -209,7 +219,8 @@
 *     LHAPDF6 output
 *
       ln = index(fname,char(0)) - 1
-      if(ln.eq.-1) ln = index(fname,char(32)) - 1
+      if(ln.le.0) ln = index(fname,char(32)) - 1
+      if(ln.le.0) ln = len_trim(fname)
 *     creating main folder
       call mkdir(fname(1:ln))
 *     creating info file
@@ -293,5 +304,159 @@
 *
  40   format(13(es14.7,1x))
 *
+
+      write(6,*) "------------------KL edit-------------------"
+      write(6,*) "--Results for d4g3S11"
+      write(6,*) "distf,N,Q,g(N,Q),c(N,Q)"
+      jKL=2   
+      iKL=0
+      distf = "d4g3S11"
+**********************************************************N=1,6.2,mu0        
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKLi = dcmplx(3d0, 0d0)
+      QKL(1) = QKLi
+      QKL(2) = QKLi
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+**********************************************************N=1,6.2,5      
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*10.032057981101175
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))   
+**********************************************************N=1,6.2,5      
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*18.576922416906161
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))    
+**********************************************************N=1,6.2,5      
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*20.381217947624698
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))    
+**********************************************************N=1,6.2,5      
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*40.232225207838141
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))    
+     
+**********************************************************N=1,6.2,5      
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*50.182182550156860
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))  
+**********************************************************N=1,6.2,5      
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*59.601994803137714
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))       
+**********************************************************N=1,6.2,10        
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*82.905631306989747
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))     
+**********************************************************N=1,6.2,30        
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*117.63807151636605
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))     
+**********************************************************N=1,6.2,60        
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*272.05903766812719
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))     
+**********************************************************N=1,6.2,100        
+      NKL = dcmplx(1d0+1d-10,0d0)
+      QKL(2) = QKLi/3d0*316.22776601683802
+      
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+      NKL = dcmplx(6.2d0,0d0)
+      call NDistributions(NKL,jKL,QKL,xfevNKL)
+      call evln2lhac(xfevNKL,xfevNfinalKL)
+      write(6,*) distf,REAL(NKL),REAL(QKL(2)),REAL(xfevNfinalKL(0))
+     * 		,REAL(xfevNfinalKL(4))
+
       return
       end

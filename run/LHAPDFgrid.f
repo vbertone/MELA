@@ -19,4 +19,5 @@
 *
       call LHAPDFgrid(2.8d0, "DeltaGluonFF")
 *
+      stop
       end
