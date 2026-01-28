@@ -43,10 +43,10 @@
       enddo
 *
       t = - dlog(x)
-      m = 33                  ! Must be odd
+      m = 97                  ! Must be odd
       r = 2d0 * m / 5d0 / t
 *
-      rmax = 10d0
+      rmax = 25d0
 *
       if(r.gt.rmax) r = rmax
 *

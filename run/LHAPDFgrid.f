@@ -17,7 +17,7 @@
 *
       call ReadParameters(card)
 *
-      call LHAPDFgrid(2.8d0, "DeltaGluonFF")
+      call LHAPDFgrid(3.0d0, "DeltaGluonFF")
 *
       stop
       end
