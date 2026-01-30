@@ -14,7 +14,7 @@ lhapdf.setVerbosity(0)
 PDF = lhapdf.mkPDF("DeltaGluonFF")
 
 data = []
-with open("build/run/mela_Nscan.dat") as f:
+with open("../build/run/mela_Nscan.dat") as f:
     for line in f:
         if line.startswith("#"):
             continue
