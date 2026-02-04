@@ -45,6 +45,55 @@ C
 ************************************************************************
 *
 *     KL series implementation 
+*     sum_n=0^infty (9+k)!/k! (1/2)^k/(N+m+k) * 1/2^10 * 1/9!
+*     Mellin Transform of (2-z)^-10
+*
+************************************************************************
+      FUNCTION SMKL10(N,m)
+*
+      IMPLICIT NONE
+*
+*     Input Variables
+      DOUBLE COMPLEX N
+      DOUBLE PRECISION m
+*
+*     Output Variable
+      DOUBLE COMPLEX SMKL10
+*
+*     Internal Variables
+      INTEGER k,kcheck
+      DOUBLE COMPLEX TERM
+      DOUBLE PRECISION THRESH
+*
+*     Initialization
+      SMKL10 = (0.0D0, 0.0D0)
+      THRESH = 1.0D-6
+*
+*     Series Summation
+      DO k = 0, 100
+         TERM = (9d0+k)*(8d0+k)*(7d0+k)*(6d0+k)*(5d0+k)
+     &       *(4d0+k)*(3d0+k)*(2d0+k)
+     &       *(1d0+k)*0.5d0**k/(N+m+k)
+         SMKL10 = SMKL10 + TERM
+      END DO
+      SMKL10=SMKL10*1d0/362880d0/1024d0
+*
+*     Check the N=101 term
+      kcheck=101
+      TERM = (9d0+kcheck)*(8d0+kcheck)
+     &       *(7d0+kcheck)*(6d0+kcheck)
+     &       *(5d0+kcheck)*(4d0+kcheck)*(3d0+kcheck)
+     &       *(2d0+kcheck)*(1d0+kcheck)*0.5d0**kcheck/(N+m+kcheck)
+C
+      IF (ABS(TERM) .GT. THRESH) THEN
+         WRITE(6,*) 'Warning: Term 101 =', TERM, ' exceeds threshold.'
+      END IF
+C
+      RETURN
+      END       
+************************************************************************
+*
+*     KL series implementation 
 *     sum_n=0^infty (7+k)!/k! (1/2)^k/(N+m+k) * 1/2^8 * 1/7!
 *     Mellin Transform of (2-z)^-8
 *

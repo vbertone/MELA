@@ -1390,6 +1390,65 @@ C=====================================================================
       end
 ************************************************************************
 *
+*     c->3S11 at v^4 KL (Function) 04/02/26
+*
+************************************************************************
+      double complex function Fv4c3S11(N)
+      implicit none
+*
+      include "../commons/alphas.h"
+      include "../commons/consts.h"
+      include "../commons/colfact.h"
+      
+      double complex SMKL10
+      double complex N
+      double complex T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11
+      double precision m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11
+      double precision a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11
+
+*     powers (m)
+      m1=1d0
+      m2=2d0
+      m3=3d0
+      m4=4d0
+      m5=5d0
+      m6=6d0
+      m7=7d0
+      m8=8d0
+      m9=9d0
+      m10=10d0
+      m11=11d0
+      
+*     coefs of powers (a)
+      a1=1639680d0
+      a2=-12648960d0
+      a3=53962240d0
+      a4=-141141120d0
+      a5=225693536d0
+      a6=-222599040d0
+      a7=136706160d0
+      a8=-52504200d0
+      a9=12461885d0 
+      a10=-1668066d0 
+      a11=97885d0      
+*    
+      T1=a1*SMKL10(N,m1)
+      T2=a2*SMKL10(N,m2)
+      T3=a3*SMKL10(N,m3)
+      T4=a4*SMKL10(N,m4)
+      T5=a5*SMKL10(N,m5)
+      T6=a6*SMKL10(N,m6) 
+      T7=a7*SMKL10(N,m7)       
+      T8=a8*SMKL10(N,m8)       
+      T9=a9*SMKL10(N,m9) 
+      T10=a10*SMKL10(N,m10)       
+      T11=a11*SMKL10(N,m11) 
+      Fv4c3S11=2d0/164025d0*(T1+T2+T3+T4+T5+T6+T7+T8+T9+T10+T11)
+*
+      return
+      end      
+************************************************************************
+*
 *     Subroutine calling gluon FF kernel
 *
 ************************************************************************
@@ -1429,6 +1488,50 @@ C=====================================================================
 
       return
       end
+      
+      
+************************************************************************
+*
+*     Subroutine calling v4 corr to charm AND gluon
+*
+************************************************************************
+      subroutine d4gc3S11(N,Q,nff)
+*
+      implicit none
+*
+      include "../commons/alphas.h"
+      include "../commons/consts.h"
+      include "../commons/colfact.h"
+*
+*     Function declaration
+*
+      double complex G4G3S11,G4G3S11DIST,Fv4c3S11
+      external G4G3S11,G4G3S11DIST,Fv4c3S11
+*
+*     Internal variables
+*
+      integer iff
+      double complex N,Q,muL
+      double precision mc,alphas      
+*
+*     Output
+*
+      double complex nff(-6:6)
+      alphas=0.31494871292d0
+      mc=1.5d0
+      muL=(1.5d0,0d0)
+      
+      do iff=-6,6
+         nff(iff) = (0d0,0d0)
+      enddo
+*
+*     Call function
+*
+      nff(0) = alphas**3*(G4G3S11(N)+G4G3S11DIST(N,muL)) 
+      nff(4) = alphas**2*(Fv4c3S11(N))
+      nff(-4) = nff(4) 
+      return
+      end      
 ************************************************************************
 *
 *     testing function which works
@@ -2057,7 +2160,7 @@ C=====================================================================
       beta0=(11d0*CA - 4d0*TR*3d0)/3d0
       
       mc = 1.5d0
-      muL = mc
+      muL = (1.5d0,0d0)
       muR0G=2d0*mc
       muR0C=2d0*mc
       

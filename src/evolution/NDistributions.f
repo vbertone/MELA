@@ -119,6 +119,9 @@
          call FF3S11(N,Q(1),xfph0N)  
       elseif(distf.eq."FF3S11v4")then
          call FF3S11v4(N,Q(1),xfph0N)   
+* JUST V4 charm and gluon 
+      elseif(distf.eq."d4gc3S11")then
+         call d4gc3S11(N,Q(1),xfph0N) 
 *MISC      
       elseif(distf.eq."TEST")then
          call TEST(N,Q(1),xfph0N) 

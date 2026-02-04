@@ -307,7 +307,7 @@
 
       write(6,*) "------------------KL edit-------------------"
       jKL=2
-      distf = "d4g3S11"
+      distf = "FF3S11v4"
       QKLi = 3d0
       QKL(1) = dcmplx(QKLi, 0d0)
 *
