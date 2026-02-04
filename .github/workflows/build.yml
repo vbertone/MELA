@@ -1,0 +1,25 @@
+name: Build and test
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y gfortran g++ gcc
+
+      - name: Build
+        run: cmake . && make -j$(nproc)
+
+      - name: Run Evolution
+        run: cd run && echo "Reference.ini" | ./Evolution
+
+      - name: Run Timing
+        run: cd run && echo "Reference.ini" | ./Timing
+
+      - name: Run StructureFunctions
+        run: cd run && echo "Reference.ini" | ./StructureFunctions

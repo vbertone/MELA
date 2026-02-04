@@ -43,10 +43,12 @@
       enddo
 *
       t = - dlog(x)
-      m = 33                  ! Must be odd
+      m = 65                  ! Must be odd (increased from 33)
       r = 2d0 * m / 5d0 / t
 *
-      rmax = 10d0
+*     Adaptive rmax: larger for small t (large x), bounded
+      rmax = 18d0 / t - 1d0
+      rmax = max(min(rmax, 25d0), 1d0)
 *
       if(r.gt.rmax) r = rmax
 *
